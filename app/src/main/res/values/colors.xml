@@ -15,4 +15,6 @@
     <color name="colorSecondary">#5c5c5c</color>
     <color name="colorSecondaryVariant">#545454</color>
     <color name="colorOnSecondary">#f8f8f8</color>
+
+    <color name="transparent">#ffffffff</color>
 </resources>
