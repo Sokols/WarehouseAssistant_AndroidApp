@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Warehouse Assistant</string>
+    <string name="go_to_registry">GO TO REGISTRY</string>
+    <string name="go_to_login">GO TO LOGIN</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
 </resources>
