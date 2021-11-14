@@ -1,37 +1,34 @@
 package pl.sokols.warehouseassistant.ui.auth.registry
 
-import android.util.Patterns
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import pl.sokols.warehouseassistant.R
+import pl.sokols.warehouseassistant.services.AuthService
+import pl.sokols.warehouseassistant.utils.AuthState
+import pl.sokols.warehouseassistant.utils.AuthUtils.isEmailValid
+import pl.sokols.warehouseassistant.utils.AuthUtils.isPasswordValid
 import javax.inject.Inject
 
 @HiltViewModel
-class RegistryViewModel @Inject constructor(): ViewModel() {
+class RegistryViewModel @Inject constructor(
+    private val authService: AuthService
+) : ViewModel() {
 
-    fun login(username: String, password: String) {
+    val userLiveData: MutableLiveData<FirebaseUser?> by lazy { authService.userLiveData }
+    val authFormState: MutableLiveData<AuthState> = MutableLiveData()
+
+    fun register(email: String, password: String) {
+        authService.register(email, password)
     }
 
-    fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
+    fun registerDataChanged(email: String, password: String) {
+        if (!isEmailValid(email)) {
+            authFormState.postValue(AuthState.INVALID_EMAIL)
         } else if (!isPasswordValid(password)) {
+            authFormState.postValue(AuthState.INVALID_PASSWORD)
         } else {
+            authFormState.postValue(AuthState.VALID)
         }
-    }
-
-    // A placeholder username validation check
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
-    }
-
-    // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
     }
 }
