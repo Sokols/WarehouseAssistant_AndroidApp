@@ -7,8 +7,7 @@ import android.widget.EditText
 
 object AuthUtils {
 
-    // Username validation check
-    fun isEmailValid(email: String): Boolean {
+    fun isEmailFormatValid(email: String): Boolean {
         return if (email.contains('@')) {
             Patterns.EMAIL_ADDRESS.matcher(email).matches()
         } else {
@@ -16,11 +15,13 @@ object AuthUtils {
         }
     }
 
-    // Password validation check
-    fun isPasswordValid(password: String): Boolean {
+    fun isPasswordLengthValid(password: String): Boolean {
         return password.length > 5
     }
 
+    fun isPasswordPresentValid(password: String): Boolean {
+        return password.isNotEmpty()
+    }
 
     /**
      * Extension function to simplify setting an afterTextChanged action to EditText components.

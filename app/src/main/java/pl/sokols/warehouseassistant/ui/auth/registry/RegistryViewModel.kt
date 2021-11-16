@@ -6,8 +6,8 @@ import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.sokols.warehouseassistant.services.AuthService
 import pl.sokols.warehouseassistant.utils.AuthState
-import pl.sokols.warehouseassistant.utils.AuthUtils.isEmailValid
-import pl.sokols.warehouseassistant.utils.AuthUtils.isPasswordValid
+import pl.sokols.warehouseassistant.utils.AuthUtils.isEmailFormatValid
+import pl.sokols.warehouseassistant.utils.AuthUtils.isPasswordLengthValid
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,17 +16,17 @@ class RegistryViewModel @Inject constructor(
 ) : ViewModel() {
 
     val userLiveData: MutableLiveData<FirebaseUser?> by lazy { authService.userLiveData }
-    val authFormState: MutableLiveData<AuthState> = MutableLiveData()
+    val authFormState: MutableLiveData<AuthState?> by lazy { authService.errorLiveData }
 
     fun register(email: String, password: String) {
         authService.register(email, password)
     }
 
     fun registerDataChanged(email: String, password: String) {
-        if (!isEmailValid(email)) {
-            authFormState.postValue(AuthState.INVALID_EMAIL)
-        } else if (!isPasswordValid(password)) {
-            authFormState.postValue(AuthState.INVALID_PASSWORD)
+        if (!isEmailFormatValid(email)) {
+            authFormState.postValue(AuthState.PROVIDED_EMAIL_INVALID)
+        } else if (!isPasswordLengthValid(password)) {
+            authFormState.postValue(AuthState.PROVIDED_PASSWORD_TOO_SHORT)
         } else {
             authFormState.postValue(AuthState.VALID)
         }

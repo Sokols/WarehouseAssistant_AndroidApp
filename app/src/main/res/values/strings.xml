@@ -9,4 +9,8 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="sign_out">Log Out</string>
+    <string name="wrong_password">Wrong password!</string>
+    <string name="user_not_found">User not found!</string>
+    <string name="email_in_use">E-mail already in use!</string>
+    <string name="other_error">Unidentified error occurred!</string>
 </resources>

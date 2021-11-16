@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -51,37 +52,32 @@ class RegistryFragment : Fragment() {
             )
         }
 
-        password.apply {
-            afterTextChanged {
-                viewModel.registerDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
-                )
-            }
+        password.afterTextChanged {
+            viewModel.registerDataChanged(
+                username.text.toString(),
+                password.text.toString()
+            )
+        }
 
-            register.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                viewModel.register(username.text.toString(), password.text.toString())
-            }
+        register.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            viewModel.register(username.text.toString(), password.text.toString())
         }
 
         viewModel.authFormState.observe(viewLifecycleOwner, { state ->
             when (state) {
-                AuthState.INVALID_EMAIL -> {
-                    register.isEnabled = false
-
+                AuthState.VALID -> register.isEnabled = true
+                AuthState.PROVIDED_EMAIL_INVALID,
+                AuthState.PROVIDED_PASSWORD_TOO_SHORT -> register.isEnabled = false
+                AuthState.ERROR_EMAIL_ALREADY_IN_USE -> {
+                    Toast.makeText(context, R.string.email_in_use, Toast.LENGTH_SHORT).show()
+                    loading.visibility = View.INVISIBLE
                 }
-                AuthState.INVALID_PASSWORD -> {
-                    register.isEnabled = false
-
+                AuthState.ERROR_OTHER -> {
+                    Toast.makeText(context, R.string.other_error, Toast.LENGTH_SHORT).show()
+                    loading.visibility = View.INVISIBLE
                 }
-                AuthState.VALID -> {
-                    register.isEnabled = true
-
-                }
-                else -> {
-                    // do nothing
-                }
+                else -> {}
             }
         })
     }

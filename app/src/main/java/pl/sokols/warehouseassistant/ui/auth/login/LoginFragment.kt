@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -29,7 +30,7 @@ class LoginFragment : Fragment() {
         binding = LoginFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val username = binding.username
@@ -37,33 +38,6 @@ class LoginFragment : Fragment() {
         val login = binding.login
         val loading = binding.loading
         val goToRegistry = binding.goToRegistry
-
-//        loginViewModel.authFormState.observe(viewLifecycleOwner, Observer {
-//            val loginState = it ?: return@Observer
-//
-//            // disable login button unless both username / password is valid
-//            login.isEnabled = loginState.isDataValid
-//
-//            if (loginState.usernameError != null) {
-//                username.error = getString(loginState.usernameError)
-//            }
-//            if (loginState.passwordError != null) {
-//                password.error = getString(loginState.passwordError)
-//            }
-//        })
-//
-//        loginViewModel.authResult.observe(viewLifecycleOwner, Observer {
-//            val loginResult = it ?: return@Observer
-//
-//            loading.visibility = View.GONE
-//            if (loginResult.error != null) {
-//                showLoginFailed(loginResult.error)
-//            }
-//            if (loginResult.success != null) {
-//                updateUiWithUser(loginResult.success)
-//            }
-//            activity?.setResult(Activity.RESULT_OK)
-//        })
 
         goToRegistry.setOnClickListener {
             Navigation.findNavController(binding.root)
@@ -77,37 +51,36 @@ class LoginFragment : Fragment() {
             )
         }
 
-        password.apply {
-            afterTextChanged {
-                viewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
-                )
-            }
+        password.afterTextChanged {
+            viewModel.loginDataChanged(
+                username.text.toString(),
+                password.text.toString()
+            )
+        }
 
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                viewModel.login(username.text.toString(), password.text.toString())
-            }
+        login.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            viewModel.login(username.text.toString(), password.text.toString())
         }
 
         viewModel.authFormState.observe(viewLifecycleOwner, { state ->
             when (state) {
-                AuthState.INVALID_EMAIL -> {
-                    login.isEnabled = false
-
+                AuthState.VALID -> login.isEnabled = true
+                AuthState.PROVIDED_EMAIL_INVALID,
+                AuthState.PROVIDED_PASSWORD_BLANK -> login.isEnabled = false
+                AuthState.ERROR_WRONG_PASSWORD -> {
+                    Toast.makeText(context, R.string.wrong_password, Toast.LENGTH_SHORT).show()
+                    loading.visibility = View.INVISIBLE
                 }
-                AuthState.INVALID_PASSWORD -> {
-                    login.isEnabled = false
-
+                AuthState.ERROR_USER_NOT_FOUND -> {
+                    Toast.makeText(context, R.string.user_not_found, Toast.LENGTH_SHORT).show()
+                    loading.visibility = View.INVISIBLE
                 }
-                AuthState.VALID -> {
-                    login.isEnabled = true
-
+                AuthState.ERROR_OTHER -> {
+                    Toast.makeText(context, R.string.other_error, Toast.LENGTH_SHORT).show()
+                    loading.visibility = View.INVISIBLE
                 }
-                else -> {
-                    // do nothing
-                }
+                else -> {}
             }
         })
     }
