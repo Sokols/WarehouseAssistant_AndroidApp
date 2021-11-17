@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/mainGroupDrawer"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeFragment"
+            android:checked="true"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/itemsFragment"
+            android:icon="@drawable/ic_baseline_shopping_cart_24"
+            android:title="@string/items" />
+    </group>
+</menu>

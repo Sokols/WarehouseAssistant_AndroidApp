@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Menadżer Magazynu</string>
+    <string name="go_to_registry">Przejdź do rejestracji</string>
+    <string name="go_to_login">Przejdź do logowania</string>
+    <string name="register">Zarejestruj</string>
+    <string name="login">Zaloguj</string>
+    <string name="sign_out">Wyloguj</string>
+    <string name="password">Hasło</string>
+    <string name="wrong_password">Niepoprawne hasło!</string>
+    <string name="user_not_found">Nie ma takiego użytkownika!</string>
+    <string name="email_in_use">E-mail w użyciu!</string>
+    <string name="other_error">Wystąpił niezydentyfikowany problem!</string>
+    <string name="home">Home</string>
+    <string name="items">Items</string>
+</resources>
