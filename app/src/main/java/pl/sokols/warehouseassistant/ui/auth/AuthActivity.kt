@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui
+package pl.sokols.warehouseassistant.ui.auth
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

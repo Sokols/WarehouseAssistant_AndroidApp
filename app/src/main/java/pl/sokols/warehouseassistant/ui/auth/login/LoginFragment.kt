@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.LoginFragmentBinding
-import pl.sokols.warehouseassistant.ui.MainActivity
+import pl.sokols.warehouseassistant.ui.main.MainActivity
 import pl.sokols.warehouseassistant.utils.AuthState
 import pl.sokols.warehouseassistant.utils.AuthUtils.afterTextChanged
 

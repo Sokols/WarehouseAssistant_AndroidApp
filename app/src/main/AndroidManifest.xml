@@ -11,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WarehouseAssistant" >
+        android:theme="@style/Theme.WarehouseAssistant"
+        android:fullBackupContent="">
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true"
@@ -23,10 +24,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.AuthActivity"
+            android:name=".ui.auth.AuthActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="false" />
     </application>
 

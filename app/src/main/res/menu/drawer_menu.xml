@@ -5,9 +5,9 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/homeFragment"
+            android:checked="true"
             android:icon="@drawable/ic_baseline_home_24"
-            android:title="@string/home"
-            android:checked="true" />
+            android:title="@string/home" />
         <item
             android:id="@+id/itemsFragment"
             android:icon="@drawable/ic_baseline_shopping_cart_24"
