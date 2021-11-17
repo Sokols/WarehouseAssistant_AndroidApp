@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui.main
+package pl.sokols.warehouseassistant.ui.main.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,28 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
-import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.databinding.MainFragmentBinding
+import pl.sokols.warehouseassistant.databinding.HomeFragmentBinding
 import pl.sokols.warehouseassistant.ui.AuthActivity
-import pl.sokols.warehouseassistant.ui.MainActivity
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class HomeFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
-    private val viewModel: MainViewModel by viewModels()
-    private lateinit var binding: MainFragmentBinding
+    private val viewModel: HomeViewModel by viewModels()
+    private lateinit var binding: HomeFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       binding = MainFragmentBinding.inflate(inflater, container, false)
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

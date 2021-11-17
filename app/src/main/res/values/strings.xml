@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">Warehouse Assistant</string>
-    <string name="title_activity_auth" translatable="false">AuthActivity</string>
-    <string name="prompt_email" translatable="false">Email</string>
-    <string name="prompt_password">Password</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="email" translatable="false">Email</string>
+    <string name="password">Password</string>
     <string name="go_to_registry">Go to registry</string>
     <string name="go_to_login">Go to login</string>
     <string name="register">Register</string>
@@ -13,4 +11,6 @@
     <string name="user_not_found">User not found!</string>
     <string name="email_in_use">E-mail already in use!</string>
     <string name="other_error">Unidentified error occurred!</string>
+    <string name="home">Home</string>
+    <string name="items">Items</string>
 </resources>
