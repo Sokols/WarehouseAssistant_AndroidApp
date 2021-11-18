@@ -13,4 +13,5 @@
     <string name="other_error">Unidentified error occurred!</string>
     <string name="home">Home</string>
     <string name="items">Items</string>
+    <string name="price">Price: $%1$.2f</string>
 </resources>
