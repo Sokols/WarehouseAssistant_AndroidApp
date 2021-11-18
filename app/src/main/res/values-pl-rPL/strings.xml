@@ -13,5 +13,11 @@
     <string name="other_error">Wystąpił niezydentyfikowany problem!</string>
     <string name="home">Home</string>
     <string name="items">Items</string>
-    <string name="price">Cena: $%1$.2f</string>
+    <string name="price_and_value">Cena: $%1$.2f</string>
+    <string name="fab_content_desc">FAB</string>
+    <string name="enter_data">Wprowadź dane</string>
+    <string name="incorrect_value">Niepoprawne dane</string>
+    <string name="name">Nazwa</string>
+    <string name="apply">Zatwierdź</string>
+    <string name="price">Cena</string>
 </resources>

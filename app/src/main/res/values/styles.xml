@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">?attr/colorOnPrimary</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:textColorHint">?attr/colorOnPrimary</item>
+        <item name="hintTextColor">?attr/colorOnPrimary</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconTint">?attr/colorOnPrimary</item>
+        <item name="startIconTint">?attr/colorOnPrimary</item>
+        <item name="errorEnabled">true</item>
+        <item name="boxStrokeErrorColor">@color/red</item>
+        <item name="errorTextColor">@color/red</item>
+    </style>
+</resources>

@@ -13,5 +13,13 @@
     <string name="other_error">Unidentified error occurred!</string>
     <string name="home">Home</string>
     <string name="items">Items</string>
-    <string name="price">Price: $%1$.2f</string>
+    <string name="price_and_value">Price: $%1$.2f</string>
+    <string name="id_and_value" translatable="false">ID: %s</string>
+    <string name="price">Price</string>
+    <string name="fab_content_desc">FAB</string>
+    <string name="enter_data">Enter data</string>
+    <string name="incorrect_value">Incorrect value</string>
+    <string name="name">Name</string>
+    <string name="apply">Apply</string>
+    <string name="provide_item_dialog" translatable="false">Provide item dialog</string>
 </resources>
