@@ -15,4 +15,8 @@ class ItemsViewModel @Inject constructor(
     fun getItems(): MutableLiveData<List<Item>> = itemRepository.getItems()
 
     fun addItem(item: Item) = itemRepository.addItem(item)
+
+    fun updateItem(item: Item) = itemRepository.updateItem(item)
+
+    fun deleteItem(deletedItem: Item) = itemRepository.deleteItem(deletedItem)
 }

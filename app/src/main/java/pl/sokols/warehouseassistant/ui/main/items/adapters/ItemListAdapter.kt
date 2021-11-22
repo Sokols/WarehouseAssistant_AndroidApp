@@ -7,14 +7,21 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.Item
 import pl.sokols.warehouseassistant.databinding.ItemBinding
 import pl.sokols.warehouseassistant.utils.ItemDiffCallback
+import pl.sokols.warehouseassistant.utils.OnItemClickListener
 
-class ItemListAdapter : ListAdapter<Item, ItemListAdapter.ItemListViewHolder>(
-    ItemDiffCallback
-) {
-    inner class ItemListViewHolder(private val binding: ItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Item) {
+class ItemListAdapter(
+    private val listener: OnItemClickListener
+) : ListAdapter<Item, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
+
+    inner class ItemListViewHolder(
+        private val binding: ItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: Item, listener: OnItemClickListener) {
             binding.item = item
+            binding.itemLayout.setOnClickListener {
+                listener.onItemClickListener(item)
+            }
         }
     }
 
@@ -30,6 +37,6 @@ class ItemListAdapter : ListAdapter<Item, ItemListAdapter.ItemListViewHolder>(
     )
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), listener)
     }
 }

@@ -20,4 +20,6 @@
     <string name="name">Nazwa</string>
     <string name="apply">Zatwierdź</string>
     <string name="price">Cena</string>
+    <string name="deleted">Usunięto</string>
+    <string name="undo">Cofnij</string>
 </resources>

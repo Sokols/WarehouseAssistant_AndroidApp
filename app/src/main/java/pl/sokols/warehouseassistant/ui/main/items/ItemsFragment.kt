@@ -1,5 +1,6 @@
 package pl.sokols.warehouseassistant.ui.main.items
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,9 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Item
@@ -14,6 +18,7 @@ import pl.sokols.warehouseassistant.databinding.ItemsFragmentBinding
 import pl.sokols.warehouseassistant.ui.main.items.adapters.ItemListAdapter
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
 import pl.sokols.warehouseassistant.utils.OnItemClickListener
+import pl.sokols.warehouseassistant.utils.SwipeHelper
 
 @AndroidEntryPoint
 class ItemsFragment : Fragment() {
@@ -33,7 +38,7 @@ class ItemsFragment : Fragment() {
     }
 
     private fun setComponents() {
-        recyclerViewAdapter = ItemListAdapter()
+        recyclerViewAdapter = ItemListAdapter(onItemClickListener)
         viewModel.getItems().observe(viewLifecycleOwner, { list ->
             recyclerViewAdapter.submitList(list)
         })
@@ -47,6 +52,7 @@ class ItemsFragment : Fragment() {
                 )!!
             )
         )
+        addSwipeToDelete()
     }
 
     private fun setListeners() {
@@ -64,5 +70,34 @@ class ItemsFragment : Fragment() {
             requireFragmentManager(),
             getString(R.string.provide_item_dialog)
         )
+    }
+
+    private fun addSwipeToDelete() {
+        ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedItem: Item = recyclerViewAdapter.currentList[viewHolder.adapterPosition]
+                viewModel.deleteItem(deletedItem)
+
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.deleted),
+                    Snackbar.LENGTH_SHORT
+                ).setAction(getString(R.string.undo)) {
+                    viewModel.addItem(deletedItem)
+                }.show()
+            }
+        }).attachToRecyclerView(binding.itemsRecyclerView)
+    }
+
+    private val onItemClickListener = object : OnItemClickListener {
+        override fun onItemClickListener(item: Any) {
+            addEditItem(item as Item, object : OnItemClickListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onItemClickListener(item: Any) {
+                    viewModel.updateItem(item as Item)
+                    recyclerViewAdapter.notifyDataSetChanged()
+                }
+            })
+        }
     }
 }

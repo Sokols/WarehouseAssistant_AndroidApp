@@ -31,6 +31,14 @@ class ItemRepository @Inject constructor() {
         itemsTable.push().setValue(item)
     }
 
+    fun updateItem(item: Item) {
+        itemsTable.child(item.id).setValue(item)
+    }
+
+    fun deleteItem(item: Item) {
+        itemsTable.child(item.id).removeValue()
+    }
+
     private fun setItemsListener() {
         itemsTable.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
