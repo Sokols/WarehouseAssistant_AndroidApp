@@ -22,4 +22,6 @@
     <string name="price">Cena</string>
     <string name="deleted">Usunięto</string>
     <string name="undo">Cofnij</string>
+    <string name="inventory">Inwentaryzacja</string>
+    <string name="amount">Amount</string>
 </resources>

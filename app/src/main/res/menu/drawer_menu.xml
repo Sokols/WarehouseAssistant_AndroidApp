@@ -12,5 +12,9 @@
             android:id="@+id/itemsFragment"
             android:icon="@drawable/ic_baseline_shopping_cart_24"
             android:title="@string/items" />
+        <item
+            android:id="@+id/inventoryFragment"
+            android:icon="@drawable/ic_baseline_document_scanner_24"
+            android:title="@string/inventory" />
     </group>
 </menu>

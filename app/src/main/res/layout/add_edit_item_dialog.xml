@@ -47,6 +47,25 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/itemAmountTextInputLayout"
+            style="@style/TextInputLayoutStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/amount"
+            android:paddingHorizontal="@dimen/large_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemNameTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/itemAmountEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="@={`` + item.amount}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/itemPriceTextInputLayout"
             style="@style/TextInputLayoutStyle"
             android:layout_width="0dp"
@@ -55,7 +74,7 @@
             android:paddingHorizontal="@dimen/large_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameTextInputLayout">
+            app:layout_constraintTop_toBottomOf="@+id/itemAmountTextInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/itemPriceEditText"

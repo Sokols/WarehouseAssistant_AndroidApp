@@ -15,7 +15,7 @@ class ItemAddEditDialog(
     private val listener: OnItemClickListener
 ) : DialogFragment() {
 
-    var item: Item = providedItem ?: Item(name = "", price = 0.0f)
+    var item: Item = providedItem ?: Item()
 
     private lateinit var dialogBinding: AddEditItemDialogBinding
 
