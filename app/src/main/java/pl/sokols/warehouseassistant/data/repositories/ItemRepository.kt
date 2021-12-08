@@ -2,21 +2,19 @@ package pl.sokols.warehouseassistant.data.repositories
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import pl.sokols.warehouseassistant.data.models.Item
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+@ActivityRetainedScoped
 class ItemRepository @Inject constructor() {
 
     private var items: MutableLiveData<List<Item>> = MutableLiveData()
-    private var database: DatabaseReference =
-        FirebaseDatabase.getInstance("https://warehouseassistant-default-rtdb.europe-west1.firebasedatabase.app").reference
-    private var itemsTable: DatabaseReference = database.child("items")
+
+    private var itemsTable: DatabaseReference = getItemsTableReference()
 
     init {
         setItemsListener()
@@ -45,10 +43,8 @@ class ItemRepository @Inject constructor() {
                 val list = mutableListOf<Item>()
                 for (dataSnapshot in snapshot.children) {
                     dataSnapshot.getValue(Item::class.java)?.let { item ->
-                        if (item.userId == FirebaseAuth.getInstance().currentUser?.uid) {
-                            item.id = dataSnapshot.key.toString()
-                            list.add(item)
-                        }
+                        item.id = dataSnapshot.key.toString()
+                        list.add(item)
                     }
                 }
                 items.postValue(list)
@@ -58,5 +54,19 @@ class ItemRepository @Inject constructor() {
                 // Unused method
             }
         })
+    }
+
+    /**
+     * Utils
+     */
+    private fun getItemsTableReference(): DatabaseReference = FirebaseDatabase
+        .getInstance("https://warehouseassistant-default-rtdb.europe-west1.firebasedatabase.app")
+        .reference
+        .child(getItemsTableName())
+        .child("items")
+
+    private fun getItemsTableName(): String {
+        val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        return firebaseUser?.uid.toString()
     }
 }

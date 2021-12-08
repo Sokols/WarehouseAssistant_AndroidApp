@@ -1,6 +1,5 @@
 package pl.sokols.warehouseassistant.ui.main
 
-import android.app.Activity
 import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED
@@ -8,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -15,21 +15,20 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.MainActivityBinding
 import pl.sokols.warehouseassistant.ui.auth.AuthActivity
+import pl.sokols.warehouseassistant.ui.main.items.ItemsFragment
 import pl.sokols.warehouseassistant.utils.NFCUtil
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var navController: NavController
     private lateinit var binding: MainActivityBinding
     private lateinit var nfcAdapter: NfcAdapter
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = MainActivityBinding.inflate(layoutInflater)
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        setContentView(binding.root)
-        setupToolbar()
+        setup()
     }
 
     override fun onResume() {
@@ -44,19 +43,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.action = ACTION_NDEF_DISCOVERED;
-        val messageWrittenSuccessfully = viewModel.retrieveNFCMessage(intent)
-        Toast.makeText(
-            this,
-            messageWrittenSuccessfully,
-            Toast.LENGTH_SHORT
-        ).show()
+        intent?.action = ACTION_NDEF_DISCOVERED
+        retrieveIntent(intent)
+    }
+
+    private fun setup() {
+        binding = MainActivityBinding.inflate(layoutInflater)
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment).navController
+        setContentView(binding.root)
+        setupToolbar()
     }
 
     private fun setupToolbar() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.homeFragment,
@@ -80,4 +80,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun retrieveIntent(intent: Intent?) {
+        val navHost = supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment)
+        navHost?.let { navFragment ->
+            navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
+                if (fragment is ItemsFragment) {
+                    fragment.retrieveIntent(intent)
+                }
+            }
+        }
+    }
+
 }

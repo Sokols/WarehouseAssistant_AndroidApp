@@ -43,11 +43,10 @@ class NfcService @Inject constructor() {
                         }
                     }
                 }
-            } else {
-                return "Touch NFC tag to read data"
             }
+            return "wrong"
         }
-        return "Touch NFC tag to read data"
+        return "wrong"
     }
 
     private fun getNDefMessages(intent: Intent): Array<NdefMessage> {
