@@ -10,17 +10,22 @@ import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 import pl.sokols.warehouseassistant.utils.OnItemClickListener
 
 class ItemListAdapter(
-    private val listener: OnItemClickListener
+    private val mainListener: OnItemClickListener,
+    private val nfcListener: OnItemClickListener
 ) : ListAdapter<Item, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
 
     inner class ItemListViewHolder(
         private val binding: ItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Item, listener: OnItemClickListener) {
+        fun bind(item: Item, mainListener: OnItemClickListener, nfcListener: OnItemClickListener) {
             binding.item = item
             binding.itemLayout.setOnClickListener {
-                listener.onItemClickListener(item)
+                mainListener.onItemClickListener(item)
+            }
+
+            binding.nfcTagButton.setOnClickListener {
+                nfcListener.onItemClickListener(item)
             }
         }
     }
@@ -37,6 +42,6 @@ class ItemListAdapter(
     )
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
-        holder.bind(getItem(position), listener)
+        holder.bind(getItem(position), mainListener, nfcListener)
     }
 }

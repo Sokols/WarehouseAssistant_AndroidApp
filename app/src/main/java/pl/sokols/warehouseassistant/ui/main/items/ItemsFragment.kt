@@ -18,7 +18,10 @@ import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Item
 import pl.sokols.warehouseassistant.databinding.ItemsFragmentBinding
 import pl.sokols.warehouseassistant.ui.main.items.adapters.ItemListAdapter
+import pl.sokols.warehouseassistant.ui.main.items.dialogs.ItemAddEditDialog
+import pl.sokols.warehouseassistant.ui.main.items.dialogs.WriteNfcDialog
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
+import pl.sokols.warehouseassistant.utils.NfcState
 import pl.sokols.warehouseassistant.utils.OnItemClickListener
 import pl.sokols.warehouseassistant.utils.SwipeHelper
 
@@ -42,13 +45,14 @@ class ItemsFragment : Fragment() {
     fun retrieveIntent(intent: Intent?) {
         Toast.makeText(
             context,
-            viewModel.retrieveNFCMessage(intent),
+            viewModel.retrieveNFC(intent),
             Toast.LENGTH_SHORT
         ).show()
+        viewModel.changeNfcState()
     }
 
     private fun setComponents() {
-        recyclerViewAdapter = ItemListAdapter(onItemClickListener)
+        recyclerViewAdapter = ItemListAdapter(mainListener, nfcListener)
         viewModel.getItems().observe(viewLifecycleOwner, { list ->
             recyclerViewAdapter.submitList(list)
         })
@@ -99,7 +103,7 @@ class ItemsFragment : Fragment() {
         }).attachToRecyclerView(binding.itemsRecyclerView)
     }
 
-    private val onItemClickListener = object : OnItemClickListener {
+    private val mainListener = object : OnItemClickListener {
         override fun onItemClickListener(item: Any) {
             addEditItem(item as Item, object : OnItemClickListener {
                 @SuppressLint("NotifyDataSetChanged")
@@ -108,6 +112,16 @@ class ItemsFragment : Fragment() {
                     recyclerViewAdapter.notifyDataSetChanged()
                 }
             })
+        }
+    }
+
+    private val nfcListener = object : OnItemClickListener {
+        override fun onItemClickListener(item: Any) {
+            viewModel.changeNfcState(NfcState.WRITE, (item as Item).id)
+            WriteNfcDialog().show(
+                requireFragmentManager(),
+                getString(R.string.provide_nfc_dialog)
+            )
         }
     }
 }

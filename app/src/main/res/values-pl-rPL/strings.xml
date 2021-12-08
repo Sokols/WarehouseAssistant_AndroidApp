@@ -24,4 +24,7 @@
     <string name="undo">Cofnij</string>
     <string name="inventory">Inwentaryzacja</string>
     <string name="amount">Ilość</string>
+    <string name="nfc_tag_image">NFC Tag Image</string>
+    <string name="writing_to_the_tag">Writing to the tag</string>
+    <string name="provide_nfc_dialog">provide_nfc_dialog</string>
 </resources>

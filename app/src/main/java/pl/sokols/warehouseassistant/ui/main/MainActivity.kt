@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var binding: MainActivityBinding
-    private lateinit var nfcAdapter: NfcAdapter
+    private var nfcAdapter: NfcAdapter? = null
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.action = ACTION_NDEF_DISCOVERED
-        retrieveIntent(intent)
+        NFCUtil.retrieveIntent(supportFragmentManager, intent)
     }
 
     private fun setup() {
@@ -80,16 +80,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun retrieveIntent(intent: Intent?) {
-        val navHost = supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment)
-        navHost?.let { navFragment ->
-            navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
-                if (fragment is ItemsFragment) {
-                    fragment.retrieveIntent(intent)
-                }
-            }
-        }
-    }
-
 }

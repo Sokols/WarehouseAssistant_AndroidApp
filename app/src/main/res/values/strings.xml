@@ -26,4 +26,7 @@
     <string name="undo">Undo</string>
     <string name="inventory">Inventory</string>
     <string name="amount">Amount</string>
+    <string name="nfc_tag_image">NFC Tag Image</string>
+    <string name="writing_to_the_tag">Writing to the tag</string>
+    <string name="provide_nfc_dialog">provide_nfc_dialog</string>
 </resources>
