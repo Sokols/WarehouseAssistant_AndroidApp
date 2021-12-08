@@ -11,8 +11,8 @@
     <string name="user_not_found">Nie ma takiego użytkownika!</string>
     <string name="email_in_use">E-mail w użyciu!</string>
     <string name="other_error">Wystąpił niezydentyfikowany problem!</string>
-    <string name="home">Home</string>
-    <string name="items">Items</string>
+    <string name="home">Strona Główna</string>
+    <string name="items">Towary</string>
     <string name="price_and_value">Cena: $%1$.2f</string>
     <string name="fab_content_desc">FAB</string>
     <string name="enter_data">Wprowadź dane</string>
@@ -23,5 +23,5 @@
     <string name="deleted">Usunięto</string>
     <string name="undo">Cofnij</string>
     <string name="inventory">Inwentaryzacja</string>
-    <string name="amount">Amount</string>
+    <string name="amount">Ilość</string>
 </resources>
