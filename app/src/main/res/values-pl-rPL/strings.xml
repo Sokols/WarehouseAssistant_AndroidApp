@@ -11,6 +11,19 @@
     <string name="user_not_found">Nie ma takiego użytkownika!</string>
     <string name="email_in_use">E-mail w użyciu!</string>
     <string name="other_error">Wystąpił niezydentyfikowany problem!</string>
-    <string name="home">Home</string>
-    <string name="items">Items</string>
+    <string name="home">Strona Główna</string>
+    <string name="items">Towary</string>
+    <string name="price_and_value">Cena: $%1$.2f</string>
+    <string name="enter_data">Wprowadź dane</string>
+    <string name="incorrect_value">Niepoprawne dane</string>
+    <string name="name">Nazwa</string>
+    <string name="apply">Zatwierdź</string>
+    <string name="price">Cena</string>
+    <string name="deleted">Usunięto</string>
+    <string name="undo">Cofnij</string>
+    <string name="inventory">Inwentaryzacja</string>
+    <string name="amount">Ilość</string>
+    <string name="writing_to_the_tag">Nadpisywanie tagu NFC</string>
+    <string name="written_to_the_tag">Nadpisano tag NFC</string>
+    <string name="cannot_find_item">Nie ma przedmiotu o podanym identyfikatorze</string>
 </resources>

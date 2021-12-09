@@ -10,7 +10,5 @@ class MainViewModel @Inject constructor(
     private val authService: AuthService
 ) : ViewModel() {
 
-    fun logout() {
-        authService.logout()
-    }
+    fun logout() = authService.logout()
 }
