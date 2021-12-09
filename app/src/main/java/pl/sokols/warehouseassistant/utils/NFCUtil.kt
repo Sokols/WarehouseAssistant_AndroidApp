@@ -46,5 +46,8 @@ object NFCUtil {
 
 enum class NfcState {
     READ,
-    WRITE
+    WRITE,
+    WRITTEN_TO_THE_TAG,
+    CANNOT_FIND_ITEM,
+    ERROR
 }

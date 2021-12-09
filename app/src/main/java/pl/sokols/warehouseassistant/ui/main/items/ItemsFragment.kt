@@ -1,6 +1,7 @@
 package pl.sokols.warehouseassistant.ui.main.items
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,6 +29,7 @@ import pl.sokols.warehouseassistant.utils.SwipeHelper
 @AndroidEntryPoint
 class ItemsFragment : Fragment() {
 
+    private lateinit var nfcDialog: WriteNfcDialog
     private val viewModel: ItemsViewModel by viewModels()
     private lateinit var binding: ItemsFragmentBinding
     private lateinit var recyclerViewAdapter: ItemListAdapter
@@ -43,18 +45,20 @@ class ItemsFragment : Fragment() {
     }
 
     fun retrieveIntent(intent: Intent?) {
-        Toast.makeText(
-            context,
-            viewModel.retrieveNFC(intent),
-            Toast.LENGTH_SHORT
-        ).show()
+        val nfcData = viewModel.retrieveNFC(intent)
+        if (nfcData is NfcState) {
+            displayToast(nfcData)
+        } else if (nfcData is Item) {
+            mainListener.onItemClickListener(nfcData)
+        }
         viewModel.changeNfcState()
     }
 
     private fun setComponents() {
+        nfcDialog = WriteNfcDialog { viewModel.changeNfcState() }
         recyclerViewAdapter = ItemListAdapter(mainListener, nfcListener)
-        viewModel.getItems().observe(viewLifecycleOwner, { list ->
-            recyclerViewAdapter.submitList(list)
+        viewModel.getItems().observe(viewLifecycleOwner, {
+            recyclerViewAdapter.submitList(it)
         })
         binding.itemsRecyclerView.adapter = recyclerViewAdapter
         binding.itemsRecyclerView.addItemDecoration(
@@ -92,15 +96,21 @@ class ItemsFragment : Fragment() {
                 val deletedItem: Item = recyclerViewAdapter.currentList[viewHolder.adapterPosition]
                 viewModel.deleteItem(deletedItem)
 
-                Snackbar.make(
-                    requireView(),
-                    getString(R.string.deleted),
-                    Snackbar.LENGTH_SHORT
-                ).setAction(getString(R.string.undo)) {
-                    viewModel.addItem(deletedItem)
-                }.show()
+                Snackbar
+                    .make(requireView(), getString(R.string.deleted), Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.undo)) { viewModel.addItem(deletedItem) }
+                    .show()
             }
         }).attachToRecyclerView(binding.itemsRecyclerView)
+    }
+
+    private fun displayToast(nfcData: NfcState) {
+        val message = when (nfcData) {
+            NfcState.WRITTEN_TO_THE_TAG -> getString(R.string.written_to_the_tag)
+            NfcState.CANNOT_FIND_ITEM -> getString(R.string.cannot_find_item)
+            else -> getString(R.string.other_error)
+        }
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     private val mainListener = object : OnItemClickListener {
@@ -118,7 +128,7 @@ class ItemsFragment : Fragment() {
     private val nfcListener = object : OnItemClickListener {
         override fun onItemClickListener(item: Any) {
             viewModel.changeNfcState(NfcState.WRITE, (item as Item).id)
-            WriteNfcDialog().show(
+            nfcDialog.show(
                 requireFragmentManager(),
                 getString(R.string.provide_nfc_dialog)
             )

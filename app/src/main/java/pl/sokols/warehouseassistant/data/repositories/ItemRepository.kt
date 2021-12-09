@@ -25,6 +25,8 @@ class ItemRepository @Inject constructor() {
         return items
     }
 
+    fun getItemById(id: String): Item? = items.value?.firstOrNull { it.id == id }
+
     fun addItem(item: Item) {
         itemsTable.push().setValue(item)
     }

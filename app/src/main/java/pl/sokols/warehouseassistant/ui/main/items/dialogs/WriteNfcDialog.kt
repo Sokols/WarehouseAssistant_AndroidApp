@@ -1,17 +1,16 @@
 package pl.sokols.warehouseassistant.ui.main.items.dialogs
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.data.models.Item
-import pl.sokols.warehouseassistant.databinding.AddEditItemDialogBinding
 import pl.sokols.warehouseassistant.databinding.WriteNfcDialogBinding
-import pl.sokols.warehouseassistant.utils.OnItemClickListener
 
-class WriteNfcDialog() : DialogFragment() {
+class WriteNfcDialog(
+    private val onCancelListener: DialogInterface.OnCancelListener
+    ) : DialogFragment() {
 
     private lateinit var dialogBinding: WriteNfcDialogBinding
 
@@ -26,6 +25,8 @@ class WriteNfcDialog() : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         dialogBinding = WriteNfcDialogBinding.inflate(inflater, container, false)
+        dialog?.setCanceledOnTouchOutside(false)
+        dialog?.setOnCancelListener(onCancelListener)
         return dialogBinding.root
     }
 }

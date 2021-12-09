@@ -16,17 +16,19 @@
     <string name="price_and_value">Price: $%1$.2f</string>
     <string name="id_and_value" translatable="false">ID: %s</string>
     <string name="price">Price</string>
-    <string name="fab_content_desc">FAB</string>
+    <string name="fab_content_desc" translatable="false">FAB</string>
     <string name="enter_data">Enter data</string>
     <string name="incorrect_value">Incorrect value</string>
     <string name="name">Name</string>
     <string name="apply">Apply</string>
-    <string name="provide_item_dialog" translatable="false">Provide item dialog</string>
+    <string name="provide_item_dialog" translatable="false">provide_item_dialog</string>
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
     <string name="inventory">Inventory</string>
     <string name="amount">Amount</string>
-    <string name="nfc_tag_image">NFC Tag Image</string>
+    <string name="nfc_tag_image" translatable="false">NFC Tag Image</string>
     <string name="writing_to_the_tag">Writing to the tag</string>
-    <string name="provide_nfc_dialog">provide_nfc_dialog</string>
+    <string name="provide_nfc_dialog" translatable="false">provide_nfc_dialog</string>
+    <string name="cannot_find_item">Cannot find item with given ID</string>
+    <string name="written_to_the_tag">Written to the NFC Tag</string>
 </resources>
