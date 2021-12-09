@@ -35,18 +35,18 @@ class NfcService @Inject constructor() {
             if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
                 val nDefMessages = getNDefMessages(intent)
                 nDefMessages[0].records?.let {
-                    it.forEach {
-                        it?.payload.let {
-                            it?.let {
-                                return String(it)
+                    it.forEach { ndefRecord ->
+                        ndefRecord?.payload.let { bytes ->
+                            bytes?.let { byteArray ->
+                                return String(byteArray)
                             }
                         }
                     }
                 }
             }
-            return "wrong"
+            return "Error with action type"
         }
-        return "wrong"
+        return "Error with intent"
     }
 
     private fun getNDefMessages(intent: Intent): Array<NdefMessage> {
@@ -74,29 +74,29 @@ class NfcService @Inject constructor() {
                     //Message to large to write to NFC tag
                     return false
                 }
-                if (it.isWritable) {
+                return if (it.isWritable) {
                     it.writeNdefMessage(nfcMessage)
                     it.close()
                     //Message is written to tag
-                    return true
+                    true
                 } else {
                     //NFC tag is read-only
-                    return false
+                    false
                 }
             }
 
             val nDefFormatableTag = NdefFormatable.get(tag)
 
             nDefFormatableTag?.let {
-                try {
+                return try {
                     it.connect()
                     it.format(nfcMessage)
                     it.close()
                     //The data is written to the tag
-                    return true
+                    true
                 } catch (e: IOException) {
                     //Failed to format tag
-                    return false
+                    false
                 }
             }
             //NDEF is not supported

@@ -49,6 +49,7 @@ class ItemRepository @Inject constructor() {
                         list.add(item)
                     }
                 }
+                list.sortBy { it.name }
                 items.postValue(list)
             }
 

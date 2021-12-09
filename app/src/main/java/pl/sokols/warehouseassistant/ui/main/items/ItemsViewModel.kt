@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Item
 import pl.sokols.warehouseassistant.data.repositories.ItemRepository
 import pl.sokols.warehouseassistant.services.NfcService
