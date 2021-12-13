@@ -31,4 +31,8 @@
     <string name="provide_nfc_dialog" translatable="false">provide_nfc_dialog</string>
     <string name="cannot_find_item">Cannot find item with given ID</string>
     <string name="written_to_the_tag">Written to the NFC Tag</string>
+    <string name="hello_user_title">Hello, %s!</string>
+    <string name="description_home">This application requires Internet access and NFC, so make sure you have both turned on before using it.</string>
+    <string name="items_description">Preview, add, edit and delete items from the database.</string>
+    <string name="inventory_description">Carrying out an inventory of available goods.</string>
 </resources>

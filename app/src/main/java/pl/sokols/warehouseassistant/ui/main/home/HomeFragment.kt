@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.databinding.HomeFragmentBinding
 
@@ -20,6 +21,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
+        binding.user = FirebaseAuth.getInstance().currentUser
         return binding.root
     }
 }
