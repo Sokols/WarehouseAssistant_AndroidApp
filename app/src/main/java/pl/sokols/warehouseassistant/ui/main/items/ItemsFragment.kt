@@ -92,12 +92,12 @@ class ItemsFragment : Fragment() {
     private fun addSwipeToDelete() {
         ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedItem: Item = recyclerViewAdapter.currentList[viewHolder.adapterPosition]
+                val deletedItem: Item = recyclerViewAdapter.currentList[viewHolder.adapterPosition] as Item
                 viewModel.deleteItem(deletedItem)
 
                 Snackbar
                     .make(requireView(), getString(R.string.deleted), Snackbar.LENGTH_SHORT)
-                    .setAction(getString(R.string.undo)) { viewModel.addItem(deletedItem) }
+                    .setAction(getString(R.string.undo)) { viewModel.updateItem(deletedItem) }
                     .show()
             }
         }).attachToRecyclerView(binding.itemsRecyclerView)

@@ -12,7 +12,7 @@ import pl.sokols.warehouseassistant.utils.OnItemClickListener
 class ItemListAdapter(
     private val mainListener: OnItemClickListener,
     private val nfcListener: OnItemClickListener
-) : ListAdapter<Item, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
+) : ListAdapter<Any, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
 
     inner class ItemListViewHolder(
         private val binding: ItemBinding
@@ -42,6 +42,6 @@ class ItemListAdapter(
     )
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
-        holder.bind(getItem(position), mainListener, nfcListener)
+        holder.bind(getItem(position) as Item, mainListener, nfcListener)
     }
 }

@@ -24,7 +24,7 @@ class ItemsViewModel @Inject constructor(
         this.payload = payload
     }
 
-    fun getItems(): MutableLiveData<List<Item>> = itemRepository.getItems()
+    fun getItems(): MutableLiveData<List<Item>> = itemRepository.items
 
     private fun getItemById(id: String): Item? = itemRepository.getItemById(id)
 

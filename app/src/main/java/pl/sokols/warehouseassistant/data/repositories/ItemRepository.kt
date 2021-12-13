@@ -6,23 +6,23 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import pl.sokols.warehouseassistant.data.models.Item
+import pl.sokols.warehouseassistant.services.DatabaseService
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @ActivityRetainedScoped
-class ItemRepository @Inject constructor() {
+class ItemRepository @Inject constructor(
+    databaseService: DatabaseService
+) {
 
-    private var items: MutableLiveData<List<Item>> = MutableLiveData()
+    var items: MutableLiveData<List<Item>> = MutableLiveData()
 
-    private var itemsTable: DatabaseReference = getItemsTableReference()
+    private var itemsTable: DatabaseReference =
+        databaseService.getUserTableReference().child("items")
+    private var archivedItemsTable: DatabaseReference =
+        databaseService.getUserTableReference().child("archived_items")
 
     init {
         setItemsListener()
-    }
-
-    fun getItems(): MutableLiveData<List<Item>> {
-        setItemsListener()
-        return items
     }
 
     fun getItemById(id: String): Item? = items.value?.firstOrNull { it.id == id }
@@ -33,10 +33,12 @@ class ItemRepository @Inject constructor() {
 
     fun updateItem(item: Item) {
         itemsTable.child(item.id).setValue(item)
+        archivedItemsTable.child(item.id).removeValue()
     }
 
     fun deleteItem(item: Item) {
         itemsTable.child(item.id).removeValue()
+        archivedItemsTable.child(item.id).setValue(item)
     }
 
     private fun setItemsListener() {
@@ -57,19 +59,5 @@ class ItemRepository @Inject constructor() {
                 // Unused method
             }
         })
-    }
-
-    /**
-     * Utils
-     */
-    private fun getItemsTableReference(): DatabaseReference = FirebaseDatabase
-        .getInstance("https://warehouseassistant-default-rtdb.europe-west1.firebasedatabase.app")
-        .reference
-        .child(getItemsTableName())
-        .child("items")
-
-    private fun getItemsTableName(): String {
-        val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-        return firebaseUser?.uid.toString()
     }
 }
