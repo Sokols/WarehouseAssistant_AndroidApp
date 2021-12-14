@@ -36,4 +36,6 @@
     <string name="items_description">Preview, add, edit and delete items from the database.</string>
     <string name="inventory_description">Carrying out an inventory of available goods.</string>
     <string name="inventory_procedure">Inventory procedure</string>
+    <string name="confirm">Confirm</string>
+    <string name="id">ID</string>
 </resources>

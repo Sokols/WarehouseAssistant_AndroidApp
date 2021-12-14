@@ -31,4 +31,6 @@
     <string name="items_description">Podgląd, dodawanie, edytowanie i usuwanie rzeczy z bazy danych.</string>
     <string name="inventory_description">Przeprowadzenie inwentaryzacji dostępnych towarów.</string>
     <string name="inventory_procedure">Procedura inwentaryzacyjna</string>
+    <string name="confirm">Potwierdź</string>
+    <string name="id">ID</string>
 </resources>

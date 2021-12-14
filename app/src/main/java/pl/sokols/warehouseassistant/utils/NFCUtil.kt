@@ -3,13 +3,16 @@ package pl.sokols.warehouseassistant.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.nfc.tech.Ndef
 import android.nfc.tech.NdefFormatable
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import pl.sokols.warehouseassistant.R
+import pl.sokols.warehouseassistant.ui.main.inventory.procedure.InventoryProcedureFragment
 import pl.sokols.warehouseassistant.ui.main.items.ItemsFragment
 
 object NFCUtil {
@@ -41,11 +44,22 @@ object NFCUtil {
         val navHost = supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment)
         navHost?.let { navFragment ->
             navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
-                if (fragment is ItemsFragment) {
-                    fragment.retrieveIntent(intent)
+                // Propagate intent only on specified fragments
+                when (fragment) {
+                    is ItemsFragment -> fragment.retrieveIntent(intent)
+                    is InventoryProcedureFragment -> fragment.retrieveIntent(intent)
                 }
             }
         }
+    }
+
+    fun displayToast(context: Context?, nfcData: NfcState) {
+        val message = when (nfcData) {
+            NfcState.WRITTEN_TO_THE_TAG -> context?.getString(R.string.written_to_the_tag)
+            NfcState.CANNOT_FIND_ITEM -> context?.getString(R.string.cannot_find_item)
+            else -> context?.getString(R.string.other_error)
+        }
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
 

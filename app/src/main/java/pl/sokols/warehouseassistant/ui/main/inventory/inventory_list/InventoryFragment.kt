@@ -11,7 +11,7 @@ import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.InventoryFragmentBinding
-import pl.sokols.warehouseassistant.ui.main.inventory.inventory_list.adapters.InventoryListAdapter
+import pl.sokols.warehouseassistant.utils.adapters.InventoryListAdapter
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
 import pl.sokols.warehouseassistant.utils.OnItemClickListener
 

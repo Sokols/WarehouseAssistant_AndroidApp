@@ -17,5 +17,6 @@
     <color name="colorSecondaryVariant">#545454</color>
     <color name="colorOnSecondary">#f8f8f8</color>
 
+    <color name="colorSelected">#D6D6D6</color>
     <color name="transparent">#ffffffff</color>
 </resources>
