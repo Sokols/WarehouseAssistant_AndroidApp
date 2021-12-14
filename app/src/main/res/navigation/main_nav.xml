@@ -17,7 +17,29 @@
         tools:layout="@layout/items_fragment" />
     <fragment
         android:id="@+id/inventoryFragment"
-        android:name="pl.sokols.warehouseassistant.ui.main.inventory.InventoryFragment"
+        android:name="pl.sokols.warehouseassistant.ui.main.inventory.inventory_list.InventoryFragment"
         android:label="@string/inventory"
-        tools:layout="@layout/inventory_fragment" />
+        tools:layout="@layout/inventory_fragment" >
+        <action
+            android:id="@+id/action_inventoryFragment_to_inventoryProcedureFragment"
+            app:destination="@id/inventoryProcedureFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/inventoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/inventoryProcedureFragment"
+        android:name="pl.sokols.warehouseassistant.ui.main.inventory.procedure.InventoryProcedureFragment"
+        android:label="@string/inventory_procedure"
+        tools:layout="@layout/inventory_procedure_fragment" >
+        <action
+            android:id="@+id/action_inventoryProcedureFragment_to_inventoryFragment"
+            app:destination="@id/inventoryFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
 </navigation>

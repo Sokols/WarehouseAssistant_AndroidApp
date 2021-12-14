@@ -24,9 +24,7 @@ class ItemsViewModel @Inject constructor(
         this.payload = payload
     }
 
-    fun getItems(): MutableLiveData<List<Item>> = itemRepository.getItems()
-
-    private fun getItemById(id: String): Item? = itemRepository.getItemById(id)
+    fun getItems(): MutableLiveData<List<Item>> = itemRepository.items
 
     fun addItem(item: Item) = itemRepository.addItem(item)
 
@@ -47,4 +45,6 @@ class ItemsViewModel @Inject constructor(
             else -> NfcState.ERROR  // do nothing
         }
     }
+
+    private fun getItemById(id: String): Item? = itemRepository.getItemById(id)
 }

@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui.main.items.dialogs
+package pl.sokols.warehouseassistant.utils.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater

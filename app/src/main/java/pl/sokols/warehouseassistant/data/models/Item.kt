@@ -4,8 +4,8 @@ import com.google.firebase.database.Exclude
 
 data class Item(
     var name: String = "",
-    var price: Float = 0.0f,
-    var amount: Int = 0
+    var price: Float = 1.0f,
+    var amount: Int = 1
 ) {
 
     @get:Exclude

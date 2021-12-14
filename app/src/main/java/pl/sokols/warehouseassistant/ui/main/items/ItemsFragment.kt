@@ -17,13 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Item
 import pl.sokols.warehouseassistant.databinding.ItemsFragmentBinding
-import pl.sokols.warehouseassistant.ui.main.items.adapters.ItemListAdapter
-import pl.sokols.warehouseassistant.ui.main.items.dialogs.ItemAddEditDialog
-import pl.sokols.warehouseassistant.ui.main.items.dialogs.WriteNfcDialog
-import pl.sokols.warehouseassistant.utils.DividerItemDecorator
-import pl.sokols.warehouseassistant.utils.NfcState
-import pl.sokols.warehouseassistant.utils.OnItemClickListener
-import pl.sokols.warehouseassistant.utils.SwipeHelper
+import pl.sokols.warehouseassistant.utils.*
+import pl.sokols.warehouseassistant.utils.adapters.ItemListAdapter
+import pl.sokols.warehouseassistant.utils.dialogs.ItemAddEditDialog
+import pl.sokols.warehouseassistant.utils.dialogs.WriteNfcDialog
 
 @AndroidEntryPoint
 class ItemsFragment : Fragment() {
@@ -46,11 +43,19 @@ class ItemsFragment : Fragment() {
     fun retrieveIntent(intent: Intent?) {
         val nfcData = viewModel.retrieveNFC(intent)
         if (nfcData is NfcState) {
-            displayToast(nfcData)
+            NFCUtil.displayToast(context, nfcData)
         } else if (nfcData is Item) {
-            mainListener.onItemClickListener(nfcData)
+            invokeItemClick(nfcData)
         }
         viewModel.changeNfcState()
+    }
+
+    private fun invokeItemClick(nfcData: Item) {
+        val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
+        binding.itemsRecyclerView.scrollToPosition(position)
+        binding.itemsRecyclerView.postDelayed({
+            binding.itemsRecyclerView.findViewHolderForLayoutPosition(position)?.itemView?.performClick()
+        }, 50)
     }
 
     private fun setComponents() {
@@ -92,24 +97,15 @@ class ItemsFragment : Fragment() {
     private fun addSwipeToDelete() {
         ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedItem: Item = recyclerViewAdapter.currentList[viewHolder.adapterPosition]
+                val deletedItem: Item = recyclerViewAdapter.currentList[viewHolder.adapterPosition] as Item
                 viewModel.deleteItem(deletedItem)
 
                 Snackbar
                     .make(requireView(), getString(R.string.deleted), Snackbar.LENGTH_SHORT)
-                    .setAction(getString(R.string.undo)) { viewModel.addItem(deletedItem) }
+                    .setAction(getString(R.string.undo)) { viewModel.updateItem(deletedItem) }
                     .show()
             }
         }).attachToRecyclerView(binding.itemsRecyclerView)
-    }
-
-    private fun displayToast(nfcData: NfcState) {
-        val message = when (nfcData) {
-            NfcState.WRITTEN_TO_THE_TAG -> getString(R.string.written_to_the_tag)
-            NfcState.CANNOT_FIND_ITEM -> getString(R.string.cannot_find_item)
-            else -> getString(R.string.other_error)
-        }
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     private val mainListener = object : OnItemClickListener {

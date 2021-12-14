@@ -26,4 +26,11 @@
     <string name="writing_to_the_tag">Nadpisywanie tagu NFC</string>
     <string name="written_to_the_tag">Nadpisano tag NFC</string>
     <string name="cannot_find_item">Nie ma przedmiotu o podanym identyfikatorze</string>
+    <string name="hello_user_title">Witaj, %s!</string>
+    <string name="description_home">Ta aplikacja wymaga dostępu do Internetu oraz NFC, dlatego przed użyciem upewnij się, że masz włączone obie rzeczy.</string>
+    <string name="items_description">Podgląd, dodawanie, edytowanie i usuwanie rzeczy z bazy danych.</string>
+    <string name="inventory_description">Przeprowadzenie inwentaryzacji dostępnych towarów.</string>
+    <string name="inventory_procedure">Procedura inwentaryzacyjna</string>
+    <string name="confirm">Potwierdź</string>
+    <string name="id">ID</string>
 </resources>

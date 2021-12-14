@@ -1,5 +1,6 @@
-package pl.sokols.warehouseassistant.ui.main.items.adapters
+package pl.sokols.warehouseassistant.utils.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -11,21 +12,36 @@ import pl.sokols.warehouseassistant.utils.OnItemClickListener
 
 class ItemListAdapter(
     private val mainListener: OnItemClickListener,
-    private val nfcListener: OnItemClickListener
-) : ListAdapter<Item, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
+    private val nfcListener: OnItemClickListener? = null
+) : ListAdapter<Any, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
+
+    private var selectedPosition: Int = RecyclerView.NO_POSITION
+    private var previousPosition: Int = RecyclerView.NO_POSITION
 
     inner class ItemListViewHolder(
         private val binding: ItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Item, mainListener: OnItemClickListener, nfcListener: OnItemClickListener) {
+        @SuppressLint("NotifyDataSetChanged")
+        fun bind(
+            item: Item,
+            mainListener: OnItemClickListener,
+            nfcListener: OnItemClickListener?,
+            position: Int
+        ) {
             binding.item = item
-            binding.itemLayout.setOnClickListener {
+            itemView.setOnClickListener {
                 mainListener.onItemClickListener(item)
+                previousPosition = selectedPosition
+                selectedPosition = position
+                notifyItemChanged(previousPosition)
+                notifyItemChanged(selectedPosition)
             }
 
+            itemView.isSelected = position == selectedPosition
+
             binding.nfcTagButton.setOnClickListener {
-                nfcListener.onItemClickListener(item)
+                nfcListener?.onItemClickListener(item)
             }
         }
     }
@@ -42,6 +58,8 @@ class ItemListAdapter(
     )
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
-        holder.bind(getItem(position), mainListener, nfcListener)
+        holder.bind(getItem(position) as Item, mainListener, nfcListener, position)
     }
+
+    fun getItemPosition(nfcData: Item): Int = currentList.indexOf(nfcData)
 }
