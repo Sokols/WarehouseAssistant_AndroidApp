@@ -35,4 +35,5 @@
     <string name="description_home">This application requires Internet access and NFC, so make sure you have both turned on before using it.</string>
     <string name="items_description">Preview, add, edit and delete items from the database.</string>
     <string name="inventory_description">Carrying out an inventory of available goods.</string>
+    <string name="inventory_procedure">Inventory procedure</string>
 </resources>

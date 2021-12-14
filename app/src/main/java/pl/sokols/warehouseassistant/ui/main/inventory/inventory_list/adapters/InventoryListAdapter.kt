@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui.main.inventory.adapters
+package pl.sokols.warehouseassistant.ui.main.inventory.inventory_list.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

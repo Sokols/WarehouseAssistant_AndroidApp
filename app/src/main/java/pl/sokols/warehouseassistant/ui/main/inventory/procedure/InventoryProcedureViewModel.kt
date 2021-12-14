@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui.main.inventory
+package pl.sokols.warehouseassistant.ui.main.inventory.procedure
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import pl.sokols.warehouseassistant.data.repositories.InventoryRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class InventoryViewModel @Inject constructor(
+class InventoryProcedureViewModel @Inject constructor(
     private val inventoryRepository: InventoryRepository
 ) : ViewModel() {
 
