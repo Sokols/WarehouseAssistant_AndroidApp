@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="pl.sokols.warehouseassistant.ui.main.home.HomeFragment"
+        android:name="pl.sokols.warehouseassistant.ui.main.screens.home.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/home_fragment" />
     <fragment
         android:id="@+id/itemsFragment"
-        android:name="pl.sokols.warehouseassistant.ui.main.items.ItemsFragment"
+        android:name="pl.sokols.warehouseassistant.ui.main.screens.items.ItemsFragment"
         android:label="@string/items"
         tools:layout="@layout/items_fragment" />
     <fragment
         android:id="@+id/inventoryFragment"
-        android:name="pl.sokols.warehouseassistant.ui.main.inventory.inventory_list.InventoryFragment"
+        android:name="pl.sokols.warehouseassistant.ui.main.screens.inventory.inventory_list.InventoryFragment"
         android:label="@string/inventory"
         tools:layout="@layout/inventory_fragment" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/inventoryProcedureFragment"
-        android:name="pl.sokols.warehouseassistant.ui.main.inventory.procedure.InventoryProcedureFragment"
+        android:name="pl.sokols.warehouseassistant.ui.main.screens.inventory.procedure.InventoryProcedureFragment"
         android:label="@string/inventory_procedure"
         tools:layout="@layout/inventory_procedure_fragment" >
         <action

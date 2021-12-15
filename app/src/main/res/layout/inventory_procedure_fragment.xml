@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.main.inventory.procedure.InventoryProcedureFragment">
+    tools:context=".ui.main.screens.inventory.procedure.InventoryProcedureFragment">
 
     <data>
 
@@ -16,19 +16,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/itemsToConfirm" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/itemsConfirmed" />
+        </com.google.android.material.tabs.TabLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itemsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent=".5"
             android:clipToPadding="false"
             android:fillViewport="true"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout"
             tools:listitem="@layout/item" />
 
         <ScrollView
@@ -134,6 +153,6 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemsRecyclerView"></LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/itemsRecyclerView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui.main.inventory.inventory_list
+package pl.sokols.warehouseassistant.ui.main.screens.inventory.inventory_list
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

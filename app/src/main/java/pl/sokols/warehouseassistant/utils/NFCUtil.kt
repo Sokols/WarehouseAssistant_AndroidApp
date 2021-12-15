@@ -12,8 +12,8 @@ import android.nfc.tech.NdefFormatable
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.ui.main.inventory.procedure.InventoryProcedureFragment
-import pl.sokols.warehouseassistant.ui.main.items.ItemsFragment
+import pl.sokols.warehouseassistant.ui.main.screens.inventory.procedure.InventoryProcedureFragment
+import pl.sokols.warehouseassistant.ui.main.screens.items.ItemsFragment
 
 object NFCUtil {
 

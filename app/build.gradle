@@ -14,7 +14,7 @@ android {
             resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
         }
         applicationId "pl.sokols.warehouseassistant"
-        minSdk 21
+        minSdk 24
         targetSdk 29
         versionCode 1
         versionName "1.0"

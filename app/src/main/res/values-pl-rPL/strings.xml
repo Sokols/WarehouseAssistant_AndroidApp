@@ -33,4 +33,6 @@
     <string name="inventory_procedure">Procedura inwentaryzacyjna</string>
     <string name="confirm">Potwierdź</string>
     <string name="id">ID</string>
+    <string name="itemsToConfirm">Niepotwierdzone</string>
+    <string name="itemsConfirmed">Potwierdzone</string>
 </resources>

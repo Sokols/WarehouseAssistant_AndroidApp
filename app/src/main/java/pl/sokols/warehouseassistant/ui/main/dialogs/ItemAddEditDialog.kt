@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.utils.dialogs
+package pl.sokols.warehouseassistant.ui.main.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,11 +8,10 @@ import androidx.fragment.app.DialogFragment
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Item
 import pl.sokols.warehouseassistant.databinding.AddEditItemDialogBinding
-import pl.sokols.warehouseassistant.utils.OnItemClickListener
 
 class ItemAddEditDialog(
     providedItem: Item?,
-    private val listener: OnItemClickListener
+    private val listener: (Any) -> Unit
 ) : DialogFragment() {
 
     var item: Item = providedItem ?: Item()
@@ -56,7 +55,7 @@ class ItemAddEditDialog(
                 dialogBinding.itemPriceTextInputLayout.isErrorEnabled = false
             }
             if (item.name.trim().isNotEmpty() && item.price.toInt() != 0) {
-                listener.onItemClickListener(item)
+                listener(item)
                 dismiss()
             }
         }

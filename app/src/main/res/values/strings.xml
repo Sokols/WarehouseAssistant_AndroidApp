@@ -38,4 +38,6 @@
     <string name="inventory_procedure">Inventory procedure</string>
     <string name="confirm">Confirm</string>
     <string name="id">ID</string>
+    <string name="itemsToConfirm">To confirm</string>
+    <string name="itemsConfirmed">Confirmed</string>
 </resources>
