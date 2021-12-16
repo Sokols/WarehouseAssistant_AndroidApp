@@ -3,6 +3,7 @@ package pl.sokols.warehouseassistant.ui.main.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.Item
@@ -11,7 +12,8 @@ import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
 class ItemListAdapter(
     private val mainListener: (Any) -> Unit,
-    private val nfcListener: (Any) -> Unit = {}
+    private val nfcListener: (Any) -> Unit = {},
+    private val isProcedure: Boolean = false
 ) : ListAdapter<Any, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
@@ -22,10 +24,9 @@ class ItemListAdapter(
 
         @SuppressLint("NotifyDataSetChanged")
         fun bind(
-            item: Item,
-            mainListener: (Any) -> Unit,
-            nfcListener: (Any) -> Unit
+            item: Item
         ) {
+            binding.nfcTagButton.isVisible = !isProcedure
             binding.item = item
             itemView.setOnClickListener {
                 mainListener(item)
@@ -54,7 +55,7 @@ class ItemListAdapter(
     )
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
-        holder.bind(getItem(position) as Item, mainListener, nfcListener)
+        holder.bind(getItem(position) as Item)
     }
 
     fun getItemPosition(nfcData: Item): Int = currentList.indexOf(nfcData)

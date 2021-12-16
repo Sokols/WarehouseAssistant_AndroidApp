@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
@@ -53,8 +54,8 @@ class InventoryProcedureFragment : Fragment() {
     }
 
     private fun setComponents() {
-        itemsAdapter = ItemListAdapter(mainListener)
-        completedItemsAdapter = ItemListAdapter(mainListener)
+        itemsAdapter = ItemListAdapter(mainListener, isProcedure = true)
+        completedItemsAdapter = ItemListAdapter(mainListener, isProcedure = true)
         binding.itemsRecyclerView.adapter = itemsAdapter
         viewModel.tempItems.observe(viewLifecycleOwner, {
             viewModel.setItems(it)
@@ -83,6 +84,11 @@ class InventoryProcedureFragment : Fragment() {
             }
         }
 
+        binding.finishInvetoryButton.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_inventoryProcedureFragment_to_summaryFragment)
+        }
+
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 changeTab(tab)
@@ -96,7 +102,7 @@ class InventoryProcedureFragment : Fragment() {
                 // Unused method
             }
 
-            // swipe adapters related to selected tab
+            // swap adapters related to selected tab
             private fun changeTab(tab: TabLayout.Tab?) {
                 if (tab?.text == getString(R.string.itemsConfirmed)) {
                     resetItems(isCompleted = true)
@@ -108,7 +114,7 @@ class InventoryProcedureFragment : Fragment() {
     }
 
     private fun resetItems(isCompleted: Boolean = false) {
-        if (isCompleted){
+        if (isCompleted) {
             completedItemsAdapter.resetPosition()
             binding.itemsRecyclerView.adapter = completedItemsAdapter
         } else {
