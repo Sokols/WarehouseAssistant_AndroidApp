@@ -37,4 +37,8 @@
     <string name="itemsConfirmed">Potwierdzone</string>
     <string name="summary">Podsumowanie</string>
     <string name="amount_and_value">%s szt.</string>
+    <string name="item_completed">Towar jest już policzony.</string>
+    <string name="nothing">-</string>
+    <string name="id_placeholder">ID:</string>
+    <string name="name_placeholder">Nazwa:</string>
 </resources>

@@ -27,10 +27,6 @@ class InventoryProcedureFragment : Fragment() {
     private lateinit var itemsAdapter: ProcedureItemListAdapter
     private lateinit var completedItemsAdapter: ProcedureItemListAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -88,7 +84,7 @@ class InventoryProcedureFragment : Fragment() {
             }
         }
 
-        binding.finishInvetoryButton.setOnClickListener {
+        binding.finishInventoryButton.setOnClickListener {
             Navigation.findNavController(binding.root)
                 .navigate(R.id.action_inventoryProcedureFragment_to_summaryFragment)
         }

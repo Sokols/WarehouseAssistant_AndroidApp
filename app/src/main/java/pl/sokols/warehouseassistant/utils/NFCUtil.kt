@@ -57,6 +57,7 @@ object NFCUtil {
         val message = when (nfcData) {
             NfcState.WRITTEN_TO_THE_TAG -> context?.getString(R.string.written_to_the_tag)
             NfcState.CANNOT_FIND_ITEM -> context?.getString(R.string.cannot_find_item)
+            NfcState.ITEM_COMPLETED -> context?.getString(R.string.item_completed)
             else -> context?.getString(R.string.other_error)
         }
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -68,5 +69,6 @@ enum class NfcState {
     WRITE,
     WRITTEN_TO_THE_TAG,
     CANNOT_FIND_ITEM,
-    ERROR
+    ERROR,
+    ITEM_COMPLETED
 }

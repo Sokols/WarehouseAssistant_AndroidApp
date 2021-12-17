@@ -31,7 +31,9 @@ class InventoryProcedureViewModel @Inject constructor(
 
     fun retrieveNFC(intent: Intent?): Any {
         val id = nfcService.retrieveNFCMessage(intent)
-        return getItemById(remainingItems, id) ?: NfcState.CANNOT_FIND_ITEM
+        return getItemById(remainingItems, id)
+            ?: if (getItemById(completedItems, id) != null) NfcState.ITEM_COMPLETED
+            else NfcState.CANNOT_FIND_ITEM
     }
 
     fun addItemToCompleted(item: Item) {
