@@ -14,18 +14,22 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Item
 import pl.sokols.warehouseassistant.databinding.InventoryProcedureFragmentBinding
+import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
 import pl.sokols.warehouseassistant.utils.NFCUtil
 import pl.sokols.warehouseassistant.utils.NfcState
-import pl.sokols.warehouseassistant.ui.main.adapters.ItemListAdapter
 
 @AndroidEntryPoint
 class InventoryProcedureFragment : Fragment() {
 
     private val viewModel: InventoryProcedureViewModel by viewModels()
     private lateinit var binding: InventoryProcedureFragmentBinding
-    private lateinit var itemsAdapter: ItemListAdapter
-    private lateinit var completedItemsAdapter: ItemListAdapter
+    private lateinit var itemsAdapter: ProcedureItemListAdapter
+    private lateinit var completedItemsAdapter: ProcedureItemListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,13 +58,13 @@ class InventoryProcedureFragment : Fragment() {
     }
 
     private fun setComponents() {
-        itemsAdapter = ItemListAdapter(mainListener, isProcedure = true)
-        completedItemsAdapter = ItemListAdapter(mainListener, isProcedure = true)
+        itemsAdapter = ProcedureItemListAdapter(mainListener)
+        completedItemsAdapter = ProcedureItemListAdapter(mainListener)
         binding.itemsRecyclerView.adapter = itemsAdapter
         viewModel.tempItems.observe(viewLifecycleOwner, {
             viewModel.setItems(it)
         })
-        viewModel.items.observe(viewLifecycleOwner, {
+        viewModel.remainingItems.observe(viewLifecycleOwner, {
             itemsAdapter.submitList(it)
         })
         viewModel.completedItems.observe(viewLifecycleOwner, {

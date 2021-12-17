@@ -41,4 +41,5 @@
     <string name="itemsToConfirm">To confirm</string>
     <string name="itemsConfirmed">Confirmed</string>
     <string name="summary">Summary</string>
+    <string name="amount_and_value">%s pcs</string>
 </resources>
