@@ -47,7 +47,6 @@ class ProcedureItemListAdapter(
         )
     )
 
-
     override fun onBindViewHolder(holder: ProcedureItemListViewHolder, position: Int) =
         holder.bind(getItem(position) as Item)
 

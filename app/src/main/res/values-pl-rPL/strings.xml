@@ -41,4 +41,5 @@
     <string name="nothing">-</string>
     <string name="id_placeholder">ID:</string>
     <string name="name_placeholder">Nazwa:</string>
+    <string name="correct">Popraw</string>
 </resources>

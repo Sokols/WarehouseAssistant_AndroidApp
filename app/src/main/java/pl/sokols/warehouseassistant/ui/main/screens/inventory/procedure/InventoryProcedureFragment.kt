@@ -79,8 +79,13 @@ class InventoryProcedureFragment : Fragment() {
         binding.applyDialogButton.setOnClickListener {
             val item = binding.item
             if (item != null) {
-                viewModel.addItemToCompleted(item)
-                resetItems()
+                if (binding.applyDialogButton.text == getString(R.string.confirm)) {
+                    viewModel.addItemToCompleted(item)
+                    resetItems(isConfirmed = false)
+                } else {
+                    viewModel.correctCompletedItem(item)
+                    resetItems(isConfirmed = true)
+                }
             }
         }
 
@@ -104,24 +109,19 @@ class InventoryProcedureFragment : Fragment() {
 
             // swap adapters related to selected tab
             private fun changeTab(tab: TabLayout.Tab?) {
-                if (tab?.text == getString(R.string.itemsConfirmed)) {
-                    resetItems(isCompleted = true)
-                } else {
-                    resetItems(isCompleted = false)
-                }
+                val isConfirmed = tab?.text == getString(R.string.itemsConfirmed)
+                resetItems(isConfirmed = isConfirmed)
+                binding.applyDialogButton.text =
+                    if (isConfirmed) getString(R.string.correct) else getString(R.string.confirm)
             }
         })
     }
 
-    private fun resetItems(isCompleted: Boolean = false) {
-        if (isCompleted) {
-            completedItemsAdapter.resetPosition()
-            binding.itemsRecyclerView.adapter = completedItemsAdapter
-        } else {
-            itemsAdapter.resetPosition()
-            binding.itemsRecyclerView.adapter = itemsAdapter
-        }
+    private fun resetItems(isConfirmed: Boolean = false) {
+        val adapter = if (isConfirmed) completedItemsAdapter else itemsAdapter
         binding.item = null
+        adapter.resetPosition()
+        binding.itemsRecyclerView.adapter = adapter
     }
 
     private val mainListener = object : (Any) -> Unit {

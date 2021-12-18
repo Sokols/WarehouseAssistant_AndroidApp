@@ -43,23 +43,64 @@ class InventoryProcedureViewModel @Inject constructor(
         val selectedCompletedItem = this.completedItems.value?.firstOrNull { it.id == item.id }
 
         // add item to completed items
-        if (selectedCompletedItem == null) {
+        if (selectedCompletedItem == null) {    // if there is no item
             completedItems?.add(item)
-        } else {
+            completedItems?.sortBy { it.name }
+        } else {                                // if there is an item
             val index = completedItems?.indexOf(selectedCompletedItem)!!
             selectedCompletedItem.amount += item.amount
             completedItems[index] = selectedCompletedItem
         }
-        this.completedItems.postValue(completedItems)
 
         // check that all items have been taken
-        if (item.amount >= selectedRemainingItem.amount) {
+        if (item.amount >= selectedRemainingItem.amount) {      // if all items have been taken
             remainingItems?.removeIf { it.id == item.id }
-        } else {
+        } else {                                                // if not all items have been taken
             val index = remainingItems?.indexOf(selectedRemainingItem)!!
             selectedRemainingItem.amount -= item.amount
             remainingItems[index] = selectedRemainingItem
         }
+
+        // update lists
+        this.completedItems.postValue(completedItems)
+        this.remainingItems.postValue(remainingItems)
+    }
+
+    fun correctCompletedItem(item: Item) {
+        val remainingItems = this.remainingItems.value?.toMutableList()
+        val completedItems = this.completedItems.value?.toMutableList()
+        val selectedTempItem = this.tempItems.value?.first { it.id == item.id }!!
+        val selectedRemainingItem = this.remainingItems.value?.firstOrNull { it.id == item.id }
+        val selectedCompletedItem = this.completedItems.value?.first { it.id == item.id }!!
+
+        val index = completedItems?.indexOf(selectedCompletedItem)!!
+
+        if (item.amount == 0) completedItems.removeAt(index) else completedItems[index] = item
+
+        // update remaining items only if new amount is smaller than amount from database
+        if (item.amount < selectedTempItem.amount) {
+
+            // count amount for remaining item
+            val extraAmount =
+                if (selectedCompletedItem.amount > selectedTempItem.amount) selectedCompletedItem.amount - selectedTempItem.amount else 0
+            var amountToAdd = selectedCompletedItem.amount - item.amount - extraAmount
+            amountToAdd += selectedRemainingItem?.amount ?: 0
+            amountToAdd =
+                if (amountToAdd > selectedTempItem.amount) selectedTempItem.amount else amountToAdd
+
+            if (selectedRemainingItem == null) {
+                selectedCompletedItem.amount = amountToAdd
+                remainingItems?.add(selectedCompletedItem)
+                remainingItems?.sortBy { it.name }
+            } else {
+                val remainingItemIndex = remainingItems?.indexOf(selectedRemainingItem)!!
+                selectedRemainingItem.amount = amountToAdd
+                remainingItems[remainingItemIndex] = selectedRemainingItem
+            }
+        }
+
+        // update lists
+        this.completedItems.postValue(completedItems)
         this.remainingItems.postValue(remainingItems)
     }
 
