@@ -1,8 +1,10 @@
 package pl.sokols.warehouseassistant.data.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Inventory(
     var timestampId: String,
-    var missingItems: List<CountedItem>? = null,
-    var extraItems: List<CountedItem>? = null,
-    var confirmedItems: List<CountedItem>? = null
-)
+    var items: List<CountedItem>? = null
+) : Parcelable

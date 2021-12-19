@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
@@ -72,14 +72,18 @@ class InventoryProcedureFragment : Fragment() {
         }
 
         binding.finishInventoryButton.setOnClickListener {
-            Navigation.findNavController(binding.root)
-                .navigate(R.id.action_inventoryProcedureFragment_to_summaryFragment)
+            it.findNavController()
+                .navigate(
+                    InventoryProcedureFragmentDirections.actionInventoryProcedureFragmentToSummaryFragment(
+                        viewModel.prepareInventory()
+                    )
+                )
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun resetItems() {
-        itemsAdapter.notifyDataSetChanged()
+        selectedItemIndex?.let { itemsAdapter.notifyItemChanged(it) }
         binding.item = null
         itemsAdapter.resetPosition()
     }

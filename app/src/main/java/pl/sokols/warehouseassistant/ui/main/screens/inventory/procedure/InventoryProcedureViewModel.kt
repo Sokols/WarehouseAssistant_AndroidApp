@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.sokols.warehouseassistant.data.models.CountedItem
+import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.data.repositories.CountedItemRepository
+import pl.sokols.warehouseassistant.data.repositories.InventoryRepository
 import pl.sokols.warehouseassistant.services.NfcService
 import pl.sokols.warehouseassistant.utils.NfcState
 import javax.inject.Inject
@@ -13,6 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class InventoryProcedureViewModel @Inject constructor(
     private val itemRepository: CountedItemRepository,
+    private val inventoryRepository: InventoryRepository,
     private val nfcService: NfcService
 ) : ViewModel() {
 
@@ -36,6 +39,9 @@ class InventoryProcedureViewModel @Inject constructor(
 
         this.items.postValue(items)
     }
+
+    fun prepareInventory(): Inventory =
+        inventoryRepository.prepareInventory(this.items.value!!, this.tempItems.value!!)
 
     private fun getItemById(id: String): CountedItem? = tempItems.value?.firstOrNull { it.id == id }
 }
