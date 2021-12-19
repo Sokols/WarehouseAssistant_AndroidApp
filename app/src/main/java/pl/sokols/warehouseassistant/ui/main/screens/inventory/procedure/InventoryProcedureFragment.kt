@@ -1,5 +1,6 @@
 package pl.sokols.warehouseassistant.ui.main.screens.inventory.procedure
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +10,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Item
@@ -25,7 +25,8 @@ class InventoryProcedureFragment : Fragment() {
     private val viewModel: InventoryProcedureViewModel by viewModels()
     private lateinit var binding: InventoryProcedureFragmentBinding
     private lateinit var itemsAdapter: ProcedureItemListAdapter
-    private lateinit var completedItemsAdapter: ProcedureItemListAdapter
+
+    private var isEditing: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,30 +42,15 @@ class InventoryProcedureFragment : Fragment() {
         if (nfcData is NfcState) {
             NFCUtil.displayToast(context, nfcData)
         } else if (nfcData is Item) {
-            invokeItemClick(nfcData)
+            prepareItem(nfcData, isEditing = false)
         }
-    }
-
-    private fun invokeItemClick(nfcData: Item) {
-        val position: Int = itemsAdapter.getItemPosition(nfcData)
-        binding.itemsRecyclerView.scrollToPosition(position)
-        binding.itemsRecyclerView.postDelayed({
-            binding.itemsRecyclerView.findViewHolderForLayoutPosition(position)?.itemView?.performClick()
-        }, 50)
     }
 
     private fun setComponents() {
         itemsAdapter = ProcedureItemListAdapter(mainListener)
-        completedItemsAdapter = ProcedureItemListAdapter(mainListener)
         binding.itemsRecyclerView.adapter = itemsAdapter
-        viewModel.tempItems.observe(viewLifecycleOwner, {
-            viewModel.setItems(it)
-        })
-        viewModel.remainingItems.observe(viewLifecycleOwner, {
+        viewModel.items.observe(viewLifecycleOwner, {
             itemsAdapter.submitList(it)
-        })
-        viewModel.completedItems.observe(viewLifecycleOwner, {
-            completedItemsAdapter.submitList(it)
         })
         binding.itemsRecyclerView.addItemDecoration(
             DividerItemDecorator(
@@ -79,13 +65,8 @@ class InventoryProcedureFragment : Fragment() {
         binding.applyDialogButton.setOnClickListener {
             val item = binding.item
             if (item != null) {
-                if (binding.applyDialogButton.text == getString(R.string.confirm)) {
-                    viewModel.addItemToCompleted(item)
-                    resetItems(isConfirmed = false)
-                } else {
-                    viewModel.correctCompletedItem(item)
-                    resetItems(isConfirmed = true)
-                }
+                viewModel.addEditItem(item, isEditing)
+                resetItems()
             }
         }
 
@@ -93,40 +74,25 @@ class InventoryProcedureFragment : Fragment() {
             Navigation.findNavController(binding.root)
                 .navigate(R.id.action_inventoryProcedureFragment_to_summaryFragment)
         }
-
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                changeTab(tab)
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                changeTab(tab)
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // Unused method
-            }
-
-            // swap adapters related to selected tab
-            private fun changeTab(tab: TabLayout.Tab?) {
-                val isConfirmed = tab?.text == getString(R.string.itemsConfirmed)
-                resetItems(isConfirmed = isConfirmed)
-                binding.applyDialogButton.text =
-                    if (isConfirmed) getString(R.string.correct) else getString(R.string.confirm)
-            }
-        })
     }
 
-    private fun resetItems(isConfirmed: Boolean = false) {
-        val adapter = if (isConfirmed) completedItemsAdapter else itemsAdapter
+    @SuppressLint("NotifyDataSetChanged")
+    private fun resetItems() {
+        itemsAdapter.notifyDataSetChanged()
         binding.item = null
-        adapter.resetPosition()
-        binding.itemsRecyclerView.adapter = adapter
+        itemsAdapter.resetPosition()
+    }
+
+    private fun prepareItem(item: Item, isEditing: Boolean) {
+        binding.item = item
+        this.isEditing = isEditing
+        binding.applyDialogButton.text =
+            if (isEditing) getString(R.string.correct) else getString(R.string.confirm)
     }
 
     private val mainListener = object : (Any) -> Unit {
         override fun invoke(item: Any) {
-            binding.item = item as Item
+            prepareItem(item as Item, isEditing = true)
         }
     }
 }
