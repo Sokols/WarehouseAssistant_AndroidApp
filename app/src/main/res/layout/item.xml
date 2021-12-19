@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="pl.sokols.warehouseassistant.data.models.Item" />
+            type="pl.sokols.warehouseassistant.data.models.CountedItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

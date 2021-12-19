@@ -4,38 +4,38 @@ import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import pl.sokols.warehouseassistant.data.models.Item
-import pl.sokols.warehouseassistant.data.repositories.ItemRepository
+import pl.sokols.warehouseassistant.data.models.CountedItem
+import pl.sokols.warehouseassistant.data.repositories.CountedItemRepository
 import pl.sokols.warehouseassistant.services.NfcService
 import pl.sokols.warehouseassistant.utils.NfcState
 import javax.inject.Inject
 
 @HiltViewModel
 class InventoryProcedureViewModel @Inject constructor(
-    private val itemRepository: ItemRepository,
+    private val itemRepository: CountedItemRepository,
     private val nfcService: NfcService
 ) : ViewModel() {
 
-    private var tempItems: MutableLiveData<List<Item>> = itemRepository.items
+    private var tempItems: MutableLiveData<List<CountedItem>> = itemRepository.items
 
-    var items: MutableLiveData<List<Item>> = MutableLiveData(mutableListOf())
+    var items: MutableLiveData<List<CountedItem>> = MutableLiveData(mutableListOf())
 
     fun retrieveNFC(intent: Intent?): Any {
         val id = nfcService.retrieveNFCMessage(intent)
         return getItemById(id) ?: NfcState.CANNOT_FIND_ITEM
     }
 
-    fun addEditItem(item: Item, isEditing: Boolean) {
+    fun addEditItem(item: CountedItem, isEditing: Boolean, index: Int?) {
         val items = this.items.value?.toMutableList()!!
 
-        if (isEditing) {
-            items.first { it.id == item.id }.amount = item.amount
+        if (isEditing && index != null) {
+            items[index].amount = item.amount
         } else {
-            items.add(item)
+            items.add(item.copy(id = item.id))
         }
 
         this.items.postValue(items)
     }
 
-    private fun getItemById(id: String): Item? = tempItems.value?.firstOrNull { it.id == id }
+    private fun getItemById(id: String): CountedItem? = tempItems.value?.firstOrNull { it.id == id }
 }

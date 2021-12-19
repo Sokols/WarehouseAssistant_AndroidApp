@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.data.models.Item
+import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.InventoryProcedureFragmentBinding
 import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
@@ -27,6 +27,7 @@ class InventoryProcedureFragment : Fragment() {
     private lateinit var itemsAdapter: ProcedureItemListAdapter
 
     private var isEditing: Boolean = false
+    private var selectedItemIndex: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +42,7 @@ class InventoryProcedureFragment : Fragment() {
         val nfcData = viewModel.retrieveNFC(intent)
         if (nfcData is NfcState) {
             NFCUtil.displayToast(context, nfcData)
-        } else if (nfcData is Item) {
+        } else if (nfcData is CountedItem) {
             prepareItem(nfcData, isEditing = false)
         }
     }
@@ -65,7 +66,7 @@ class InventoryProcedureFragment : Fragment() {
         binding.applyDialogButton.setOnClickListener {
             val item = binding.item
             if (item != null) {
-                viewModel.addEditItem(item, isEditing)
+                viewModel.addEditItem(item, isEditing, selectedItemIndex)
                 resetItems()
             }
         }
@@ -83,16 +84,17 @@ class InventoryProcedureFragment : Fragment() {
         itemsAdapter.resetPosition()
     }
 
-    private fun prepareItem(item: Item, isEditing: Boolean) {
+    private fun prepareItem(item: CountedItem, isEditing: Boolean, index: Int? = null) {
         binding.item = item
         this.isEditing = isEditing
+        this.selectedItemIndex = index
         binding.applyDialogButton.text =
             if (isEditing) getString(R.string.correct) else getString(R.string.confirm)
     }
 
-    private val mainListener = object : (Any) -> Unit {
-        override fun invoke(item: Any) {
-            prepareItem(item as Item, isEditing = true)
+    private val mainListener = object : (Int, Any) -> Unit {
+        override fun invoke(index: Int, item: Any) {
+            prepareItem(item as CountedItem, isEditing = true, index)
         }
     }
 }

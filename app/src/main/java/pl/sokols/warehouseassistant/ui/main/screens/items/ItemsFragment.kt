@@ -14,12 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.data.models.Item
+import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.ItemsFragmentBinding
-import pl.sokols.warehouseassistant.utils.*
 import pl.sokols.warehouseassistant.ui.main.adapters.ItemListAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
 import pl.sokols.warehouseassistant.ui.main.dialogs.WriteNfcDialog
+import pl.sokols.warehouseassistant.utils.DividerItemDecorator
+import pl.sokols.warehouseassistant.utils.NFCUtil
+import pl.sokols.warehouseassistant.utils.NfcState
+import pl.sokols.warehouseassistant.utils.SwipeHelper
 
 @AndroidEntryPoint
 class ItemsFragment : Fragment() {
@@ -43,13 +46,13 @@ class ItemsFragment : Fragment() {
         val nfcData = viewModel.retrieveNFC(intent)
         if (nfcData is NfcState) {
             NFCUtil.displayToast(context, nfcData)
-        } else if (nfcData is Item) {
+        } else if (nfcData is CountedItem) {
             invokeItemClick(nfcData)
         }
         viewModel.changeNfcState()
     }
 
-    private fun invokeItemClick(nfcData: Item) {
+    private fun invokeItemClick(nfcData: CountedItem) {
         val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
         binding.itemsRecyclerView.scrollToPosition(position)
         binding.itemsRecyclerView.postDelayed({
@@ -80,13 +83,13 @@ class ItemsFragment : Fragment() {
         binding.addItemButton.setOnClickListener {
             addEditItem(null, object : (Any) -> Unit {
                 override fun invoke(item: Any) {
-                    viewModel.addItem(item as Item)
+                    viewModel.addItem(item as CountedItem)
                 }
             })
         }
     }
 
-    private fun addEditItem(item: Item?, listener: (Any) -> Unit) {
+    private fun addEditItem(item: CountedItem?, listener: (Any) -> Unit) {
         ItemAddEditDialog(item, listener).show(
             requireFragmentManager(),
             getString(R.string.provide_item_dialog)
@@ -96,8 +99,8 @@ class ItemsFragment : Fragment() {
     private fun addSwipeToDelete() {
         ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedItem: Item =
-                    recyclerViewAdapter.currentList[viewHolder.adapterPosition] as Item
+                val deletedItem: CountedItem =
+                    recyclerViewAdapter.currentList[viewHolder.adapterPosition] as CountedItem
                 viewModel.deleteItem(deletedItem)
 
                 Snackbar
@@ -110,10 +113,10 @@ class ItemsFragment : Fragment() {
 
     private val mainListener = object : (Any) -> Unit {
         override fun invoke(item: Any) {
-            addEditItem(item as Item, object : (Any) -> Unit {
+            addEditItem(item as CountedItem, object : (Any) -> Unit {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun invoke(item: Any) {
-                    viewModel.updateItem(item as Item)
+                    viewModel.updateItem(item as CountedItem)
                     recyclerViewAdapter.notifyDataSetChanged()
                 }
             })
@@ -122,7 +125,7 @@ class ItemsFragment : Fragment() {
 
     private val nfcListener = object : (Any) -> Unit {
         override fun invoke(item: Any) {
-            viewModel.changeNfcState(NfcState.WRITE, (item as Item).id)
+            viewModel.changeNfcState(NfcState.WRITE, (item as CountedItem).id)
             nfcDialog.show(
                 requireFragmentManager(),
                 getString(R.string.provide_nfc_dialog)

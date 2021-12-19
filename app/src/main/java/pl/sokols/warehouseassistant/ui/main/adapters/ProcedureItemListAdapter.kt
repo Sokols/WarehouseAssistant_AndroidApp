@@ -3,16 +3,14 @@ package pl.sokols.warehouseassistant.ui.main.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import pl.sokols.warehouseassistant.data.models.Item
-import pl.sokols.warehouseassistant.databinding.ItemBinding
+import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.ProcedureItemBinding
 import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
 class ProcedureItemListAdapter(
-    private val mainListener: (Any) -> Unit
+    private val mainListener: (Int, Any) -> Unit
 ) : ListAdapter<Any, ProcedureItemListAdapter.ProcedureItemListViewHolder>(ItemDiffCallback) {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
@@ -22,11 +20,11 @@ class ProcedureItemListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("NotifyDataSetChanged")
-        fun bind(item: Item) {
+        fun bind(item: CountedItem) {
             binding.item = item.copy(id = item.id)
             itemView.setOnClickListener {
                 val tempItem = binding.item!!
-                mainListener(tempItem)
+                mainListener(layoutPosition, tempItem)
                 notifyItemChanged(selectedPosition)
                 selectedPosition = layoutPosition
                 notifyItemChanged(selectedPosition)
@@ -48,7 +46,7 @@ class ProcedureItemListAdapter(
     )
 
     override fun onBindViewHolder(holder: ProcedureItemListViewHolder, position: Int) =
-        holder.bind(getItem(position) as Item)
+        holder.bind(getItem(position) as CountedItem)
 
     fun resetPosition() {
         selectedPosition = RecyclerView.NO_POSITION

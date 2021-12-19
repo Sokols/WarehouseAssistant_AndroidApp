@@ -4,15 +4,15 @@ import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import pl.sokols.warehouseassistant.data.models.Item
-import pl.sokols.warehouseassistant.data.repositories.ItemRepository
+import pl.sokols.warehouseassistant.data.models.CountedItem
+import pl.sokols.warehouseassistant.data.repositories.CountedItemRepository
 import pl.sokols.warehouseassistant.services.NfcService
 import pl.sokols.warehouseassistant.utils.NfcState
 import javax.inject.Inject
 
 @HiltViewModel
 class ItemsViewModel @Inject constructor(
-    private val itemRepository: ItemRepository,
+    private val itemRepository: CountedItemRepository,
     private val nfcService: NfcService
 ) : ViewModel() {
 
@@ -24,13 +24,13 @@ class ItemsViewModel @Inject constructor(
         this.payload = payload
     }
 
-    fun getItems(): MutableLiveData<List<Item>> = itemRepository.items
+    fun getItems(): MutableLiveData<List<CountedItem>> = itemRepository.items
 
-    fun addItem(item: Item) = itemRepository.addItem(item)
+    fun addItem(item: CountedItem) = itemRepository.addItem(item)
 
-    fun updateItem(item: Item) = itemRepository.updateItem(item)
+    fun updateItem(item: CountedItem) = itemRepository.updateItem(item)
 
-    fun deleteItem(deletedItem: Item) = itemRepository.deleteItem(deletedItem)
+    fun deleteItem(deletedItem: CountedItem) = itemRepository.deleteItem(deletedItem)
 
     fun retrieveNFC(intent: Intent?): Any {
         return when (nfcState) {
@@ -46,5 +46,5 @@ class ItemsViewModel @Inject constructor(
         }
     }
 
-    private fun getItemById(id: String): Item? = itemRepository.getItemById(id)
+    private fun getItemById(id: String): CountedItem? = itemRepository.getItemById(id)
 }

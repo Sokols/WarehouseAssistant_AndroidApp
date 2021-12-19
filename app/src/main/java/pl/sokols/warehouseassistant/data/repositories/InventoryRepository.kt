@@ -1,10 +1,12 @@
 package pl.sokols.warehouseassistant.data.repositories
 
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import pl.sokols.warehouseassistant.data.models.Inventory
-import pl.sokols.warehouseassistant.data.models.Item
 import pl.sokols.warehouseassistant.services.DatabaseService
 import javax.inject.Inject
 

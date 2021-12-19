@@ -3,10 +3,9 @@ package pl.sokols.warehouseassistant.ui.main.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import pl.sokols.warehouseassistant.data.models.Item
+import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.ItemBinding
 import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
@@ -22,7 +21,7 @@ class ItemListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("NotifyDataSetChanged")
-        fun bind(item: Item) {
+        fun bind(item: CountedItem) {
             binding.item = item
             itemView.setOnClickListener {
                 mainListener(item)
@@ -51,7 +50,7 @@ class ItemListAdapter(
     )
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) =
-        holder.bind(getItem(position) as Item)
+        holder.bind(getItem(position) as CountedItem)
 
-    fun getItemPosition(nfcData: Item): Int = currentList.indexOf(nfcData)
+    fun getItemPosition(nfcData: CountedItem): Int = currentList.indexOf(nfcData)
 }
