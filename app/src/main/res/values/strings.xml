@@ -38,4 +38,13 @@
     <string name="inventory_procedure">Inventory procedure</string>
     <string name="confirm">Confirm</string>
     <string name="id">ID</string>
+    <string name="itemsToConfirm">To confirm</string>
+    <string name="itemsConfirmed">Confirmed</string>
+    <string name="summary">Summary</string>
+    <string name="amount_and_value">%s pcs</string>
+    <string name="item_completed">Item is already completed</string>
+    <string name="nothing">-</string>
+    <string name="id_placeholder">ID:</string>
+    <string name="name_placeholder">Name:</string>
+    <string name="correct">Correct</string>
 </resources>

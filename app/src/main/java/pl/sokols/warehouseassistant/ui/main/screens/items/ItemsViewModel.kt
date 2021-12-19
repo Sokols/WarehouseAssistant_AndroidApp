@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui.main.items
+package pl.sokols.warehouseassistant.ui.main.screens.items
 
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData

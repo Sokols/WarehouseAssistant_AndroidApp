@@ -4,7 +4,6 @@ import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -15,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.MainActivityBinding
 import pl.sokols.warehouseassistant.ui.auth.AuthActivity
-import pl.sokols.warehouseassistant.ui.main.items.ItemsFragment
 import pl.sokols.warehouseassistant.utils.NFCUtil
 
 @AndroidEntryPoint

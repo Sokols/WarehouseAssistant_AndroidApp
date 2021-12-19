@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui.main.home
+package pl.sokols.warehouseassistant.ui.main.screens.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

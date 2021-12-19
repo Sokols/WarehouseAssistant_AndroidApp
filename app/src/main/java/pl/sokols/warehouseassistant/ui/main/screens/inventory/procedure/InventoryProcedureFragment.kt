@@ -1,30 +1,32 @@
-package pl.sokols.warehouseassistant.ui.main.inventory.procedure
+package pl.sokols.warehouseassistant.ui.main.screens.inventory.procedure
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Item
 import pl.sokols.warehouseassistant.databinding.InventoryProcedureFragmentBinding
+import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
 import pl.sokols.warehouseassistant.utils.NFCUtil
 import pl.sokols.warehouseassistant.utils.NfcState
-import pl.sokols.warehouseassistant.utils.OnItemClickListener
-import pl.sokols.warehouseassistant.utils.adapters.ItemListAdapter
 
 @AndroidEntryPoint
 class InventoryProcedureFragment : Fragment() {
 
     private val viewModel: InventoryProcedureViewModel by viewModels()
     private lateinit var binding: InventoryProcedureFragmentBinding
-    private lateinit var recyclerViewAdapter: ItemListAdapter
+    private lateinit var itemsAdapter: ProcedureItemListAdapter
+
+    private var isEditing: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,24 +42,16 @@ class InventoryProcedureFragment : Fragment() {
         if (nfcData is NfcState) {
             NFCUtil.displayToast(context, nfcData)
         } else if (nfcData is Item) {
-            invokeItemClick(nfcData)
+            prepareItem(nfcData, isEditing = false)
         }
     }
 
-    private fun invokeItemClick(nfcData: Item) {
-        val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
-        binding.itemsRecyclerView.scrollToPosition(position)
-        binding.itemsRecyclerView.postDelayed({
-            binding.itemsRecyclerView.findViewHolderForLayoutPosition(position)?.itemView?.performClick()
-        }, 50)
-    }
-
     private fun setComponents() {
-        recyclerViewAdapter = ItemListAdapter(mainListener)
-        viewModel.getItems().observe(viewLifecycleOwner, {
-            recyclerViewAdapter.submitList(it)
+        itemsAdapter = ProcedureItemListAdapter(mainListener)
+        binding.itemsRecyclerView.adapter = itemsAdapter
+        viewModel.items.observe(viewLifecycleOwner, {
+            itemsAdapter.submitList(it)
         })
-        binding.itemsRecyclerView.adapter = recyclerViewAdapter
         binding.itemsRecyclerView.addItemDecoration(
             DividerItemDecorator(
                 ResourcesCompat.getDrawable(
@@ -67,11 +61,38 @@ class InventoryProcedureFragment : Fragment() {
                 )!!
             )
         )
+
+        binding.applyDialogButton.setOnClickListener {
+            val item = binding.item
+            if (item != null) {
+                viewModel.addEditItem(item, isEditing)
+                resetItems()
+            }
+        }
+
+        binding.finishInventoryButton.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_inventoryProcedureFragment_to_summaryFragment)
+        }
     }
 
-    private val mainListener = object : OnItemClickListener {
-        override fun onItemClickListener(item: Any) {
-            binding.item = item as Item
+    @SuppressLint("NotifyDataSetChanged")
+    private fun resetItems() {
+        itemsAdapter.notifyDataSetChanged()
+        binding.item = null
+        itemsAdapter.resetPosition()
+    }
+
+    private fun prepareItem(item: Item, isEditing: Boolean) {
+        binding.item = item
+        this.isEditing = isEditing
+        binding.applyDialogButton.text =
+            if (isEditing) getString(R.string.correct) else getString(R.string.confirm)
+    }
+
+    private val mainListener = object : (Any) -> Unit {
+        override fun invoke(item: Any) {
+            prepareItem(item as Item, isEditing = true)
         }
     }
 }

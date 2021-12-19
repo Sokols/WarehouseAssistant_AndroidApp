@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.main.inventory.inventory_list.InventoryFragment">
+    tools:context=".ui.main.screens.inventory.inventory_list.InventoryFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/inventoryLayout"

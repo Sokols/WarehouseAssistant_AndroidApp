@@ -20,6 +20,7 @@
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/add_edit_item_dialog.xml" value="0.1828125" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/auth_activity.xml" value="0.2421875" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/content_splash.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/custom_item_card.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/fragment_first.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/fragment_items_list.xml" value="0.2171875" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/fragment_login.xml" value="0.21197916666666666" />
@@ -28,15 +29,17 @@
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/home_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/inventory_fragment.xml" value="0.2" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/inventory_item.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/inventory_procedure_fragment.xml" value="0.536" />
+        <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/inventory_procedure_fragment.xml" value="0.264" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/item.xml" value="0.2359375" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/item_description.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/items_fragment.xml" value="0.2" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/login_fragment.xml" value="0.2421875" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/main_activity.xml" value="0.2421875" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/main_fragment.xml" value="0.2421875" />
+        <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/procedure_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/registry_fragment.xml" value="0.1" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/splash_activity.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/summary_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/toolbar.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/layout/write_nfc_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/asus1/Desktop/programmin/AndroidStudioProjects/WarehouseAssistant/app/src/main/res/menu/drawer_menu.xml" value="0.23125" />

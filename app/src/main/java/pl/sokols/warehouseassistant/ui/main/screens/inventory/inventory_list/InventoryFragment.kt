@@ -1,4 +1,4 @@
-package pl.sokols.warehouseassistant.ui.main.inventory.inventory_list
+package pl.sokols.warehouseassistant.ui.main.screens.inventory.inventory_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +11,8 @@ import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.InventoryFragmentBinding
-import pl.sokols.warehouseassistant.utils.adapters.InventoryListAdapter
+import pl.sokols.warehouseassistant.ui.main.adapters.InventoryListAdapter
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
-import pl.sokols.warehouseassistant.utils.OnItemClickListener
 
 @AndroidEntryPoint
 class InventoryFragment : Fragment() {
@@ -53,9 +52,9 @@ class InventoryFragment : Fragment() {
         }
     }
 
-    private val mainListener = object : OnItemClickListener {
-        override fun onItemClickListener(item: Any) {
-            // TODO: Finish it.
+    private val mainListener = object : (Any) -> Unit {
+        override fun invoke(item: Any) {
+            TODO("Not yet implemented")
         }
     }
 }
