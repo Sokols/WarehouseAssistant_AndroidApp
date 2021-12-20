@@ -56,7 +56,11 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/inventoryProcedureFragment" />
+            app:popUpTo="@id/inventoryFragment" />
+        <argument
+            android:name="inventory"
+            app:argType="pl.sokols.warehouseassistant.data.models.Inventory"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/summaryFragment"
@@ -70,5 +74,11 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="inventory"
+            app:argType="pl.sokols.warehouseassistant.data.models.Inventory" />
+        <action
+            android:id="@+id/action_summaryFragment_to_inventoryProcedureFragment"
+            app:destination="@id/inventoryProcedureFragment" />
     </fragment>
 </navigation>

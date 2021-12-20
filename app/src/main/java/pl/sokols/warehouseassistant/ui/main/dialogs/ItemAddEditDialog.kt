@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.data.models.Item
+import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.AddEditItemDialogBinding
 
 class ItemAddEditDialog(
-    providedItem: Item?,
+    providedItem: CountedItem?,
     private val listener: (Any) -> Unit
 ) : DialogFragment() {
 
-    var item: Item = providedItem ?: Item()
+    var item: CountedItem = providedItem ?: CountedItem()
 
     private lateinit var dialogBinding: AddEditItemDialogBinding
 

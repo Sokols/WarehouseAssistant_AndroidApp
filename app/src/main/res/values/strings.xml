@@ -47,4 +47,20 @@
     <string name="id_placeholder">ID:</string>
     <string name="name_placeholder">Name:</string>
     <string name="correct">Correct</string>
+    <string name="difference_and_value">Difference: %s</string>
+    <string name="icon_image">icon_image</string>
+    <string name="timestamp_edited_and_value">Last edition: %s</string>
+    <string name="use_nfc_tag">Use the NFC tag to read the item.</string>
+    <string name="items_not_found">No records! Add a new one.</string>
+    <string name="are_you_sure_to_logout">Are you sure you want to log out?</string>
+    <string name="no">No</string>
+    <string name="warning">Warning</string>
+    <string name="yes">Yes</string>
+    <string name="are_you_sure_to_finish_inventory">Are you sure you want to finish the inventory?</string>
+    <string name="search_item">Search item</string>
+    <string name="finish_inventory">Finish inventory</string>
+    <string name="add_new_item">Add new item</string>
+    <string name="edit">Edit</string>
+    <string name="share">Share</string>
+    <string name="something_went_wrong">Something went wrong.</string>
 </resources>

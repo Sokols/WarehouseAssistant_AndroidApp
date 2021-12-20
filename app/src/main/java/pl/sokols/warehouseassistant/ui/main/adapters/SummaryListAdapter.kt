@@ -6,51 +6,49 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.ItemBinding
+import pl.sokols.warehouseassistant.databinding.SummaryItemBinding
 import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
-class ItemListAdapter(
-    private val mainListener: (Any) -> Unit,
-    private val nfcListener: (Any) -> Unit
-) : ListAdapter<Any, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
+class SummaryListAdapter(
+    private val mainListener: (Int, Any) -> Unit
+) : ListAdapter<Any, SummaryListAdapter.SummaryListViewHolder>(ItemDiffCallback) {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
-    inner class ItemListViewHolder(
-        private val binding: ItemBinding
+    inner class SummaryListViewHolder(
+        private val binding: SummaryItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("NotifyDataSetChanged")
         fun bind(item: CountedItem) {
-            binding.item = item
+            binding.item = item.copy(id = item.id)
             itemView.setOnClickListener {
-                mainListener(item)
+                val tempItem = binding.item!!
+                mainListener(layoutPosition, tempItem)
                 notifyItemChanged(selectedPosition)
                 selectedPosition = layoutPosition
                 notifyItemChanged(selectedPosition)
             }
 
             itemView.isSelected = selectedPosition == layoutPosition
-
-            binding.nfcTagButton.setOnClickListener {
-                nfcListener(item)
-            }
         }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ItemListViewHolder = ItemListViewHolder(
-        ItemBinding.inflate(
+    ): SummaryListViewHolder = SummaryListViewHolder(
+        SummaryItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
     )
 
-    override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: SummaryListViewHolder, position: Int) =
         holder.bind(getItem(position) as CountedItem)
 
-    fun getItemPosition(nfcData: CountedItem): Int = currentList.indexOf(nfcData)
+    fun resetPosition() {
+        selectedPosition = RecyclerView.NO_POSITION
+    }
 }

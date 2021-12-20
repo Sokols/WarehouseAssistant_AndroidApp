@@ -45,19 +45,29 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/nfcTagButton"
+        <TextView
+            android:id="@+id/amountTextView"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/default_padding"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_padding"
-            android:layout_marginBottom="@dimen/default_padding"
-            android:contentDescription="@string/nfc_tag_image"
+            android:text="@{String.format(@string/amount_and_value, item.amount)}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/differenceTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/itemNameTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/differenceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_padding"
+            android:text="@{String.format(@string/difference_and_value, item.difference)}"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_nfc_24" />
+            app:layout_constraintStart_toEndOf="@+id/itemIdTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

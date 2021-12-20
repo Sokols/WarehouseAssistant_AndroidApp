@@ -1,20 +1,21 @@
 package pl.sokols.warehouseassistant.data.repositories
 
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import pl.sokols.warehouseassistant.data.models.Item
+import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.services.DatabaseService
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class ItemRepository @Inject constructor(
+class CountedItemRepository @Inject constructor(
     databaseService: DatabaseService
 ) {
 
-    var items: MutableLiveData<List<Item>> = MutableLiveData()
+    var items: MutableLiveData<List<CountedItem>> = MutableLiveData()
 
     private var itemsTable: DatabaseReference =
         databaseService.getUserTableReference().child("items")
@@ -25,18 +26,18 @@ class ItemRepository @Inject constructor(
         setItemsListener()
     }
 
-    fun getItemById(id: String): Item? = items.value?.firstOrNull { it.id == id }
+    fun getItemById(id: String): CountedItem? = items.value?.firstOrNull { it.id == id }
 
-    fun addItem(item: Item) {
+    fun addItem(item: CountedItem) {
         itemsTable.push().setValue(item)
     }
 
-    fun updateItem(item: Item) {
+    fun updateItem(item: CountedItem) {
         itemsTable.child(item.id).setValue(item)
         archivedItemsTable.child(item.id).removeValue()
     }
 
-    fun deleteItem(item: Item) {
+    fun deleteItem(item: CountedItem) {
         itemsTable.child(item.id).removeValue()
         archivedItemsTable.child(item.id).setValue(item)
     }
@@ -44,9 +45,9 @@ class ItemRepository @Inject constructor(
     private fun setItemsListener() {
         itemsTable.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list = mutableListOf<Item>()
+                val list = mutableListOf<CountedItem>()
                 for (dataSnapshot in snapshot.children) {
-                    dataSnapshot.getValue(Item::class.java)?.let { item ->
+                    dataSnapshot.getValue(CountedItem::class.java)?.let { item ->
                         item.id = dataSnapshot.key.toString()
                         list.add(item)
                     }

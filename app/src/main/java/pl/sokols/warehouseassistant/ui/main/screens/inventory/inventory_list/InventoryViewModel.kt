@@ -14,5 +14,7 @@ class InventoryViewModel @Inject constructor(
 
     fun getInventories(): MutableLiveData<List<Inventory>> = inventoryRepository.inventories
 
-    private fun getInventoryById(id: String): Inventory? = inventoryRepository.getInventoryById(id)
+    fun deleteInventory(deletedInventory: Inventory) = inventoryRepository.deleteInventory(deletedInventory)
+
+    fun addInventory(inventory: Inventory) = inventoryRepository.addInventory(inventory)
 }

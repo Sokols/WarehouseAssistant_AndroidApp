@@ -1,8 +1,8 @@
 package pl.sokols.warehouseassistant.utils
 
 import androidx.recyclerview.widget.DiffUtil
+import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.data.models.Inventory
-import pl.sokols.warehouseassistant.data.models.Item
 
 /**
  * Based on:
@@ -10,17 +10,17 @@ import pl.sokols.warehouseassistant.data.models.Item
  */
 object ItemDiffCallback : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-        return if (oldItem is Item && newItem is Item) {
+        return if (oldItem is CountedItem && newItem is CountedItem) {
             oldItem.id == newItem.id
         } else if (oldItem is Inventory && newItem is Inventory) {
-            oldItem.timestampId == newItem.timestampId
+            oldItem.timestampCreated == newItem.timestampCreated
         } else {
             false
         }
     }
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-        return if (oldItem is Item && newItem is Item) {
+        return if (oldItem is CountedItem && newItem is CountedItem) {
             oldItem == newItem
         } else if (oldItem is Inventory && newItem is Inventory) {
             oldItem == newItem
