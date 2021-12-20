@@ -10,12 +10,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
+import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.databinding.InventoryProcedureFragmentBinding
 import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
 import pl.sokols.warehouseassistant.utils.*
@@ -27,6 +29,10 @@ class InventoryProcedureFragment : Fragment() {
     private lateinit var binding: InventoryProcedureFragmentBinding
     private lateinit var itemsAdapter: ProcedureItemListAdapter
 
+
+    private val args: InventoryProcedureFragmentArgs by navArgs()
+    private var inventory: Inventory? = null
+
     private var isEditing: Boolean = false
     private var selectedItemIndex: Int? = null
 
@@ -37,6 +43,12 @@ class InventoryProcedureFragment : Fragment() {
         binding = InventoryProcedureFragmentBinding.inflate(inflater, container, false)
         setComponents()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        inventory = args.inventory
+        viewModel.setItems(inventory)
     }
 
     fun retrieveIntent(intent: Intent?) {
@@ -130,13 +142,14 @@ class InventoryProcedureFragment : Fragment() {
             requireContext(),
             getString(R.string.are_you_sure_to_finish_inventory)
         ) { _, _ ->
-            view.findNavController()
-                .navigate(
-                    InventoryProcedureFragmentDirections
-                        .actionInventoryProcedureFragmentToSummaryFragment(
-                            viewModel.prepareInventory()
-                        )
-                )
+            val inventory = viewModel.prepareInventory(inventory)
+            inventory?.let {
+                view.findNavController()
+                    .navigate(
+                        InventoryProcedureFragmentDirections
+                            .actionInventoryProcedureFragmentToSummaryFragment(inventory)
+                    )
+            }
         }.show()
     }
 }

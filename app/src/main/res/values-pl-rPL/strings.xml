@@ -55,4 +55,7 @@
     <string name="search_item">Szukaj towaru</string>
     <string name="finish_inventory">Zakończ inwentaryzację</string>
     <string name="add_new_item">Dodaj towar</string>
+    <string name="edit">Edytuj</string>
+    <string name="share">Udostępnij</string>
+    <string name="something_went_wrong">Coś poszło nie tak.</string>
 </resources>

@@ -60,4 +60,7 @@
     <string name="search_item">Search item</string>
     <string name="finish_inventory">Finish inventory</string>
     <string name="add_new_item">Add new item</string>
+    <string name="edit">Edit</string>
+    <string name="share">Share</string>
+    <string name="something_went_wrong">Something went wrong.</string>
 </resources>

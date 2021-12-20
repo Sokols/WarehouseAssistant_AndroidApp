@@ -60,32 +60,4 @@ class InventoryRepository @Inject constructor(
             }
         })
     }
-
-    fun prepareInventory(items: List<CountedItem>, databaseItems: List<CountedItem>): Inventory {
-        val tempList = mutableListOf<CountedItem>()
-        items.forEach { item ->
-            val tempItem = tempList.firstOrNull { item.id == it.id }
-            if (tempItem == null) {
-                tempList.add(item)
-            } else {
-                tempItem.amount += item.amount
-            }
-        }
-
-        databaseItems.forEach { item ->
-            val tempItem = tempList.firstOrNull { item.id == it.id }
-            if (tempItem == null) {
-                val databaseItem = item.copy(id = item.id)
-                databaseItem.difference = databaseItem.amount * -1
-                databaseItem.amount = 0
-                tempList.add(databaseItem)
-            } else {
-                tempItem.difference = tempItem.amount - item.amount
-            }
-        }
-
-        val map = tempList.associateBy({ it.id }, { it })
-
-        return Inventory(Utils.getTimestamp(), Utils.getTimestamp(), map)
-    }
 }
