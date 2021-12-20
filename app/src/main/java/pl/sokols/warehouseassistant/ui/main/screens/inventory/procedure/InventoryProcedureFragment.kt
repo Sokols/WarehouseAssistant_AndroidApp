@@ -1,6 +1,5 @@
 package pl.sokols.warehouseassistant.ui.main.screens.inventory.procedure
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,17 +9,16 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.InventoryProcedureFragmentBinding
 import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
-import pl.sokols.warehouseassistant.utils.DividerItemDecorator
-import pl.sokols.warehouseassistant.utils.NFCUtil
-import pl.sokols.warehouseassistant.utils.NfcState
-import pl.sokols.warehouseassistant.utils.Utils
+import pl.sokols.warehouseassistant.utils.*
 
 @AndroidEntryPoint
 class InventoryProcedureFragment : Fragment() {
@@ -75,9 +73,29 @@ class InventoryProcedureFragment : Fragment() {
             }
         }
 
-        binding.finishInventoryButton.setOnClickListener {
+        binding.finishFAB.setOnClickListener {
             displayConfirmationDialog(it)
         }
+
+        addSwipeToDelete()
+    }
+
+    private fun addSwipeToDelete() {
+        ItemTouchHelper(object : SwipeHelper(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val index = viewHolder.layoutPosition
+                val deletedItem: CountedItem =
+                    itemsAdapter.currentList[index] as CountedItem
+                viewModel.deleteItem(index)
+
+                Snackbar
+                    .make(requireView(), getString(R.string.deleted), Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.undo)) {
+                        viewModel.addEditItem(deletedItem, isEditing = false)
+                    }
+                    .show()
+            }
+        }).attachToRecyclerView(binding.itemsRecyclerView)
     }
 
     private fun setView(list: List<CountedItem>?) {
@@ -87,7 +105,6 @@ class InventoryProcedureFragment : Fragment() {
         binding.itemsRecyclerView.isVisible = !emptyVisibility
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun resetItems() {
         selectedItemIndex?.let { itemsAdapter.notifyItemChanged(it) }
         binding.item = null
@@ -115,9 +132,10 @@ class InventoryProcedureFragment : Fragment() {
         ) { _, _ ->
             view.findNavController()
                 .navigate(
-                    InventoryProcedureFragmentDirections.actionInventoryProcedureFragmentToSummaryFragment(
-                        viewModel.prepareInventory()
-                    )
+                    InventoryProcedureFragmentDirections
+                        .actionInventoryProcedureFragmentToSummaryFragment(
+                            viewModel.prepareInventory()
+                        )
                 )
         }.show()
     }

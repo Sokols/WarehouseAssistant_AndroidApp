@@ -52,4 +52,7 @@
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="are_you_sure_to_finish_inventory">Czy na pewno chcesz zakończyć inwentaryzację?</string>
+    <string name="search_item">Szukaj towaru</string>
+    <string name="finish_inventory">Zakończ inwentaryzację</string>
+    <string name="add_new_item">Dodaj towar</string>
 </resources>

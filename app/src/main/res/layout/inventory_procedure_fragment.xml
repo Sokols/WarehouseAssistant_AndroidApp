@@ -41,21 +41,52 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:listitem="@layout/procedure_item" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/finishInventoryButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_padding"
-                android:backgroundTint="?attr/colorPrimary"
-                android:contentDescription="@string/fab_content_desc"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                app:srcCompat="@drawable/ic_baseline_check_24"
-                app:tint="@color/white" />
+            <com.nambimobile.widgets.efab.ExpandableFabLayout
+                android:id="@+id/expandable_fab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.nambimobile.widgets.efab.ExpandableFab
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="@dimen/default_padding"
+                    android:layout_marginBottom="@dimen/default_padding"
+                    app:efab_closingAnticipateTension="0"
+                    app:efab_color="?attr/colorPrimary"
+                    app:efab_icon="@drawable/ic_baseline_more_vert_24"
+                    app:efab_iconAnimationRotationDeg="-275" />
+
+                <com.nambimobile.widgets.efab.FabOption
+                    android:id="@+id/searchFAB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fab_color="?attr/colorPrimary"
+                    app:fab_icon="@drawable/ic_baseline_search_24"
+                    app:label_backgroundColor="@color/colorOnPrimary"
+                    app:label_text="@string/search_item"
+                    app:label_textColor="@color/white" />
+
+                <com.nambimobile.widgets.efab.FabOption
+                    android:id="@+id/addItemFAB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fab_color="?attr/colorPrimary"
+                    app:fab_icon="@drawable/ic_plus_white_24dp"
+                    app:label_backgroundColor="@color/colorOnPrimary"
+                    app:label_text="@string/add_new_item"
+                    app:label_textColor="@color/white" />
+
+                <com.nambimobile.widgets.efab.FabOption
+                    android:id="@+id/finishFAB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fab_color="?attr/colorPrimary"
+                    app:fab_icon="@drawable/ic_baseline_check_24"
+                    app:label_backgroundColor="@color/colorOnPrimary"
+                    app:label_text="@string/finish_inventory"
+                    app:label_textColor="@color/white" />
+            </com.nambimobile.widgets.efab.ExpandableFabLayout>
 
             <include
                 android:id="@+id/emptyLayout"

@@ -99,17 +99,19 @@ class ItemsFragment : Fragment() {
     }
 
     private fun addEditItem(item: CountedItem?, listener: (Any) -> Unit) {
-        ItemAddEditDialog(item, listener).show(
-            requireFragmentManager(),
-            getString(R.string.provide_item_dialog)
-        )
+        activity?.let {
+            ItemAddEditDialog(item, listener).show(
+                it.supportFragmentManager,
+                getString(R.string.provide_item_dialog)
+            )
+        }
     }
 
     private fun addSwipeToDelete() {
-        ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
+        ItemTouchHelper(object : SwipeHelper(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deletedItem: CountedItem =
-                    recyclerViewAdapter.currentList[viewHolder.adapterPosition] as CountedItem
+                    recyclerViewAdapter.currentList[viewHolder.layoutPosition] as CountedItem
                 viewModel.deleteItem(deletedItem)
 
                 Snackbar
@@ -135,10 +137,12 @@ class ItemsFragment : Fragment() {
     private val nfcListener = object : (Any) -> Unit {
         override fun invoke(item: Any) {
             viewModel.changeNfcState(NfcState.WRITE, (item as CountedItem).id)
-            nfcDialog.show(
-                requireFragmentManager(),
-                getString(R.string.provide_nfc_dialog)
-            )
+            activity?.let {
+                nfcDialog.show(
+                    it.supportFragmentManager,
+                    getString(R.string.provide_nfc_dialog)
+                )
+            }
         }
     }
 }

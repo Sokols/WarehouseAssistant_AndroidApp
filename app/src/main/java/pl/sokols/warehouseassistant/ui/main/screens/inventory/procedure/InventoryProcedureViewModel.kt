@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InventoryProcedureViewModel @Inject constructor(
-    private val itemRepository: CountedItemRepository,
+    itemRepository: CountedItemRepository,
     private val inventoryRepository: InventoryRepository,
     private val nfcService: NfcService
 ) : ViewModel() {
@@ -28,7 +28,7 @@ class InventoryProcedureViewModel @Inject constructor(
         return getItemById(id) ?: NfcState.CANNOT_FIND_ITEM
     }
 
-    fun addEditItem(item: CountedItem, isEditing: Boolean, index: Int?) {
+    fun addEditItem(item: CountedItem, isEditing: Boolean, index: Int? = null) {
         val items = this.items.value?.toMutableList()!!
 
         if (isEditing && index != null) {
@@ -41,9 +41,16 @@ class InventoryProcedureViewModel @Inject constructor(
     }
 
     fun prepareInventory(): Inventory {
-        val inventory = inventoryRepository.prepareInventory(this.items.value!!, this.tempItems.value!!)
+        val inventory =
+            inventoryRepository.prepareInventory(this.items.value!!, this.tempItems.value!!)
         inventoryRepository.addInventory(inventory)
         return inventory
+    }
+
+    fun deleteItem(index: Int) {
+        val items = this.items.value?.toMutableList()!!
+        items.removeAt(index)
+        this.items.postValue(items)
     }
 
     private fun getItemById(id: String): CountedItem? = tempItems.value?.firstOrNull { it.id == id }

@@ -19,4 +19,5 @@
 
     <color name="colorSelected">#D6D6D6</color>
     <color name="transparent">#ffffffff</color>
+    <color name="dark_red">#8F0B01</color>
 </resources>

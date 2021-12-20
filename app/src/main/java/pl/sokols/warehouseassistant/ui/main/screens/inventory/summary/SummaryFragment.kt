@@ -59,7 +59,7 @@ class SummaryFragment : Fragment() {
 
     private val mainListener = object : (Int, Any) -> Unit {
         override fun invoke(index: Int, item: Any) {
-            TODO("MAKE IT")
+
         }
     }
 }

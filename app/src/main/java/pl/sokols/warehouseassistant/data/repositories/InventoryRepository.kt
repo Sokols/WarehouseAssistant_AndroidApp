@@ -84,7 +84,7 @@ class InventoryRepository @Inject constructor(
             }
         }
 
-        val map = tempList.associateBy({it.id}, {it})
+        val map = tempList.associateBy({ it.id }, { it })
 
         return Inventory(Utils.getTimestamp(), Utils.getTimestamp(), map)
     }
