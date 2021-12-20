@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -65,6 +66,7 @@ class ItemsFragment : Fragment() {
         recyclerViewAdapter = ItemListAdapter(mainListener, nfcListener)
         viewModel.getItems().observe(viewLifecycleOwner, {
             recyclerViewAdapter.submitList(it)
+            setView(it)
         })
         binding.itemsRecyclerView.adapter = recyclerViewAdapter
         binding.itemsRecyclerView.addItemDecoration(
@@ -77,6 +79,13 @@ class ItemsFragment : Fragment() {
             )
         )
         addSwipeToDelete()
+    }
+
+    private fun setView(list: List<CountedItem>?) {
+        binding.loading.isVisible = false
+        val emptyVisibility = list.isNullOrEmpty()
+        binding.emptyLayout.emptyLayout.isVisible = emptyVisibility
+        binding.itemsRecyclerView.isVisible = !emptyVisibility
     }
 
     private fun setListeners() {

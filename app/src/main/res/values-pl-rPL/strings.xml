@@ -43,4 +43,13 @@
     <string name="name_placeholder">Nazwa:</string>
     <string name="correct">Popraw</string>
     <string name="difference_and_value">Różnica: %s</string>
+    <string name="icon_image">icon_image</string>
+    <string name="timestamp_edited_and_value">Ostatnia edycja: %s</string>
+    <string name="use_nfc_tag">Użyj tagu NFC, żeby odczytać przedmiot.</string>
+    <string name="items_not_found">Brak rekordów! Dodaj nowy.</string>
+    <string name="are_you_sure_to_logout">Czy na pewno chcesz się wylogować?</string>
+    <string name="warning">Uwaga</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="are_you_sure_to_finish_inventory">Czy na pewno chcesz zakończyć inwentaryzację?</string>
 </resources>

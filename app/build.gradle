@@ -81,4 +81,7 @@ dependencies {
 
     // Material UI
     implementation 'com.google.android.material:material:1.4.0'
+
+    // Expandable FAB
+    implementation 'com.nambimobile.widgets:expandable-fab:1.0.2'
 }

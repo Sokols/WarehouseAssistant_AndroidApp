@@ -16,36 +16,58 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/itemsRecyclerView"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemsLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:fillViewport="true"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="percent"
             app:layout_constraintHeight_percent=".6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/procedure_item" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/finishInventoryButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_padding"
-            android:backgroundTint="?attr/colorPrimary"
-            android:contentDescription="@string/fab_content_desc"
-            app:layout_constraintBottom_toTopOf="@+id/itemScrollView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_baseline_check_24"
-            app:tint="@color/white" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/itemsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:fillViewport="true"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:listitem="@layout/procedure_item" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/finishInventoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_padding"
+                android:backgroundTint="?attr/colorPrimary"
+                android:contentDescription="@string/fab_content_desc"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/ic_baseline_check_24"
+                app:tint="@color/white" />
+
+            <include
+                android:id="@+id/emptyLayout"
+                layout="@layout/empty_nfc_layout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
             android:id="@+id/itemScrollView"
@@ -70,11 +92,11 @@
                     android:id="@+id/nameTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     android:layout_marginTop="@dimen/default_padding"
                     android:layout_marginEnd="@dimen/very_small_padding"
                     android:text="@string/name_placeholder"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/idValueTitle"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -84,11 +106,11 @@
                     android:id="@+id/nameValueTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     android:layout_marginStart="@dimen/huge_padding"
                     android:layout_marginTop="@dimen/default_padding"
                     android:text="@{item != null ? item.name : `-`}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -98,9 +120,9 @@
                     android:id="@+id/idTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
                     android:layout_marginEnd="@dimen/very_small_padding"
                     android:text="@string/id_placeholder"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@+id/nameValueTitle"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -110,9 +132,9 @@
                     android:id="@+id/idValueTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
                     android:layout_marginStart="@dimen/huge_padding"
                     android:text="@{item != null ? item.id : `-`}"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -166,6 +188,16 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemsRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/itemsLayout" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,12 +1,15 @@
 package pl.sokols.warehouseassistant.ui.main
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -15,6 +18,7 @@ import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.MainActivityBinding
 import pl.sokols.warehouseassistant.ui.auth.AuthActivity
 import pl.sokols.warehouseassistant.utils.NFCUtil
+import pl.sokols.warehouseassistant.utils.Utils
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -69,13 +73,19 @@ class MainActivity : AppCompatActivity() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.logout -> {
-                    viewModel.logout()
-                    startActivity(Intent(this, AuthActivity::class.java))
-                    finish()
+                    displayLogoutDialog()
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun displayLogoutDialog() {
+        Utils.displayLogoutDialog(this, getString(R.string.are_you_sure_to_logout)) { _, _ ->
+            viewModel.logout()
+            startActivity(Intent(this, AuthActivity::class.java))
+            finish()
+        }.show()
     }
 }
