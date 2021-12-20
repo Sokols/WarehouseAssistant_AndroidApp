@@ -1,8 +1,5 @@
 package pl.sokols.warehouseassistant.data.repositories
 
-import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -12,16 +9,12 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.services.DatabaseService
-import java.sql.Timestamp
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
+import pl.sokols.warehouseassistant.utils.Utils
 import javax.inject.Inject
 
 @ActivityRetainedScoped
 class InventoryRepository @Inject constructor(
-    databaseService: DatabaseService,
-    itemsRepository: CountedItemRepository
+    databaseService: DatabaseService
 ) {
 
     var inventories: MutableLiveData<List<Inventory>> = MutableLiveData()
@@ -34,18 +27,18 @@ class InventoryRepository @Inject constructor(
     }
 
     fun getInventoryById(id: String): Inventory? =
-        inventories.value?.firstOrNull { it.timestampId == id }
+        inventories.value?.firstOrNull { it.timestampCreated == id }
 
     fun addInventory(inventory: Inventory) {
-        inventoriesTable.push().setValue(inventory)
+        inventoriesTable.child(inventory.timestampCreated).setValue(inventory)
     }
 
     fun updateInventory(inventory: Inventory) {
-        inventoriesTable.child(inventory.timestampId).setValue(inventory)
+        inventoriesTable.child(inventory.timestampCreated).setValue(inventory)
     }
 
     fun deleteInventory(inventory: Inventory) {
-        inventoriesTable.child(inventory.timestampId).removeValue()
+        inventoriesTable.child(inventory.timestampCreated).removeValue()
     }
 
     private fun setInventoriesListener() {
@@ -54,19 +47,11 @@ class InventoryRepository @Inject constructor(
                 val list = mutableListOf<Inventory>()
                 for (dataSnapshot in snapshot.children) {
                     dataSnapshot.getValue(Inventory::class.java)?.let { inventory ->
-                        inventory.timestampId = dataSnapshot.key.toString()
+                        inventory.items.forEach { it.value.id = it.key }
                         list.add(inventory)
                     }
                 }
-                // TODO: MOCKUP - remove
-                list.addAll(
-                    listOf(
-                        Inventory(timestampId = "13-12-2021"),
-                        Inventory(timestampId = "14-12-2021"),
-                        Inventory(timestampId = "15-12-2021")
-                    )
-                )
-                list.sortByDescending { it.timestampId }
+                list.sortByDescending { it.timestampCreated }
                 inventories.postValue(list)
             }
 
@@ -99,13 +84,8 @@ class InventoryRepository @Inject constructor(
             }
         }
 
-        return Inventory(getTimestamp(), tempList)
-    }
+        val map = tempList.associateBy({it.id}, {it})
 
-    @SuppressLint("NewApi")
-    private fun getTimestamp(): String = DateTimeFormatter
-        .ofPattern("yyyy-MM-dd_HH:mm:ss")
-        .withZone(ZoneOffset.UTC)
-        .format(Instant.now())
-        .toString()
+        return Inventory(Utils.getTimestamp(), Utils.getTimestamp(), map)
+    }
 }

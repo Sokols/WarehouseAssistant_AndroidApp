@@ -40,8 +40,11 @@ class InventoryProcedureViewModel @Inject constructor(
         this.items.postValue(items)
     }
 
-    fun prepareInventory(): Inventory =
-        inventoryRepository.prepareInventory(this.items.value!!, this.tempItems.value!!)
+    fun prepareInventory(): Inventory {
+        val inventory = inventoryRepository.prepareInventory(this.items.value!!, this.tempItems.value!!)
+        inventoryRepository.addInventory(inventory)
+        return inventory
+    }
 
     private fun getItemById(id: String): CountedItem? = tempItems.value?.firstOrNull { it.id == id }
 }

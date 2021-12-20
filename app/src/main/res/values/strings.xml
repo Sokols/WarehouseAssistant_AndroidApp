@@ -47,4 +47,5 @@
     <string name="id_placeholder">ID:</string>
     <string name="name_placeholder">Name:</string>
     <string name="correct">Correct</string>
+    <string name="difference_and_value">Difference: %s</string>
 </resources>

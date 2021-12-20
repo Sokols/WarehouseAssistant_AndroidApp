@@ -42,4 +42,5 @@
     <string name="id_placeholder">ID:</string>
     <string name="name_placeholder">Nazwa:</string>
     <string name="correct">Popraw</string>
+    <string name="difference_and_value">Różnica: %s</string>
 </resources>

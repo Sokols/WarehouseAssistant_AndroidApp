@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Inventory(
-    var timestampId: String,
-    var items: List<CountedItem>? = null
+    var timestampCreated: String = "",
+    var timestampEdited: String = "",
+    var items: Map<String, CountedItem> = mutableMapOf()
 ) : Parcelable

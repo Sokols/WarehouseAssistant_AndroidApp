@@ -8,10 +8,13 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
+import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.databinding.InventoryFragmentBinding
 import pl.sokols.warehouseassistant.ui.main.adapters.InventoryListAdapter
+import pl.sokols.warehouseassistant.ui.main.screens.inventory.summary.SummaryFragmentDirections
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
 
 @AndroidEntryPoint
@@ -53,8 +56,12 @@ class InventoryFragment : Fragment() {
     }
 
     private val mainListener = object : (Any) -> Unit {
-        override fun invoke(item: Any) {
-            TODO("Not yet implemented")
+        override fun invoke(inventory: Any) {
+            findNavController().navigate(
+                InventoryFragmentDirections.actionInventoryFragmentToSummaryFragment(
+                    inventory as Inventory
+                )
+            )
         }
     }
 }

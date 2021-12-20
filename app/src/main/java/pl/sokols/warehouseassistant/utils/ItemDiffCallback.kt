@@ -13,7 +13,7 @@ object ItemDiffCallback : DiffUtil.ItemCallback<Any>() {
         return if (oldItem is CountedItem && newItem is CountedItem) {
             oldItem.id == newItem.id
         } else if (oldItem is Inventory && newItem is Inventory) {
-            oldItem.timestampId == newItem.timestampId
+            oldItem.timestampCreated == newItem.timestampCreated
         } else {
             false
         }

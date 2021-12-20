@@ -56,7 +56,7 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/inventoryProcedureFragment" />
+            app:popUpTo="@id/inventoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/summaryFragment"

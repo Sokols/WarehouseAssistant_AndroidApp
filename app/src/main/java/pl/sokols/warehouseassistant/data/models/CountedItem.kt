@@ -16,7 +16,7 @@ data class CountedItem(
         name: String = this.name,
         price: Float = this.price,
         amount: Int = this.amount,
-        difference: Int? = this.amount
+        difference: Int? = this.difference
     ): CountedItem {
         val copy = CountedItem(name = name, price = price, amount = amount, difference = difference)
         copy.id = id
