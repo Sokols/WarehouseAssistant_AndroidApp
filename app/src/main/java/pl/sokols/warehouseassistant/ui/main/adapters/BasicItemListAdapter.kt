@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.BasicItemBinding
-import pl.sokols.warehouseassistant.databinding.ProcedureItemBinding
 import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
 class BasicItemListAdapter(

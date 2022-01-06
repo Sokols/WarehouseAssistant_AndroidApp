@@ -62,4 +62,6 @@
     <string name="refresh">Odśwież</string>
     <string name="search">Szukaj</string>
     <string name="select">Wybierz</string>
+    <string name="sign_in">Logowanie</string>
+    <string name="sign_up">Rejestracja</string>
 </resources>

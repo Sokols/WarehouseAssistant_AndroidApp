@@ -56,17 +56,27 @@ class InventoryProcedureFragment : Fragment() {
         if (nfcData is NfcState) {
             NFCUtil.displayToast(context, nfcData)
         } else if (nfcData is CountedItem) {
-            prepareItem(nfcData, isEditing = false)
+            val item = nfcData.copy(id = nfcData.id)
+            prepareItem(item, isEditing = false)
         }
     }
 
     private fun setComponents() {
+        initRecyclerView()
+        setButtonClickListeners()
+        viewModel.tempItems.observe(viewLifecycleOwner, {
+            allItems = it
+        })
+    }
+
+    private fun initRecyclerView() {
         itemsAdapter = ProcedureItemListAdapter(mainListener)
         binding.itemsRecyclerView.adapter = itemsAdapter
         viewModel.items.observe(viewLifecycleOwner, {
             itemsAdapter.submitList(it)
             setView(it)
         })
+
         binding.itemsRecyclerView.addItemDecoration(
             DividerItemDecorator(
                 ResourcesCompat.getDrawable(
@@ -76,11 +86,10 @@ class InventoryProcedureFragment : Fragment() {
                 )!!
             )
         )
+        addSwipeToDelete()
+    }
 
-        viewModel.tempItems.observe(viewLifecycleOwner, {
-            allItems = it
-        })
-
+    private fun setButtonClickListeners() {
         binding.applyDialogButton.setOnClickListener {
             val item = binding.item
             if (item != null) {
@@ -100,8 +109,6 @@ class InventoryProcedureFragment : Fragment() {
         binding.searchFAB.setOnClickListener {
             displaySearchItemDialog()
         }
-
-        addSwipeToDelete()
     }
 
     private fun addSwipeToDelete() {

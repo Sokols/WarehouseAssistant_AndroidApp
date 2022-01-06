@@ -15,7 +15,7 @@
             android:layout_height="@dimen/very_large_padding"
             android:layout_gravity="center"
             android:contentDescription="@string/items"
-            android:padding="@dimen/default_padding"/>
+            android:padding="@dimen/default_padding" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:id="@+id/itemDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/very_small_padding"/>
+                android:padding="@dimen/very_small_padding" />
 
         </LinearLayout>
     </LinearLayout>

@@ -7,6 +7,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:visibility="gone"
+    tools:ignore="UseCompoundDrawables"
     tools:visibility="visible">
 
     <ImageView

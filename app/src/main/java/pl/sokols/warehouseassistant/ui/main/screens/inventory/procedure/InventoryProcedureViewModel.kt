@@ -40,7 +40,7 @@ class InventoryProcedureViewModel @Inject constructor(
 
         if (isEditing && index != null) {
             items[index].amount = item.amount
-        } else {
+        } else if (!isEditing) {
             items.add(item.copy(id = item.id))
         }
 

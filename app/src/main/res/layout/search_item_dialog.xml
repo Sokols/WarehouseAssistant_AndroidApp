@@ -43,12 +43,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/applyDialogButton"
-            android:enabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_padding"
             android:layout_marginEnd="@dimen/default_padding"
             android:layout_marginBottom="@dimen/default_padding"
+            android:enabled="false"
             android:paddingHorizontal="@dimen/large_padding"
             android:paddingVertical="@dimen/default_padding"
             android:text="@string/select"

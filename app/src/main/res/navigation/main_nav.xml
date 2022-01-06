@@ -19,7 +19,7 @@
         android:id="@+id/inventoryFragment"
         android:name="pl.sokols.warehouseassistant.ui.main.screens.inventory.inventory_list.InventoryFragment"
         android:label="@string/inventory"
-        tools:layout="@layout/inventory_fragment" >
+        tools:layout="@layout/inventory_fragment">
         <action
             android:id="@+id/action_inventoryFragment_to_inventoryProcedureFragment"
             app:destination="@id/inventoryProcedureFragment"
@@ -41,7 +41,7 @@
         android:id="@+id/inventoryProcedureFragment"
         android:name="pl.sokols.warehouseassistant.ui.main.screens.inventory.procedure.InventoryProcedureFragment"
         android:label="@string/inventory_procedure"
-        tools:layout="@layout/inventory_procedure_fragment" >
+        tools:layout="@layout/inventory_procedure_fragment">
         <action
             android:id="@+id/action_inventoryProcedureFragment_to_inventoryFragment"
             app:destination="@id/inventoryFragment"
@@ -66,7 +66,7 @@
         android:id="@+id/summaryFragment"
         android:name="pl.sokols.warehouseassistant.ui.main.screens.inventory.summary.SummaryFragment"
         android:label="@string/summary"
-        tools:layout="@layout/summary_fragment" >
+        tools:layout="@layout/summary_fragment">
         <action
             android:id="@+id/action_summaryFragment_to_inventoryFragment"
             app:destination="@id/inventoryFragment"
