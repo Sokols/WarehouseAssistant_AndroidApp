@@ -6,17 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.SummaryItemBinding
+import pl.sokols.warehouseassistant.databinding.BasicItemBinding
+import pl.sokols.warehouseassistant.databinding.ProcedureItemBinding
 import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
-class SummaryListAdapter(
-    private val mainListener: (Int, Any) -> Unit
-) : ListAdapter<Any, SummaryListAdapter.SummaryListViewHolder>(ItemDiffCallback) {
+class BasicItemListAdapter(
+    private val mainListener: (Any) -> Unit
+) : ListAdapter<Any, BasicItemListAdapter.BasicItemListViewHolder>(ItemDiffCallback) {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
-    inner class SummaryListViewHolder(
-        private val binding: SummaryItemBinding
+    inner class BasicItemListViewHolder(
+        private val binding: BasicItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("NotifyDataSetChanged")
@@ -24,7 +25,7 @@ class SummaryListAdapter(
             binding.item = item.copy(id = item.id)
             itemView.setOnClickListener {
                 val tempItem = binding.item!!
-                mainListener(layoutPosition, tempItem)
+                mainListener(tempItem)
                 notifyItemChanged(selectedPosition)
                 selectedPosition = layoutPosition
                 notifyItemChanged(selectedPosition)
@@ -37,14 +38,14 @@ class SummaryListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): SummaryListViewHolder = SummaryListViewHolder(
-        SummaryItemBinding.inflate(
+    ): BasicItemListViewHolder = BasicItemListViewHolder(
+        BasicItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
     )
 
-    override fun onBindViewHolder(holder: SummaryListViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: BasicItemListViewHolder, position: Int) =
         holder.bind(getItem(position) as CountedItem)
 }

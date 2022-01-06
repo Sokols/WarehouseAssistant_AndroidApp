@@ -10,7 +10,7 @@ import pl.sokols.warehouseassistant.databinding.WriteNfcDialogBinding
 
 class WriteNfcDialog(
     private val onCancelListener: DialogInterface.OnCancelListener
-    ) : DialogFragment() {
+) : DialogFragment() {
 
     private lateinit var dialogBinding: WriteNfcDialogBinding
 
