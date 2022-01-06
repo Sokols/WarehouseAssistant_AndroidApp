@@ -58,4 +58,10 @@
     <string name="edit">Edytuj</string>
     <string name="share">Udostępnij</string>
     <string name="something_went_wrong">Coś poszło nie tak.</string>
+    <string name="turn_on_wifi_and_nfc">Włącz Internet oraz NFC.</string>
+    <string name="refresh">Odśwież</string>
+    <string name="search">Szukaj</string>
+    <string name="select">Wybierz</string>
+    <string name="sign_in">Logowanie</string>
+    <string name="sign_up">Rejestracja</string>
 </resources>

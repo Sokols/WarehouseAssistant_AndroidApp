@@ -20,6 +20,8 @@ import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.databinding.InventoryProcedureFragmentBinding
 import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
+import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
+import pl.sokols.warehouseassistant.ui.main.dialogs.SearchItemDialog
 import pl.sokols.warehouseassistant.utils.*
 
 @AndroidEntryPoint
@@ -28,13 +30,11 @@ class InventoryProcedureFragment : Fragment() {
     private val viewModel: InventoryProcedureViewModel by viewModels()
     private lateinit var binding: InventoryProcedureFragmentBinding
     private lateinit var itemsAdapter: ProcedureItemListAdapter
-
-
     private val args: InventoryProcedureFragmentArgs by navArgs()
     private var inventory: Inventory? = null
-
     private var isEditing: Boolean = false
     private var selectedItemIndex: Int? = null
+    private lateinit var allItems: List<CountedItem>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,17 +56,27 @@ class InventoryProcedureFragment : Fragment() {
         if (nfcData is NfcState) {
             NFCUtil.displayToast(context, nfcData)
         } else if (nfcData is CountedItem) {
-            prepareItem(nfcData, isEditing = false)
+            val item = nfcData.copy(id = nfcData.id)
+            prepareItem(item, isEditing = false)
         }
     }
 
     private fun setComponents() {
+        initRecyclerView()
+        setButtonClickListeners()
+        viewModel.tempItems.observe(viewLifecycleOwner, {
+            allItems = it
+        })
+    }
+
+    private fun initRecyclerView() {
         itemsAdapter = ProcedureItemListAdapter(mainListener)
         binding.itemsRecyclerView.adapter = itemsAdapter
         viewModel.items.observe(viewLifecycleOwner, {
             itemsAdapter.submitList(it)
             setView(it)
         })
+
         binding.itemsRecyclerView.addItemDecoration(
             DividerItemDecorator(
                 ResourcesCompat.getDrawable(
@@ -76,7 +86,10 @@ class InventoryProcedureFragment : Fragment() {
                 )!!
             )
         )
+        addSwipeToDelete()
+    }
 
+    private fun setButtonClickListeners() {
         binding.applyDialogButton.setOnClickListener {
             val item = binding.item
             if (item != null) {
@@ -89,7 +102,13 @@ class InventoryProcedureFragment : Fragment() {
             displayConfirmationDialog(it)
         }
 
-        addSwipeToDelete()
+        binding.addItemFAB.setOnClickListener {
+            displayAddItemDialog()
+        }
+
+        binding.searchFAB.setOnClickListener {
+            displaySearchItemDialog()
+        }
     }
 
     private fun addSwipeToDelete() {
@@ -151,5 +170,33 @@ class InventoryProcedureFragment : Fragment() {
                     )
             }
         }.show()
+    }
+
+    private fun displayAddItemDialog() {
+        activity?.let {
+            ItemAddEditDialog(null, object : (Any) -> Unit {
+                override fun invoke(item: Any) {
+                    viewModel.addNewItem(item as CountedItem)
+                }
+            }).show(
+                it.supportFragmentManager,
+                getString(R.string.provide_item_dialog)
+            )
+        }
+    }
+
+    private fun displaySearchItemDialog() {
+        activity?.let {
+            SearchItemDialog(searchItemListener, allItems).show(
+                it.supportFragmentManager,
+                getString(R.string.provide_item_dialog)
+            )
+        }
+    }
+
+    private val searchItemListener = object : (CountedItem) -> Unit {
+        override fun invoke(item: CountedItem) {
+            prepareItem(item, isEditing = false)
+        }
     }
 }

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="pl.sokols.warehouseassistant.ui.auth.login.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="LoginFragment">
         <action
             android:id="@+id/action_loginFragment_to_registryFragment"
             app:destination="@id/registryFragment"
@@ -22,7 +22,7 @@
         android:id="@+id/registryFragment"
         android:name="pl.sokols.warehouseassistant.ui.auth.registry.RegistryFragment"
         android:label="fragment_registry"
-        tools:layout="@layout/registry_fragment" >
+        tools:layout="@layout/registry_fragment">
         <action
             android:id="@+id/action_registryFragment_to_loginFragment"
             app:destination="@id/loginFragment"

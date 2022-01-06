@@ -3,18 +3,13 @@ package pl.sokols.warehouseassistant.services
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import dagger.hilt.android.qualifiers.ApplicationContext
-import pl.sokols.warehouseassistant.data.models.Inventory
-import java.io.File
-import java.io.FileOutputStream
-import java.util.stream.Stream
-import javax.inject.Inject
-import javax.inject.Singleton
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
-
+import android.widget.Toast
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class EmailService @Inject constructor(

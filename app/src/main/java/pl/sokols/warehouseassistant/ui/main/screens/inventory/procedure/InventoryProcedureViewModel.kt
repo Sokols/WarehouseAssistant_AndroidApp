@@ -15,12 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InventoryProcedureViewModel @Inject constructor(
-    itemRepository: CountedItemRepository,
+    private val itemRepository: CountedItemRepository,
     private val inventoryRepository: InventoryRepository,
     private val nfcService: NfcService
 ) : ViewModel() {
 
-    private var tempItems: MutableLiveData<List<CountedItem>> = itemRepository.items
+    var tempItems: MutableLiveData<List<CountedItem>> = itemRepository.items
 
     var items: MutableLiveData<List<CountedItem>> = MutableLiveData(mutableListOf())
 
@@ -40,7 +40,7 @@ class InventoryProcedureViewModel @Inject constructor(
 
         if (isEditing && index != null) {
             items[index].amount = item.amount
-        } else {
+        } else if (!isEditing) {
             items.add(item.copy(id = item.id))
         }
 
@@ -94,6 +94,11 @@ class InventoryProcedureViewModel @Inject constructor(
         val items = this.items.value?.toMutableList()!!
         items.removeAt(index)
         this.items.postValue(items)
+    }
+
+    fun addNewItem(countedItem: CountedItem) {
+        countedItem.id = itemRepository.addItem(countedItem)
+        addEditItem(countedItem, isEditing = false)
     }
 
     private fun getItemById(id: String): CountedItem? = tempItems.value?.firstOrNull { it.id == id }

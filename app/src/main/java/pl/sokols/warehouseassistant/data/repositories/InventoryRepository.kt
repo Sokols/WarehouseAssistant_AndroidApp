@@ -6,10 +6,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.services.DatabaseService
-import pl.sokols.warehouseassistant.utils.Utils
 import javax.inject.Inject
 
 @ActivityRetainedScoped

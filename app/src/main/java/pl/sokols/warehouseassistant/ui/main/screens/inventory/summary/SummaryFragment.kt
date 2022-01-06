@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -42,7 +41,12 @@ class SummaryFragment : Fragment() {
     }
 
     private fun setComponents() {
-        itemsAdapter = SummaryListAdapter(mainListener)
+        initRecyclerView()
+        setButtonClickListeners()
+    }
+
+    private fun initRecyclerView() {
+        itemsAdapter = SummaryListAdapter()
         binding.itemsRecyclerView.adapter = itemsAdapter
         itemsAdapter.submitList(ArrayList(inventory.items.values).toMutableList() as List<Any>?)
 
@@ -55,7 +59,9 @@ class SummaryFragment : Fragment() {
                 )!!
             )
         )
+    }
 
+    private fun setButtonClickListeners() {
         binding.editFAB.setOnClickListener {
             it.findNavController().navigate(
                 SummaryFragmentDirections
@@ -65,12 +71,6 @@ class SummaryFragment : Fragment() {
 
         binding.shareFAB.setOnClickListener {
             viewModel.shareInventory(inventory)
-        }
-    }
-
-    private val mainListener = object : (Int, Any) -> Unit {
-        override fun invoke(index: Int, item: Any) {
-            // Unused
         }
     }
 }

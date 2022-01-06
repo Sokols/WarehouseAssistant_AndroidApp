@@ -1,15 +1,16 @@
 package pl.sokols.warehouseassistant.ui.main
 
-import android.content.DialogInterface
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.nfc.NfcAdapter
 import android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        setPlaceholderView()
         NFCUtil.enableNFCInForeground(nfcAdapter, this, javaClass)
     }
 
@@ -79,6 +81,34 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun setPlaceholderView() {
+        val isMainViewVisible = checkIfInternetAndNfcEnabled()
+        binding.drawerLayout.isVisible = isMainViewVisible
+        binding.noServicesPlaceholder.isVisible = !isMainViewVisible
+        binding.refreshButton.setOnClickListener {
+            finish()
+            startActivity(intent)
+        }
+    }
+
+    private fun checkIfInternetAndNfcEnabled(): Boolean {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            val isInternetEnabled = when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+            val isNfcEnabled = nfcAdapter != null && NfcAdapter.getDefaultAdapter(this).isEnabled
+            return isInternetEnabled && isNfcEnabled
+        }
+        return false
     }
 
     private fun displayLogoutDialog() {

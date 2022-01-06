@@ -53,16 +53,22 @@ class ItemsFragment : Fragment() {
         viewModel.changeNfcState()
     }
 
-    private fun invokeItemClick(nfcData: CountedItem) {
-        val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
-        binding.itemsRecyclerView.scrollToPosition(position)
-        binding.itemsRecyclerView.postDelayed({
-            binding.itemsRecyclerView.findViewHolderForLayoutPosition(position)?.itemView?.performClick()
-        }, 50)
-    }
-
     private fun setComponents() {
         nfcDialog = WriteNfcDialog { viewModel.changeNfcState() }
+        initRecyclerView()
+    }
+
+    private fun setListeners() {
+        binding.addItemButton.setOnClickListener {
+            addEditItem(null, object : (Any) -> Unit {
+                override fun invoke(item: Any) {
+                    viewModel.addItem(item as CountedItem)
+                }
+            })
+        }
+    }
+
+    private fun initRecyclerView() {
         recyclerViewAdapter = ItemListAdapter(mainListener, nfcListener)
         viewModel.getItems().observe(viewLifecycleOwner, {
             recyclerViewAdapter.submitList(it)
@@ -81,21 +87,19 @@ class ItemsFragment : Fragment() {
         addSwipeToDelete()
     }
 
+    private fun invokeItemClick(nfcData: CountedItem) {
+        val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
+        binding.itemsRecyclerView.scrollToPosition(position)
+        binding.itemsRecyclerView.postDelayed({
+            binding.itemsRecyclerView.findViewHolderForLayoutPosition(position)?.itemView?.performClick()
+        }, 50)
+    }
+
     private fun setView(list: List<CountedItem>?) {
         binding.loading.isVisible = false
         val emptyVisibility = list.isNullOrEmpty()
         binding.emptyLayout.emptyLayout.isVisible = emptyVisibility
         binding.itemsRecyclerView.isVisible = !emptyVisibility
-    }
-
-    private fun setListeners() {
-        binding.addItemButton.setOnClickListener {
-            addEditItem(null, object : (Any) -> Unit {
-                override fun invoke(item: Any) {
-                    viewModel.addItem(item as CountedItem)
-                }
-            })
-        }
     }
 
     private fun addEditItem(item: CountedItem?, listener: (Any) -> Unit) {

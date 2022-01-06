@@ -63,4 +63,10 @@
     <string name="edit">Edit</string>
     <string name="share">Share</string>
     <string name="something_went_wrong">Something went wrong.</string>
+    <string name="turn_on_wifi_and_nfc">Turn on Internet and NFC.</string>
+    <string name="refresh">Refresh</string>
+    <string name="search">Search</string>
+    <string name="select">Select</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

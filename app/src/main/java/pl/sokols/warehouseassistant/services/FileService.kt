@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.Toast
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.json.JSONObject
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Inventory
 import java.io.File

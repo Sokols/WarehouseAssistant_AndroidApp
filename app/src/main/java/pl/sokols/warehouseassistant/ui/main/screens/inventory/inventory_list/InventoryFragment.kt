@@ -38,6 +38,18 @@ class InventoryFragment : Fragment() {
     }
 
     private fun setComponents() {
+        initRecyclerView()
+        binding.startInventoryButton.setOnClickListener {
+            it.findNavController()
+                .navigate(
+                    InventoryFragmentDirections.actionInventoryFragmentToInventoryProcedureFragment(
+                        null
+                    )
+                )
+        }
+    }
+
+    private fun initRecyclerView() {
         inventoriesAdapter = InventoryListAdapter(mainListener)
         viewModel.getInventories().observe(viewLifecycleOwner, {
             inventoriesAdapter.submitList(it)
@@ -53,15 +65,6 @@ class InventoryFragment : Fragment() {
                 )!!
             )
         )
-
-        binding.startInventoryButton.setOnClickListener {
-            it.findNavController()
-                .navigate(
-                    InventoryFragmentDirections.actionInventoryFragmentToInventoryProcedureFragment(
-                        null
-                    )
-                )
-        }
 
         addSwipeToDelete()
     }

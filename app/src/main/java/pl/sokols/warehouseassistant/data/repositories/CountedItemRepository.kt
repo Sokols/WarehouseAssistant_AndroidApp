@@ -28,8 +28,10 @@ class CountedItemRepository @Inject constructor(
 
     fun getItemById(id: String): CountedItem? = items.value?.firstOrNull { it.id == id }
 
-    fun addItem(item: CountedItem) {
-        itemsTable.push().setValue(item)
+    fun addItem(item: CountedItem): String {
+        val push = itemsTable.push()
+        push.setValue(item)
+        return push.key!!
     }
 
     fun updateItem(item: CountedItem) {

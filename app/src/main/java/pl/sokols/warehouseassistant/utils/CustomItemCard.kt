@@ -11,6 +11,7 @@ class CustomItemCard(
     context: Context,
     attrs: AttributeSet
 ) : MaterialCardView(context, attrs) {
+
     init {
         inflate(context, R.layout.custom_item_card, this)
 
