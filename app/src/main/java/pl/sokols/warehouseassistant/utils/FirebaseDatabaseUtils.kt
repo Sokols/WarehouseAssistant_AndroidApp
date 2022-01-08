@@ -1,14 +1,11 @@
-package pl.sokols.warehouseassistant.services
+package pl.sokols.warehouseassistant.utils
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class DatabaseService @Inject constructor() {
+object FirebaseDatabaseUtils {
 
     fun getUserTableReference(): DatabaseReference = FirebaseDatabase
         .getInstance("https://warehouseassistant-default-rtdb.europe-west1.firebasedatabase.app")
