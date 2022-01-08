@@ -7,20 +7,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.services.DatabaseService
+import pl.sokols.warehouseassistant.utils.FirebaseDatabaseUtils
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class CountedItemRepository @Inject constructor(
-    databaseService: DatabaseService
-) {
+class CountedItemRepository @Inject constructor() {
 
     var items: MutableLiveData<List<CountedItem>> = MutableLiveData()
 
     private var itemsTable: DatabaseReference =
-        databaseService.getUserTableReference().child("items")
+        FirebaseDatabaseUtils.getUserTableReference().child("items")
     private var archivedItemsTable: DatabaseReference =
-        databaseService.getUserTableReference().child("archived_items")
+        FirebaseDatabaseUtils.getUserTableReference().child("archived_items")
 
     init {
         setItemsListener()

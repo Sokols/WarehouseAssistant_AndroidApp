@@ -7,18 +7,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import pl.sokols.warehouseassistant.data.models.Inventory
-import pl.sokols.warehouseassistant.services.DatabaseService
+import pl.sokols.warehouseassistant.utils.FirebaseDatabaseUtils
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class InventoryRepository @Inject constructor(
-    databaseService: DatabaseService
-) {
+class InventoryRepository @Inject constructor() {
 
     var inventories: MutableLiveData<List<Inventory>> = MutableLiveData()
 
     private var inventoriesTable: DatabaseReference =
-        databaseService.getUserTableReference().child("inventories")
+        FirebaseDatabaseUtils.getUserTableReference().child("inventories")
 
     init {
         setInventoriesListener()
