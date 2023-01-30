@@ -2,12 +2,9 @@ package pl.sokols.warehouseassistant.ui.main.screens.inventory.procedure
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,34 +16,29 @@ import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.databinding.InventoryProcedureFragmentBinding
+import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
 import pl.sokols.warehouseassistant.ui.main.dialogs.SearchItemDialog
 import pl.sokols.warehouseassistant.utils.*
 
 @AndroidEntryPoint
-class InventoryProcedureFragment : Fragment() {
+class InventoryProcedureFragment : BaseFragment() {
 
     private val viewModel: InventoryProcedureViewModel by viewModels()
-    private lateinit var binding: InventoryProcedureFragmentBinding
+    override val binding by viewBinding(InventoryProcedureFragmentBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.inventory_procedure_fragment
     private lateinit var itemsAdapter: ProcedureItemListAdapter
     private val args: InventoryProcedureFragmentArgs by navArgs()
+
     private var inventory: Inventory? = null
     private var isEditing: Boolean = false
     private var selectedItemIndex: Int? = null
     private lateinit var allItems: List<CountedItem>
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = InventoryProcedureFragmentBinding.inflate(inflater, container, false)
-        setComponents()
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setComponents()
         inventory = args.inventory
         viewModel.setItems(inventory)
     }

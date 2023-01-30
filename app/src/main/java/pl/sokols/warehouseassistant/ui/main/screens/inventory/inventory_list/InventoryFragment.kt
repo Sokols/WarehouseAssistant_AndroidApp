@@ -1,12 +1,9 @@
 package pl.sokols.warehouseassistant.ui.main.screens.inventory.inventory_list
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -17,24 +14,23 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.databinding.InventoryFragmentBinding
+import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.adapters.InventoryListAdapter
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
 import pl.sokols.warehouseassistant.utils.SwipeHelper
+import pl.sokols.warehouseassistant.utils.viewBinding
 
 @AndroidEntryPoint
-class InventoryFragment : Fragment() {
+class InventoryFragment : BaseFragment() {
 
     private val viewModel: InventoryViewModel by viewModels()
-    private lateinit var binding: InventoryFragmentBinding
+    override val binding by viewBinding(InventoryFragmentBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.inventory_fragment
     private lateinit var inventoriesAdapter: InventoryListAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = InventoryFragmentBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setComponents()
-        return binding.root
     }
 
     private fun setComponents() {
@@ -51,10 +47,10 @@ class InventoryFragment : Fragment() {
 
     private fun initRecyclerView() {
         inventoriesAdapter = InventoryListAdapter(mainListener)
-        viewModel.getInventories().observe(viewLifecycleOwner, {
+        viewModel.getInventories().observe(viewLifecycleOwner) {
             inventoriesAdapter.submitList(it)
             setView(it)
-        })
+        }
         binding.inventoriesRecyclerView.adapter = inventoriesAdapter
         binding.inventoriesRecyclerView.addItemDecoration(
             DividerItemDecorator(

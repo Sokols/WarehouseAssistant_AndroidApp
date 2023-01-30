@@ -3,12 +3,9 @@ package pl.sokols.warehouseassistant.ui.main.screens.items
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -17,30 +14,25 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.ItemsFragmentBinding
+import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.adapters.ItemListAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
 import pl.sokols.warehouseassistant.ui.main.dialogs.WriteNfcDialog
-import pl.sokols.warehouseassistant.utils.DividerItemDecorator
-import pl.sokols.warehouseassistant.utils.NFCUtil
-import pl.sokols.warehouseassistant.utils.NfcState
-import pl.sokols.warehouseassistant.utils.SwipeHelper
+import pl.sokols.warehouseassistant.utils.*
 
 @AndroidEntryPoint
-class ItemsFragment : Fragment() {
+class ItemsFragment : BaseFragment() {
 
     private lateinit var nfcDialog: WriteNfcDialog
     private val viewModel: ItemsViewModel by viewModels()
-    private lateinit var binding: ItemsFragmentBinding
+    override val binding by viewBinding(ItemsFragmentBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.items_fragment
     private lateinit var recyclerViewAdapter: ItemListAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = ItemsFragmentBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setComponents()
         setListeners()
-        return binding.root
     }
 
     fun retrieveIntent(intent: Intent?) {

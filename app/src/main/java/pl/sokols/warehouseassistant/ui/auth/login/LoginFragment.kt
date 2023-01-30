@@ -2,37 +2,29 @@ package pl.sokols.warehouseassistant.ui.auth.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.LoginFragmentBinding
+import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.MainActivity
 import pl.sokols.warehouseassistant.utils.AuthState
 import pl.sokols.warehouseassistant.utils.AuthUtils.afterTextChanged
+import pl.sokols.warehouseassistant.utils.viewBinding
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private val viewModel: LoginViewModel by viewModels()
-    private lateinit var binding: LoginFragmentBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        setObservers()
-        binding = LoginFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override val binding by viewBinding(LoginFragmentBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.login_fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setObservers()
         val username = binding.username
         val password = binding.password
         val login = binding.login

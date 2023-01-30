@@ -1,25 +1,22 @@
 package pl.sokols.warehouseassistant.ui.main.screens.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
+import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.HomeFragmentBinding
+import pl.sokols.warehouseassistant.ui.base.BaseFragment
+import pl.sokols.warehouseassistant.utils.viewBinding
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
-    private lateinit var binding: HomeFragmentBinding
+    override val binding: HomeFragmentBinding by viewBinding(HomeFragmentBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.home_fragment
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeFragmentBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.user = FirebaseAuth.getInstance().currentUser
-        return binding.root
     }
 }
