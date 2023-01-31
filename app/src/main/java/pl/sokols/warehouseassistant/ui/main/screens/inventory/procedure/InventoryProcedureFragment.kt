@@ -56,18 +56,18 @@ class InventoryProcedureFragment : BaseFragment() {
     private fun setComponents() {
         initRecyclerView()
         setButtonClickListeners()
-        viewModel.tempItems.observe(viewLifecycleOwner, {
+        viewModel.tempItems.observe(viewLifecycleOwner) {
             allItems = it
-        })
+        }
     }
 
     private fun initRecyclerView() {
         itemsAdapter = ProcedureItemListAdapter(mainListener)
         binding.itemsRecyclerView.adapter = itemsAdapter
-        viewModel.items.observe(viewLifecycleOwner, {
+        viewModel.items.observe(viewLifecycleOwner) {
             itemsAdapter.submitList(it)
             setView(it)
-        })
+        }
 
         binding.itemsRecyclerView.addItemDecoration(
             DividerItemDecorator(

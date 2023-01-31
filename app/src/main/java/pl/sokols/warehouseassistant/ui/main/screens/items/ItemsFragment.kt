@@ -62,10 +62,10 @@ class ItemsFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         recyclerViewAdapter = ItemListAdapter(mainListener, nfcListener)
-        viewModel.getItems().observe(viewLifecycleOwner, {
+        viewModel.getItems().observe(viewLifecycleOwner) {
             recyclerViewAdapter.submitList(it)
             setView(it)
-        })
+        }
         binding.itemsRecyclerView.adapter = recyclerViewAdapter
         binding.itemsRecyclerView.addItemDecoration(
             DividerItemDecorator(

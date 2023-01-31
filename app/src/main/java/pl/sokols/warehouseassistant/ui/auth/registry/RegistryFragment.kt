@@ -26,8 +26,8 @@ class RegistryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
 
-        val username = binding.username
-        val password = binding.password
+        val username = binding.etUsername
+        val password = binding.etPassword
         val register = binding.register
         val loading = binding.loading
         val goToLogin = binding.goToLogin
@@ -56,7 +56,7 @@ class RegistryFragment : BaseFragment() {
             viewModel.register(username.text.toString(), password.text.toString())
         }
 
-        viewModel.authFormState.observe(viewLifecycleOwner, { state ->
+        viewModel.authFormState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 AuthState.VALID -> register.isEnabled = true
                 AuthState.PROVIDED_EMAIL_INVALID,
@@ -71,15 +71,15 @@ class RegistryFragment : BaseFragment() {
                 }
                 else -> {}
             }
-        })
+        }
     }
 
     private fun setObservers() {
-        viewModel.userLiveData.observe(viewLifecycleOwner, { user ->
+        viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 goToMainActivity()
             }
-        })
+        }
     }
 
     private fun goToMainActivity() {
