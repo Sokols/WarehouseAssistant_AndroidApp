@@ -68,7 +68,6 @@
         android:paddingHorizontal="@dimen/large_padding"
         android:paddingVertical="@dimen/default_padding"
         android:text="@string/login"
-        android:enabled="false"
         android:textSize="18sp"
         app:cornerRadius="45dp"
         app:layout_constraintEnd_toEndOf="parent"

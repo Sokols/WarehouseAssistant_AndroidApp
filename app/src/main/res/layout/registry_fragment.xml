@@ -60,21 +60,19 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/register"
+        android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_padding"
-        android:layout_marginEnd="@dimen/default_padding"
+        android:layout_marginHorizontal="@dimen/default_padding"
         android:layout_marginBottom="@dimen/default_padding"
         android:paddingHorizontal="@dimen/large_padding"
         android:paddingVertical="@dimen/default_padding"
         android:text="@string/register"
-        android:enabled="false"
         android:textSize="18sp"
         app:cornerRadius="45dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_password"   />
+        app:layout_constraintTop_toBottomOf="@+id/til_password" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -90,7 +88,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/goToLogin"
+        android:id="@+id/btn_go_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/go_to_login"
@@ -98,6 +96,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register"
         tools:ignore="TextContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

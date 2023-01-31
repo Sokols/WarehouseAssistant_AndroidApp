@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.nfc.NfcAdapter
 import android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setup() {
-        binding = MainActivityBinding.inflate(layoutInflater)
+        binding = MainActivityBinding.inflate(LayoutInflater.from(this))
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         navController =
             (supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment).navController
