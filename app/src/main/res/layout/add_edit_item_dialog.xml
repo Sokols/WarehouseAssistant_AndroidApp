@@ -86,16 +86,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/applyDialogButton"
+            style="@style/ButtonActionStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_padding"
-            android:layout_marginEnd="@dimen/default_padding"
+            android:layout_marginHorizontal="@dimen/default_padding"
             android:layout_marginBottom="@dimen/default_padding"
-            android:paddingHorizontal="@dimen/large_padding"
-            android:paddingVertical="@dimen/default_padding"
             android:text="@string/apply"
-            android:textSize="18sp"
-            app:cornerRadius="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

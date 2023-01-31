@@ -1,8 +1,21 @@
 <resources>
+    <!-- Paddings -->
     <dimen name="default_padding">16dp</dimen>
     <dimen name="large_padding">32dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="very_small_padding">4dp</dimen>
     <dimen name="very_large_padding">64dp</dimen>
     <dimen name="huge_padding">96dp</dimen>
+
+    <!-- Radius -->
+    <dimen name="radius_button_action">45dp</dimen>
+
+    <!-- Font Sizes -->
+    <dimen name="font_h7">10sp</dimen>
+    <dimen name="font_h6">12sp</dimen>
+    <dimen name="font_h5">14sp</dimen>
+    <dimen name="font_h4">16sp</dimen>
+    <dimen name="font_h3">18sp</dimen>
+    <dimen name="font_h2">20sp</dimen>
+    <dimen name="font_h1">26sp</dimen>
 </resources>

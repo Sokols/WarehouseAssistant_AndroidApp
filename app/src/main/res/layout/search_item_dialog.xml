@@ -39,21 +39,18 @@
             app:layout_constraintHeight_default="percent"
             app:layout_constraintHeight_percent=".7"
             app:layout_constraintStart_toStartOf="parent"
+            tools:itemCount="2"
             tools:listitem="@layout/basic_item" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/applyDialogButton"
+            style="@style/ButtonActionStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_padding"
-            android:layout_marginEnd="@dimen/default_padding"
+            android:layout_marginHorizontal="@dimen/default_padding"
             android:layout_marginBottom="@dimen/default_padding"
             android:enabled="false"
-            android:paddingHorizontal="@dimen/large_padding"
-            android:paddingVertical="@dimen/default_padding"
             android:text="@string/select"
-            android:textSize="18sp"
-            app:cornerRadius="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

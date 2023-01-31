@@ -26,8 +26,7 @@ class RegistryFragment : BaseAuthFragment() {
     }
 
     override fun onNavigationClicked() {
-        val directions = RegistryFragmentDirections.actionRegistryFragmentToLoginFragment()
-        findNavController().navigate(directions)
+        findNavController().popBackStack(R.id.loginFragment, false)
     }
 
     //endregion

@@ -5,4 +5,16 @@
         <attr name="itemTitle" format="string" />
         <attr name="itemDescription" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="AppEditText">
+        <attr name="title" format="string" />
+        <attr name="required" format="boolean" />
+        <attr name="limit" format="integer" />
+        <attr name="validateTyping" format="boolean" />
+        <attr name="validateRequired" format="string" />
+        <attr name="validateEmail" format="string" />
+        <attr name="validateMinLength" format="integer" />
+        <attr name="validateMinValue" format="float" />
+        <attr name="isPassword" format="boolean" />
+    </declare-styleable>
 </resources>
