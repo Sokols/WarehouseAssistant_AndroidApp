@@ -56,8 +56,16 @@ class InventoryProcedureFragment : BaseFragment() {
     private fun setComponents() {
         initRecyclerView()
         setButtonClickListeners()
+        setupEmptyLayout()
         viewModel.tempItems.observe(viewLifecycleOwner) {
             allItems = it
+        }
+    }
+
+    private fun setupEmptyLayout() {
+        binding.emptyLayout.apply {
+            ivEmptyIcon.setImageResource(R.drawable.ic_baseline_nfc_24)
+            tvEmptyDescription.setText(R.string.use_nfc_tag)
         }
     }
 
@@ -122,10 +130,12 @@ class InventoryProcedureFragment : BaseFragment() {
     }
 
     private fun setView(list: List<CountedItem>?) {
-        binding.loading.isVisible = false
-        val emptyVisibility = list.isNullOrEmpty()
-        binding.emptyLayout.emptyLayout.isVisible = emptyVisibility
-        binding.itemsRecyclerView.isVisible = !emptyVisibility
+        binding.apply {
+            loading.isVisible = false
+            val emptyVisibility = list.isNullOrEmpty()
+            emptyLayout.emptyLayout.isVisible = emptyVisibility
+            itemsRecyclerView.isVisible = !emptyVisibility
+        }
     }
 
     private fun resetItems() {

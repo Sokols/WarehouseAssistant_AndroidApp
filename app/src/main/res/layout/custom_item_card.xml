@@ -28,7 +28,7 @@
 
                 <TextView
                     android:id="@+id/itemTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/very_small_padding"
                     android:textStyle="bold"
@@ -36,7 +36,7 @@
 
                 <TextView
                     android:id="@+id/itemDescription"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/very_small_padding"
                     tools:text="This description is written for test purpose" />
