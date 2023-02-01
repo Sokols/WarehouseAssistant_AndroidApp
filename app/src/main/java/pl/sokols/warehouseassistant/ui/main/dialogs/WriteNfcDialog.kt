@@ -14,10 +14,7 @@ class WriteNfcDialog(
 
     private lateinit var dialogBinding: WriteNfcDialogBinding
 
-    override fun onPause() {
-        super.onPause()
-        dismiss()
-    }
+    //region Lifecycle
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,8 +22,17 @@ class WriteNfcDialog(
         savedInstanceState: Bundle?
     ): View {
         dialogBinding = WriteNfcDialogBinding.inflate(inflater, container, false)
-        dialog?.setCanceledOnTouchOutside(false)
-        dialog?.setOnCancelListener(onCancelListener)
+        dialog?.apply {
+            setCanceledOnTouchOutside(false)
+            setOnCancelListener(onCancelListener)
+        }
         return dialogBinding.root
     }
+
+    override fun onPause() {
+        super.onPause()
+        dismiss()
+    }
+
+    //endregion
 }

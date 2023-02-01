@@ -7,6 +7,9 @@ import android.widget.EditText
 
 object AuthUtils {
 
+    private const val MINIMUM_PASSWORD_LENGTH = 5
+    private const val MAXIMUM_PASSWORD_LENGTH = 30
+
     fun isEmailFormatValid(email: String): Boolean {
         return if (email.contains('@')) {
             Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -15,13 +18,10 @@ object AuthUtils {
         }
     }
 
-    fun isPasswordLengthValid(password: String): Boolean {
-        return password.length > 5
-    }
+    fun isPasswordLengthValid(password: String) =
+        password.length in (MINIMUM_PASSWORD_LENGTH + 1)..MAXIMUM_PASSWORD_LENGTH
 
-    fun isPasswordPresentValid(password: String): Boolean {
-        return password.isNotEmpty()
-    }
+    fun isPasswordPresentValid(password: String) = password.isNotEmpty()
 
     /**
      * Extension function to simplify setting an afterTextChanged action to EditText components.

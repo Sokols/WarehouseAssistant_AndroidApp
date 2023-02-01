@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,6 +18,7 @@ import pl.sokols.warehouseassistant.ui.main.adapters.ItemListAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
 import pl.sokols.warehouseassistant.ui.main.dialogs.WriteNfcDialog
 import pl.sokols.warehouseassistant.utils.*
+import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 
 @AndroidEntryPoint
 class ItemsFragment : BaseFragment() {
@@ -29,11 +29,29 @@ class ItemsFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.items_fragment
     private lateinit var recyclerViewAdapter: ItemListAdapter
 
+    //region Lifecycle
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setComponents()
-        setListeners()
+        setupButtons()
+        setupObservers()
     }
+
+    //endregion
+
+    //region Observers
+
+    private fun setupObservers() {
+        viewModel.getItems().observe(viewLifecycleOwner) {
+            recyclerViewAdapter.submitList(it)
+            setView(it)
+        }
+    }
+
+    //endregion
+
+    //region NFC setup
 
     fun retrieveIntent(intent: Intent?) {
         val nfcData = viewModel.retrieveNFC(intent)
@@ -45,53 +63,57 @@ class ItemsFragment : BaseFragment() {
         viewModel.changeNfcState()
     }
 
+    private fun invokeItemClick(nfcData: CountedItem) {
+        val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
+        binding.itemsRecyclerView.apply {
+            scrollToPosition(position)
+            postDelayed({
+                findViewHolderForLayoutPosition(position)?.itemView?.performClick()
+            }, 50)
+        }
+    }
+
+    //endregion
+
+    //region Setup UI elements
+
     private fun setComponents() {
         nfcDialog = WriteNfcDialog { viewModel.changeNfcState() }
         initRecyclerView()
     }
 
-    private fun setListeners() {
-        binding.addItemButton.setOnClickListener {
-            addEditItem(null, object : (Any) -> Unit {
-                override fun invoke(item: Any) {
-                    viewModel.addItem(item as CountedItem)
-                }
-            })
-        }
+    private fun setupButtons() {
+        binding.addItemButton.setOnClickListener { onAddItemClicked() }
     }
 
     private fun initRecyclerView() {
-        recyclerViewAdapter = ItemListAdapter(mainListener, nfcListener)
-        viewModel.getItems().observe(viewLifecycleOwner) {
-            recyclerViewAdapter.submitList(it)
-            setView(it)
+        binding.itemsRecyclerView.apply {
+            recyclerViewAdapter = ItemListAdapter(mainListener, nfcListener)
+            adapter = recyclerViewAdapter
+            setupDivider()
+            addSwipeToDelete()
         }
-        binding.itemsRecyclerView.adapter = recyclerViewAdapter
-        binding.itemsRecyclerView.addItemDecoration(
-            DividerItemDecorator(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.divider,
-                    null
-                )!!
-            )
-        )
-        addSwipeToDelete()
-    }
-
-    private fun invokeItemClick(nfcData: CountedItem) {
-        val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
-        binding.itemsRecyclerView.scrollToPosition(position)
-        binding.itemsRecyclerView.postDelayed({
-            binding.itemsRecyclerView.findViewHolderForLayoutPosition(position)?.itemView?.performClick()
-        }, 50)
     }
 
     private fun setView(list: List<CountedItem>?) {
-        binding.loading.isVisible = false
-        val emptyVisibility = list.isNullOrEmpty()
-        binding.emptyLayout.emptyLayout.isVisible = emptyVisibility
-        binding.itemsRecyclerView.isVisible = !emptyVisibility
+        binding.apply {
+            loading.isVisible = false
+            val emptyVisibility = list.isNullOrEmpty()
+            emptyLayout.emptyLayout.isVisible = emptyVisibility
+            itemsRecyclerView.isVisible = !emptyVisibility
+        }
+    }
+
+    //endregion
+
+    //region Actions
+
+    private fun onAddItemClicked() {
+        addEditItem(null, object : (Any) -> Unit {
+            override fun invoke(item: Any) {
+                viewModel.addItem(item as CountedItem)
+            }
+        })
     }
 
     private fun addEditItem(item: CountedItem?, listener: (Any) -> Unit) {
@@ -102,6 +124,10 @@ class ItemsFragment : BaseFragment() {
             )
         }
     }
+
+    //endregion
+
+    //region Helpers
 
     private fun addSwipeToDelete() {
         ItemTouchHelper(object : SwipeHelper(requireContext()) {
@@ -141,4 +167,6 @@ class ItemsFragment : BaseFragment() {
             }
         }
     }
+
+    //endregion
 }

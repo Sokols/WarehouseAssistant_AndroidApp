@@ -17,9 +17,11 @@ class InventoryListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(inventory: Inventory, mainListener: (Any) -> Unit) {
-            binding.inventory = inventory
-            binding.itemLayout.setOnClickListener {
-                mainListener(inventory)
+            binding.apply {
+                this.inventory = inventory
+                itemLayout.setOnClickListener {
+                    mainListener(inventory)
+                }
             }
         }
     }

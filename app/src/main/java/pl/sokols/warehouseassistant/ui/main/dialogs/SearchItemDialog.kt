@@ -12,6 +12,7 @@ import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.SearchItemDialogBinding
 import pl.sokols.warehouseassistant.ui.main.adapters.BasicItemListAdapter
 import pl.sokols.warehouseassistant.utils.DividerItemDecorator
+import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 
 class SearchItemDialog(
     private val listener: (CountedItem) -> Unit,
@@ -22,10 +23,7 @@ class SearchItemDialog(
     private var matchedItems: ArrayList<CountedItem> = arrayListOf()
     private lateinit var itemsAdapter: BasicItemListAdapter
 
-    override fun onPause() {
-        super.onPause()
-        dismiss()
-    }
+    //region Lifecycle
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,33 +35,32 @@ class SearchItemDialog(
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        dismiss()
+    }
+
+    //endregion
+
+    //region Setup UI components
+
     private fun setComponents() {
         initRecyclerView()
         setSearching()
+        setupButtons()
+    }
 
-        binding.applyDialogButton.setOnClickListener {
-            val item: CountedItem? = binding.item
-            item?.let {
-                listener(item)
-            }
-            dismiss()
-        }
+    private fun setupButtons() {
+        binding.applyDialogButton.setOnClickListener { onApplyClicked() }
     }
 
     private fun initRecyclerView() {
-        itemsAdapter = BasicItemListAdapter(searchItemListener).also {
-            binding.recyclerView.adapter = it
-            it.submitList(items)
+        binding.recyclerView.apply {
+            itemsAdapter = BasicItemListAdapter(searchItemListener)
+            adapter = itemsAdapter
+            itemsAdapter.submitList(items)
+            setupDivider()
         }
-        binding.recyclerView.addItemDecoration(
-            DividerItemDecorator(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.divider,
-                    null
-                )!!
-            )
-        )
     }
 
     private fun setSearching() {
@@ -80,6 +77,21 @@ class SearchItemDialog(
         })
     }
 
+    //endregion
+
+    //region Actions
+
+    private fun onApplyClicked() {
+        binding.item?.let {
+            listener(it)
+        }
+        dismiss()
+    }
+
+    //endregion
+
+    //region Helpers
+
     private fun search(text: String?) {
         matchedItems = arrayListOf()
 
@@ -91,20 +103,19 @@ class SearchItemDialog(
                     matchedItems.add(item)
                 }
             }
-            updateRecyclerView()
-        }
-    }
 
-    private fun updateRecyclerView() {
-        binding.recyclerView.apply {
             itemsAdapter.submitList(matchedItems as List<Any>?)
         }
     }
 
     private val searchItemListener = object : (Any) -> Unit {
         override fun invoke(item: Any) {
-            binding.item = item as CountedItem
-            binding.applyDialogButton.isEnabled = true
+            binding.apply {
+                this.item = item as CountedItem
+                applyDialogButton.isEnabled = true
+            }
         }
     }
+
+    //endregion
 }

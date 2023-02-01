@@ -14,14 +14,10 @@ class ItemAddEditDialog(
     private val listener: (Any) -> Unit
 ) : DialogFragment() {
 
-    var item: CountedItem = providedItem ?: CountedItem()
-
+    private var item: CountedItem = providedItem ?: CountedItem()
     private lateinit var dialogBinding: AddEditItemDialogBinding
 
-    override fun onPause() {
-        super.onPause()
-        dismiss()
-    }
+    //region Lifecycle
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,34 +26,49 @@ class ItemAddEditDialog(
     ): View {
         dialogBinding = AddEditItemDialogBinding.inflate(inflater, container, false)
         dialogBinding.item = item
-        setComponents()
+        setupButtons()
         return dialogBinding.root
     }
 
-    /**
-     * Method which:
-     * - validates the inputs,
-     * - displays the errors if the inputs are incorrect,
-     * - turns on the listener if the inputs are correct.
-     */
-    private fun setComponents() {
-        dialogBinding.applyDialogButton.setOnClickListener {
-            if (item.name.trim().isEmpty()) {
-                dialogBinding.itemNameTextInputLayout.error = getString(R.string.incorrect_value)
-                dialogBinding.itemNameTextInputLayout.isErrorEnabled = true
-            } else {
-                dialogBinding.itemNameTextInputLayout.isErrorEnabled = false
+    override fun onPause() {
+        super.onPause()
+        dismiss()
+    }
+
+    //endregion
+
+    //region Helpers
+
+    private fun setupButtons() {
+        dialogBinding.applyDialogButton.setOnClickListener { onApplyClicked() }
+    }
+
+    private fun onApplyClicked() {
+        dialogBinding.apply {
+            itemNameTextInputLayout.apply {
+                if (item.name.trim().isEmpty()) {
+                    error = getString(R.string.incorrect_value)
+                    isErrorEnabled = true
+                } else {
+                    isErrorEnabled = false
+                }
             }
-            if (item.price.toInt() == 0) {
-                dialogBinding.itemPriceTextInputLayout.error = getString(R.string.incorrect_value)
-                dialogBinding.itemPriceTextInputLayout.isErrorEnabled = true
-            } else {
-                dialogBinding.itemPriceTextInputLayout.isErrorEnabled = false
+
+            itemPriceTextInputLayout.apply {
+                if (item.price.toInt() == 0) {
+                    error = getString(R.string.incorrect_value)
+                    isErrorEnabled = true
+                } else {
+                    isErrorEnabled = false
+                }
             }
+
             if (item.name.trim().isNotEmpty() && item.price.toInt() != 0) {
                 listener(item)
                 dismiss()
             }
         }
     }
+
+    //endregion
 }

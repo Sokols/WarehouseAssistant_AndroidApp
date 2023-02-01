@@ -10,6 +10,7 @@ import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
 class SummaryListAdapter :
     ListAdapter<Any, SummaryListAdapter.SummaryListViewHolder>(ItemDiffCallback) {
+
     inner class SummaryListViewHolder(
         private val binding: SummaryItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -22,13 +23,11 @@ class SummaryListAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): SummaryListViewHolder = SummaryListViewHolder(
-        SummaryItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-    )
+    ): SummaryListViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = SummaryItemBinding.inflate(inflater, parent, false)
+        return SummaryListViewHolder(binding)
+    }
 
     override fun onBindViewHolder(holder: SummaryListViewHolder, position: Int) =
         holder.bind(getItem(position) as CountedItem)

@@ -14,7 +14,9 @@ class SummaryViewModel @Inject constructor(
     private val emailService: EmailService
 ) : ViewModel() {
 
-    fun shareInventory(inventory: Inventory) {
+    lateinit var inventory: Inventory
+
+    fun shareInventory() {
         val file = fileService.generateTextFile(inventory)
         FirebaseAuth.getInstance().currentUser?.email?.let {
             emailService.sendEmail(it, subject = inventory.timestampCreated, attachment = file)

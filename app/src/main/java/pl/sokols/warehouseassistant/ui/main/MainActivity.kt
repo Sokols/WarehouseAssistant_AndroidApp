@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private var nfcAdapter: NfcAdapter? = null
     private val viewModel: MainViewModel by viewModels()
 
+    //region Lifecycle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setup()
@@ -52,6 +54,10 @@ class MainActivity : AppCompatActivity() {
         NFCUtil.retrieveIntent(supportFragmentManager, intent)
     }
 
+    //endregion
+
+    //region Helpers
+
     private fun setup() {
         binding = MainActivityBinding.inflate(LayoutInflater.from(this))
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
@@ -62,35 +68,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment,
-                R.id.itemsFragment,
-                R.id.inventoryFragment
-            ),
-            binding.drawerLayout
-        )
-        binding.topAppBar.setupWithNavController(navController, appBarConfiguration)
-        binding.drawerView.setupWithNavController(navController)
+        binding.apply {
+            val appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.homeFragment,
+                    R.id.itemsFragment,
+                    R.id.inventoryFragment
+                ),
+                drawerLayout
+            )
+            topAppBar.setupWithNavController(navController, appBarConfiguration)
+            drawerView.setupWithNavController(navController)
 
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.logout -> {
-                    displayLogoutDialog()
-                    true
+            topAppBar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.logout -> {
+                        displayLogoutDialog()
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
         }
     }
 
     private fun setPlaceholderView() {
-        val isMainViewVisible = checkIfInternetAndNfcEnabled()
-        binding.drawerLayout.isVisible = isMainViewVisible
-        binding.noServicesPlaceholder.isVisible = !isMainViewVisible
-        binding.refreshButton.setOnClickListener {
-            finish()
-            startActivity(intent)
+        binding.apply {
+            val isMainViewVisible = checkIfInternetAndNfcEnabled()
+            drawerLayout.isVisible = isMainViewVisible
+            noServicesPlaceholder.isVisible = !isMainViewVisible
+            refreshButton.setOnClickListener {
+                finish()
+                startActivity(intent)
+            }
         }
     }
 
@@ -119,4 +129,6 @@ class MainActivity : AppCompatActivity() {
             finish()
         }.show()
     }
+
+    //endregion
 }

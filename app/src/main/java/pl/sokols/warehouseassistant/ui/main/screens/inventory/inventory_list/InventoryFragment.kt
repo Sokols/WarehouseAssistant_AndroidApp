@@ -2,10 +2,8 @@ package pl.sokols.warehouseassistant.ui.main.screens.inventory.inventory_list
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -16,8 +14,8 @@ import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.databinding.InventoryFragmentBinding
 import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.adapters.InventoryListAdapter
-import pl.sokols.warehouseassistant.utils.DividerItemDecorator
 import pl.sokols.warehouseassistant.utils.SwipeHelper
+import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 import pl.sokols.warehouseassistant.utils.viewBinding
 
 @AndroidEntryPoint
@@ -28,42 +26,56 @@ class InventoryFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.inventory_fragment
     private lateinit var inventoriesAdapter: InventoryListAdapter
 
+    //region Lifecycle
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setComponents()
-    }
-
-    private fun setComponents() {
         initRecyclerView()
-        binding.startInventoryButton.setOnClickListener {
-            it.findNavController()
-                .navigate(
-                    InventoryFragmentDirections.actionInventoryFragmentToInventoryProcedureFragment(
-                        null
-                    )
-                )
-        }
+        setupButtons()
+        setupObservers()
     }
 
-    private fun initRecyclerView() {
-        inventoriesAdapter = InventoryListAdapter(mainListener)
+    //endregion
+
+    //region Setup observers
+
+    private fun setupObservers() {
         viewModel.getInventories().observe(viewLifecycleOwner) {
             inventoriesAdapter.submitList(it)
             setView(it)
         }
-        binding.inventoriesRecyclerView.adapter = inventoriesAdapter
-        binding.inventoriesRecyclerView.addItemDecoration(
-            DividerItemDecorator(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.divider,
-                    null
-                )!!
-            )
-        )
-
-        addSwipeToDelete()
     }
+
+    //endregion
+
+    //region Setup UI Components
+
+    private fun setupButtons() {
+        binding.startInventoryButton.setOnClickListener { onStartInventoryClicked() }
+    }
+
+    private fun initRecyclerView() {
+        binding.inventoriesRecyclerView.apply {
+            inventoriesAdapter = InventoryListAdapter(mainListener)
+            adapter = inventoriesAdapter
+            setupDivider()
+            addSwipeToDelete()
+        }
+    }
+
+    //endregion
+
+    //region Actions
+
+    private fun onStartInventoryClicked() {
+        val directions = InventoryFragmentDirections
+            .actionInventoryFragmentToInventoryProcedureFragment(null)
+        findNavController().navigate(directions)
+    }
+
+    //endregion
+
+    //region Helpers
 
     private fun addSwipeToDelete() {
         ItemTouchHelper(object : SwipeHelper(requireContext()) {
@@ -83,19 +95,19 @@ class InventoryFragment : BaseFragment() {
     }
 
     private fun setView(list: List<Inventory>?) {
-        binding.loading.isVisible = false
-        val emptyVisibility = list.isNullOrEmpty()
-        binding.emptyLayout.emptyLayout.isVisible = emptyVisibility
-        binding.inventoriesRecyclerView.isVisible = !emptyVisibility
+        binding.apply {
+            loading.isVisible = false
+            val emptyVisibility = list.isNullOrEmpty()
+            emptyLayout.emptyLayout.isVisible = emptyVisibility
+            inventoriesRecyclerView.isVisible = !emptyVisibility
+        }
     }
 
     private val mainListener = object : (Any) -> Unit {
         override fun invoke(inventory: Any) {
-            findNavController().navigate(
-                InventoryFragmentDirections.actionInventoryFragmentToSummaryFragment(
-                    inventory as Inventory
-                )
-            )
+            val directions = InventoryFragmentDirections
+                .actionInventoryFragmentToSummaryFragment(inventory as Inventory)
+            findNavController().navigate(directions)
         }
     }
 }
