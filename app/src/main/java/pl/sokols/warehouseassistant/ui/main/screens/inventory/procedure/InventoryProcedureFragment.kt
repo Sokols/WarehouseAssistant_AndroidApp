@@ -105,6 +105,7 @@ class InventoryProcedureFragment : BaseFragment() {
     private fun setButtonClickListeners() {
         binding.apply {
             applyDialogButton.setOnClickListener {
+                val item = item
                 if (item != null) {
                     viewModel.addEditItem(item, isEditing, selectedItemIndex)
                     resetItems()

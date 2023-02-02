@@ -46,7 +46,7 @@ class ItemAddEditDialog(
     private fun onApplyClicked() {
         dialogBinding.apply {
             itemNameTextInputLayout.apply {
-                if (item.name.trim().isEmpty()) {
+                if (this@ItemAddEditDialog.item.name.trim().isEmpty()) {
                     error = getString(R.string.incorrect_value)
                     isErrorEnabled = true
                 } else {
@@ -55,7 +55,7 @@ class ItemAddEditDialog(
             }
 
             itemPriceTextInputLayout.apply {
-                if (item.price.toInt() == 0) {
+                if (this@ItemAddEditDialog.item.price.toInt() == 0) {
                     error = getString(R.string.incorrect_value)
                     isErrorEnabled = true
                 } else {
@@ -63,8 +63,8 @@ class ItemAddEditDialog(
                 }
             }
 
-            if (item.name.trim().isNotEmpty() && item.price.toInt() != 0) {
-                listener(item)
+            if (this@ItemAddEditDialog.item.name.trim().isNotEmpty() && this@ItemAddEditDialog.item.price.toInt() != 0) {
+                listener(this@ItemAddEditDialog.item)
                 dismiss()
             }
         }
