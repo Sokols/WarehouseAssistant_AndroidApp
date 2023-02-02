@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.SummaryItemBinding
-import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
 class SummaryListAdapter :
-    ListAdapter<Any, SummaryListAdapter.SummaryListViewHolder>(ItemDiffCallback) {
+    ListAdapter<CountedItem, SummaryListAdapter.SummaryListViewHolder>(BasicItemListAdapter.ItemDiffCallback) {
 
     inner class SummaryListViewHolder(
         private val binding: SummaryItemBinding
@@ -29,6 +28,7 @@ class SummaryListAdapter :
         return SummaryListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: SummaryListViewHolder, position: Int) =
-        holder.bind(getItem(position) as CountedItem)
+    override fun onBindViewHolder(holder: SummaryListViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 }

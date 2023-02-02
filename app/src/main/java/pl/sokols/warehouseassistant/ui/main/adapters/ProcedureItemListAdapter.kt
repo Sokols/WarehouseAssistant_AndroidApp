@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.ProcedureItemBinding
-import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
 class ProcedureItemListAdapter(
-    private val mainListener: (Int, Any) -> Unit
-) : ListAdapter<Any, ProcedureItemListAdapter.ProcedureItemListViewHolder>(ItemDiffCallback) {
+    private val onItemClick: (Int, CountedItem) -> Unit
+) : ListAdapter<CountedItem, ProcedureItemListAdapter.ProcedureItemListViewHolder>(
+    BasicItemListAdapter.ItemDiffCallback
+) {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
@@ -24,7 +25,7 @@ class ProcedureItemListAdapter(
             binding.item = item.copy(id = item.id)
             itemView.setOnClickListener {
                 val tempItem = binding.item!!
-                mainListener(layoutPosition, tempItem)
+                onItemClick(layoutPosition, tempItem)
                 notifyItemChanged(selectedPosition)
                 selectedPosition = layoutPosition
                 notifyItemChanged(selectedPosition)
@@ -45,8 +46,9 @@ class ProcedureItemListAdapter(
         )
     )
 
-    override fun onBindViewHolder(holder: ProcedureItemListViewHolder, position: Int) =
-        holder.bind(getItem(position) as CountedItem)
+    override fun onBindViewHolder(holder: ProcedureItemListViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 
     fun resetPosition() {
         selectedPosition = RecyclerView.NO_POSITION

@@ -7,9 +7,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
@@ -20,6 +17,7 @@ import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
 import pl.sokols.warehouseassistant.ui.main.dialogs.SearchItemDialog
 import pl.sokols.warehouseassistant.utils.*
+import pl.sokols.warehouseassistant.utils.extensions.addSwipe
 import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 
 @AndroidEntryPoint
@@ -28,7 +26,9 @@ class InventoryProcedureFragment : BaseFragment() {
     private val viewModel: InventoryProcedureViewModel by viewModels()
     override val binding by viewBinding(InventoryProcedureFragmentBinding::bind)
     override fun getLayoutRes(): Int = R.layout.inventory_procedure_fragment
-    private lateinit var itemsAdapter: ProcedureItemListAdapter
+    private val itemsAdapter = ProcedureItemListAdapter { position, item ->
+        onItemClick(position, item)
+    }
     private val args: InventoryProcedureFragmentArgs by navArgs()
 
     private var inventory: Inventory? = null
@@ -95,10 +95,9 @@ class InventoryProcedureFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.itemsRecyclerView.apply {
-            itemsAdapter = ProcedureItemListAdapter(mainListener)
             adapter = itemsAdapter
             setupDivider()
-            addSwipeToDelete()
+            addSwipe { deleteItemAt(it) }
         }
     }
 
@@ -135,22 +134,13 @@ class InventoryProcedureFragment : BaseFragment() {
 
     //region Helpers
 
-    private fun addSwipeToDelete() {
-        ItemTouchHelper(object : SwipeHelper(requireContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val index = viewHolder.layoutPosition
-                val deletedItem: CountedItem =
-                    itemsAdapter.currentList[index] as CountedItem
-                viewModel.deleteItem(index)
+    private fun deleteItemAt(index: Int) {
+        val deletedItem = itemsAdapter.currentList[index] as CountedItem
+        viewModel.deleteItem(index)
 
-                Snackbar
-                    .make(requireView(), getString(R.string.deleted), Snackbar.LENGTH_SHORT)
-                    .setAction(getString(R.string.undo)) {
-                        viewModel.addEditItem(deletedItem, isEditing = false)
-                    }
-                    .show()
-            }
-        }).attachToRecyclerView(binding.itemsRecyclerView)
+        AlertUtils.showMessage(requireView(), R.string.deleted, R.string.undo) {
+            viewModel.addEditItem(deletedItem, isEditing = false)
+        }
     }
 
     private fun setView(list: List<CountedItem>?) {
@@ -178,10 +168,8 @@ class InventoryProcedureFragment : BaseFragment() {
         }
     }
 
-    private val mainListener = object : (Int, Any) -> Unit {
-        override fun invoke(index: Int, item: Any) {
-            prepareItem(item as CountedItem, isEditing = true, index)
-        }
+    private fun onItemClick(position: Int, item: CountedItem) {
+        prepareItem(item, isEditing = true, position)
     }
 
     private fun displayConfirmationDialog() {
@@ -194,31 +182,15 @@ class InventoryProcedureFragment : BaseFragment() {
     }
 
     private fun displayAddItemDialog() {
-        activity?.let {
-            ItemAddEditDialog(null, object : (Any) -> Unit {
-                override fun invoke(item: Any) {
-                    viewModel.addNewItem(item as CountedItem)
-                }
-            }).show(
-                it.supportFragmentManager,
-                getString(R.string.provide_item_dialog)
-            )
-        }
+        ItemAddEditDialog(null) { item ->
+            viewModel.addNewItem(item)
+        }.show(requireActivity().supportFragmentManager, getString(R.string.provide_item_dialog))
     }
 
     private fun displaySearchItemDialog() {
-        activity?.let {
-            SearchItemDialog(searchItemListener, allItems).show(
-                it.supportFragmentManager,
-                getString(R.string.provide_item_dialog)
-            )
-        }
-    }
-
-    private val searchItemListener = object : (CountedItem) -> Unit {
-        override fun invoke(item: CountedItem) {
+        SearchItemDialog(allItems) { item ->
             prepareItem(item, isEditing = false)
-        }
+        }.show(requireActivity().supportFragmentManager, getString(R.string.provide_item_dialog))
     }
 
     //endregion

@@ -65,4 +65,5 @@
     <string name="sign_in">Logowanie</string>
     <string name="sign_up">Rejestracja</string>
     <string name="required">Pole obowiązkowe</string>
+    <string name="ok">OK</string>
 </resources>

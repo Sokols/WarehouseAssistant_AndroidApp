@@ -5,16 +5,14 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.databinding.InventoryFragmentBinding
 import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.adapters.InventoryListAdapter
-import pl.sokols.warehouseassistant.utils.SwipeHelper
+import pl.sokols.warehouseassistant.utils.AlertUtils
+import pl.sokols.warehouseassistant.utils.extensions.addSwipe
 import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 import pl.sokols.warehouseassistant.utils.viewBinding
 
@@ -24,7 +22,7 @@ class InventoryFragment : BaseFragment() {
     private val viewModel: InventoryViewModel by viewModels()
     override val binding by viewBinding(InventoryFragmentBinding::bind)
     override fun getLayoutRes(): Int = R.layout.inventory_fragment
-    private lateinit var inventoriesAdapter: InventoryListAdapter
+    private val inventoriesAdapter = InventoryListAdapter { onItemClick(it) }
 
     //region Lifecycle
 
@@ -56,10 +54,9 @@ class InventoryFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.inventoriesRecyclerView.apply {
-            inventoriesAdapter = InventoryListAdapter(mainListener)
             adapter = inventoriesAdapter
             setupDivider()
-            addSwipeToDelete()
+            addSwipe { deleteItemAt(it) }
         }
     }
 
@@ -77,21 +74,13 @@ class InventoryFragment : BaseFragment() {
 
     //region Helpers
 
-    private fun addSwipeToDelete() {
-        ItemTouchHelper(object : SwipeHelper(requireContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedInventory: Inventory =
-                    inventoriesAdapter.currentList[viewHolder.layoutPosition] as Inventory
-                viewModel.deleteInventory(deletedInventory)
+    private fun deleteItemAt(index: Int) {
+        val deletedInventory = inventoriesAdapter.currentList[index] as Inventory
+        viewModel.deleteInventory(deletedInventory)
 
-                Snackbar
-                    .make(requireView(), getString(R.string.deleted), Snackbar.LENGTH_SHORT)
-                    .setAction(getString(R.string.undo)) {
-                        viewModel.addInventory(deletedInventory)
-                    }
-                    .show()
-            }
-        }).attachToRecyclerView(binding.inventoriesRecyclerView)
+        AlertUtils.showMessage(requireView(), R.string.deleted, R.string.undo) {
+            viewModel.addInventory(deletedInventory)
+        }
     }
 
     private fun setView(list: List<Inventory>?) {
@@ -103,11 +92,9 @@ class InventoryFragment : BaseFragment() {
         }
     }
 
-    private val mainListener = object : (Any) -> Unit {
-        override fun invoke(inventory: Any) {
-            val directions = InventoryFragmentDirections
-                .actionInventoryFragmentToSummaryFragment(inventory as Inventory)
-            findNavController().navigate(directions)
-        }
+    private fun onItemClick(inventory: Inventory) {
+        val directions =
+            InventoryFragmentDirections.actionInventoryFragmentToSummaryFragment(inventory)
+        findNavController().navigate(directions)
     }
 }

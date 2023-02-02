@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.ItemBinding
-import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
 class ItemListAdapter(
-    private val mainListener: (Any) -> Unit,
-    private val nfcListener: (Any) -> Unit
-) : ListAdapter<Any, ItemListAdapter.ItemListViewHolder>(ItemDiffCallback) {
+    private val onItemClick: (CountedItem) -> Unit,
+    private val onNfcTagClick: (CountedItem) -> Unit
+) : ListAdapter<CountedItem, ItemListAdapter.ItemListViewHolder>(BasicItemListAdapter.ItemDiffCallback) {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
@@ -24,7 +23,7 @@ class ItemListAdapter(
         fun bind(item: CountedItem) {
             binding.item = item
             itemView.setOnClickListener {
-                mainListener(item)
+                onItemClick(item)
                 notifyItemChanged(selectedPosition)
                 selectedPosition = layoutPosition
                 notifyItemChanged(selectedPosition)
@@ -33,7 +32,7 @@ class ItemListAdapter(
             itemView.isSelected = selectedPosition == layoutPosition
 
             binding.nfcTagButton.setOnClickListener {
-                nfcListener(item)
+                onNfcTagClick(item)
             }
         }
     }
@@ -49,8 +48,9 @@ class ItemListAdapter(
         )
     )
 
-    override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) =
-        holder.bind(getItem(position) as CountedItem)
+    override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 
     fun getItemPosition(nfcData: CountedItem): Int = currentList.indexOf(nfcData)
 }

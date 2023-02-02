@@ -11,7 +11,7 @@ import pl.sokols.warehouseassistant.databinding.AddEditItemDialogBinding
 
 class ItemAddEditDialog(
     providedItem: CountedItem?,
-    private val listener: (Any) -> Unit
+    private val onApplyClick: (CountedItem) -> Unit
 ) : DialogFragment() {
 
     private var item: CountedItem = providedItem ?: CountedItem()
@@ -44,9 +44,11 @@ class ItemAddEditDialog(
     }
 
     private fun onApplyClicked() {
+        val nameValid = item.name.trim().isNotEmpty()
+        val priceValid = item.price.toInt() > 0
         dialogBinding.apply {
             itemNameTextInputLayout.apply {
-                if (this@ItemAddEditDialog.item.name.trim().isEmpty()) {
+                if (!nameValid) {
                     error = getString(R.string.incorrect_value)
                     isErrorEnabled = true
                 } else {
@@ -55,7 +57,7 @@ class ItemAddEditDialog(
             }
 
             itemPriceTextInputLayout.apply {
-                if (this@ItemAddEditDialog.item.price.toInt() == 0) {
+                if (!priceValid) {
                     error = getString(R.string.incorrect_value)
                     isErrorEnabled = true
                 } else {
@@ -63,8 +65,8 @@ class ItemAddEditDialog(
                 }
             }
 
-            if (this@ItemAddEditDialog.item.name.trim().isNotEmpty() && this@ItemAddEditDialog.item.price.toInt() != 0) {
-                listener(this@ItemAddEditDialog.item)
+            if (nameValid && priceValid) {
+                onApplyClick(this@ItemAddEditDialog.item)
                 dismiss()
             }
         }

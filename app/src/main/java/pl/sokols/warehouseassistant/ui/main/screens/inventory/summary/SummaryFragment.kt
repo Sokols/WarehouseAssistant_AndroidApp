@@ -44,7 +44,7 @@ class SummaryFragment : BaseFragment() {
     private fun initRecyclerView() {
         binding.itemsRecyclerView.apply {
             adapter = itemsAdapter
-            val list = ArrayList(viewModel.inventory.items.values).toMutableList() as List<Any>?
+            val list = viewModel.inventory.items.values.toMutableList()
             itemsAdapter.submitList(list)
             setupDivider()
         }

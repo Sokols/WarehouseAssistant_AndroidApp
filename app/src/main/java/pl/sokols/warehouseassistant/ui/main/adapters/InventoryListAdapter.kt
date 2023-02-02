@@ -2,26 +2,24 @@ package pl.sokols.warehouseassistant.ui.main.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.Inventory
 import pl.sokols.warehouseassistant.databinding.InventoryItemBinding
-import pl.sokols.warehouseassistant.utils.ItemDiffCallback
 
 class InventoryListAdapter(
-    private val mainListener: (Any) -> Unit
-) : ListAdapter<Any, InventoryListAdapter.InventoryListViewHolder>(ItemDiffCallback) {
+    private val onItemClick: (Inventory) -> Unit
+) : ListAdapter<Inventory, InventoryListAdapter.InventoryListViewHolder>(ItemDiffCallback) {
 
     inner class InventoryListViewHolder(
         private val binding: InventoryItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(inventory: Inventory, mainListener: (Any) -> Unit) {
+        fun bind(inventory: Inventory) {
             binding.apply {
                 this.inventory = inventory
-                itemLayout.setOnClickListener {
-                    mainListener(inventory)
-                }
+                itemLayout.setOnClickListener { onItemClick(inventory) }
             }
         }
     }
@@ -38,6 +36,22 @@ class InventoryListAdapter(
     )
 
     override fun onBindViewHolder(holder: InventoryListViewHolder, position: Int) {
-        holder.bind(getItem(position) as Inventory, mainListener)
+        holder.bind(getItem(position))
     }
+
+    //region DiffCallback
+
+    object ItemDiffCallback : DiffUtil.ItemCallback<Inventory>() {
+        override fun areItemsTheSame(oldItem: Inventory, newItem: Inventory): Boolean {
+            return oldItem.timestampCreated == newItem.timestampCreated
+        }
+
+        override fun areContentsTheSame(oldItem: Inventory, newItem: Inventory): Boolean {
+            return oldItem.timestampCreated == newItem.timestampCreated
+                    && oldItem.timestampEdited == newItem.timestampEdited
+                    && oldItem.items == newItem.items
+        }
+    }
+
+    //endregion
 }

@@ -12,13 +12,12 @@ import pl.sokols.warehouseassistant.ui.main.adapters.BasicItemListAdapter
 import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 
 class SearchItemDialog(
-    private val listener: (CountedItem) -> Unit,
-    private val items: List<CountedItem>
+    private val items: List<CountedItem>,
+    private val onApplyClick: (CountedItem) -> Unit
 ) : DialogFragment() {
 
     private lateinit var binding: SearchItemDialogBinding
-    private var matchedItems: ArrayList<CountedItem> = arrayListOf()
-    private lateinit var itemsAdapter: BasicItemListAdapter
+    private val itemsAdapter = BasicItemListAdapter { onItemClick(it) }
 
     //region Lifecycle
 
@@ -53,7 +52,6 @@ class SearchItemDialog(
 
     private fun initRecyclerView() {
         binding.recyclerView.apply {
-            itemsAdapter = BasicItemListAdapter(searchItemListener)
             adapter = itemsAdapter
             itemsAdapter.submitList(items)
             setupDivider()
@@ -80,7 +78,7 @@ class SearchItemDialog(
 
     private fun onApplyClicked() {
         binding.item?.let {
-            listener(it)
+            onApplyClick(it)
         }
         dismiss()
     }
@@ -90,27 +88,18 @@ class SearchItemDialog(
     //region Helpers
 
     private fun search(text: String?) {
-        matchedItems = arrayListOf()
-
-        text?.let {
-            items.forEach { item ->
-                if (item.name.contains(text, true) ||
-                    item.id.contains(text, true)
-                ) {
-                    matchedItems.add(item)
-                }
+        text?.let { txt ->
+            val matchedItems = items.filter { item ->
+                item.name.contains(txt, true) || item.id.contains(txt, true)
             }
-
-            itemsAdapter.submitList(matchedItems as List<Any>?)
+            itemsAdapter.submitList(matchedItems)
         }
     }
 
-    private val searchItemListener = object : (Any) -> Unit {
-        override fun invoke(item: Any) {
-            binding.apply {
-                this.item = item as CountedItem
-                applyDialogButton.isEnabled = true
-            }
+    private fun onItemClick(item: CountedItem) {
+        binding.apply {
+            this.item = item
+            applyDialogButton.isEnabled = true
         }
     }
 
