@@ -18,7 +18,7 @@
             android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/default_padding">
+            android:padding="@dimen/large_padding">
 
             <TextView
                 android:id="@+id/titleTextView"
@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/large_padding"
+                android:gravity="center"
                 android:text="@string/description_home"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
@@ -44,7 +45,7 @@
                 android:id="@+id/itemsCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/large_padding"
                 app:itemDescription="@string/items_description"
                 app:itemIcon="@drawable/ic_baseline_shopping_cart_24"
                 app:itemTitle="@string/items"

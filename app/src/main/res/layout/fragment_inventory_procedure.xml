@@ -34,7 +34,7 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="5"
-                tools:listitem="@layout/item_procedure" />
+                tools:listitem="@layout/item_counted_item" />
 
             <com.nambimobile.widgets.efab.ExpandableFabLayout
                 android:id="@+id/expandable_fab_layout"

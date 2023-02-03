@@ -10,7 +10,8 @@ import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.FragmentItemsBinding
 import pl.sokols.warehouseassistant.ui.base.BaseFragment
-import pl.sokols.warehouseassistant.ui.main.adapters.ItemListAdapter
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemAdapterType
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemsAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
 import pl.sokols.warehouseassistant.ui.main.dialogs.WriteNfcDialog
 import pl.sokols.warehouseassistant.utils.AlertUtils
@@ -27,7 +28,11 @@ class ItemsFragment : BaseFragment() {
     private val viewModel: ItemsViewModel by viewModels()
     override val binding by viewBinding(FragmentItemsBinding::bind)
     override fun getLayoutRes(): Int = R.layout.fragment_items
-    private val recyclerViewAdapter = ItemListAdapter({ onItemClick(it) }, { onNfcTagClick(it) })
+    private val recyclerViewAdapter = CountedItemsAdapter(
+        CountedItemAdapterType.ITEM,
+        { _, item -> onItemClick(item) },
+        { onNfcTagClick(it) }
+    )
 
     //region Lifecycle
 

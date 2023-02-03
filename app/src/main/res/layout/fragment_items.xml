@@ -19,7 +19,7 @@
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:itemCount="8"
-            tools:listitem="@layout/item" />
+            tools:listitem="@layout/item_counted_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addItemButton"

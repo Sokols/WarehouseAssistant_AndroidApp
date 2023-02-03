@@ -8,7 +8,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.databinding.DialogSearchItemBinding
-import pl.sokols.warehouseassistant.ui.main.adapters.BasicItemListAdapter
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemAdapterType
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemsAdapter
 import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 
 class SearchItemDialog(
@@ -17,7 +18,10 @@ class SearchItemDialog(
 ) : DialogFragment() {
 
     private lateinit var binding: DialogSearchItemBinding
-    private val itemsAdapter = BasicItemListAdapter { onItemClick(it) }
+    private val itemsAdapter = CountedItemsAdapter(
+        CountedItemAdapterType.SEARCH,
+        { _, item -> onItemClick(item) }
+    )
 
     //region Lifecycle
 

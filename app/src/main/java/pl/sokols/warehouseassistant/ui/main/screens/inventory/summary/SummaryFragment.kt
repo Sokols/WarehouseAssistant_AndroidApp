@@ -9,7 +9,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.databinding.FragmentSummaryBinding
 import pl.sokols.warehouseassistant.ui.base.BaseFragment
-import pl.sokols.warehouseassistant.ui.main.adapters.SummaryListAdapter
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemAdapterType
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemsAdapter
 import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 import pl.sokols.warehouseassistant.utils.viewBinding
 
@@ -21,7 +22,7 @@ class SummaryFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.fragment_summary
     private val args: SummaryFragmentArgs by navArgs()
 
-    private val itemsAdapter = SummaryListAdapter()
+    private val itemsAdapter = CountedItemsAdapter(CountedItemAdapterType.SUMMARY)
 
     //region Lifecycle
 
