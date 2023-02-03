@@ -4,7 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.databinding.LoginFragmentBinding
+import pl.sokols.warehouseassistant.databinding.FragmentLoginBinding
 import pl.sokols.warehouseassistant.ui.auth.base.BaseAuthFragment
 import pl.sokols.warehouseassistant.utils.viewBinding
 
@@ -12,8 +12,8 @@ import pl.sokols.warehouseassistant.utils.viewBinding
 class LoginFragment : BaseAuthFragment() {
 
     override val viewModel: LoginViewModel by viewModels()
-    override val binding by viewBinding(LoginFragmentBinding::bind)
-    override fun getLayoutRes(): Int = R.layout.login_fragment
+    override val binding by viewBinding(FragmentLoginBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.fragment_login
 
     //region Overridden
 

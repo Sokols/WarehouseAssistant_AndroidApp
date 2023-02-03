@@ -4,7 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.databinding.RegistryFragmentBinding
+import pl.sokols.warehouseassistant.databinding.FragmentRegistryBinding
 import pl.sokols.warehouseassistant.ui.auth.base.BaseAuthFragment
 import pl.sokols.warehouseassistant.utils.viewBinding
 
@@ -12,8 +12,8 @@ import pl.sokols.warehouseassistant.utils.viewBinding
 class RegistryFragment : BaseAuthFragment() {
 
     override val viewModel: RegistryViewModel by viewModels()
-    override val binding by viewBinding(RegistryFragmentBinding::bind)
-    override fun getLayoutRes(): Int = R.layout.registry_fragment
+    override val binding by viewBinding(FragmentRegistryBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.fragment_registry
 
     //region Overridden
 

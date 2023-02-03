@@ -1,6 +1,5 @@
 package pl.sokols.warehouseassistant.ui.main.screens.items
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,22 +8,25 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.ItemsFragmentBinding
+import pl.sokols.warehouseassistant.databinding.FragmentItemsBinding
 import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.adapters.ItemListAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
 import pl.sokols.warehouseassistant.ui.main.dialogs.WriteNfcDialog
-import pl.sokols.warehouseassistant.utils.*
+import pl.sokols.warehouseassistant.utils.AlertUtils
+import pl.sokols.warehouseassistant.utils.NFCUtil
+import pl.sokols.warehouseassistant.utils.NfcState
 import pl.sokols.warehouseassistant.utils.extensions.addSwipe
 import pl.sokols.warehouseassistant.utils.extensions.setupDivider
+import pl.sokols.warehouseassistant.utils.viewBinding
 
 @AndroidEntryPoint
 class ItemsFragment : BaseFragment() {
 
     private lateinit var nfcDialog: WriteNfcDialog
     private val viewModel: ItemsViewModel by viewModels()
-    override val binding by viewBinding(ItemsFragmentBinding::bind)
-    override fun getLayoutRes(): Int = R.layout.items_fragment
+    override val binding by viewBinding(FragmentItemsBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.fragment_items
     private val recyclerViewAdapter = ItemListAdapter({ onItemClick(it) }, { onNfcTagClick(it) })
 
     //region Lifecycle

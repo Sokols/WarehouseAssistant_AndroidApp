@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.SummaryItemBinding
+import pl.sokols.warehouseassistant.databinding.ItemSummaryBinding
 
 class SummaryListAdapter :
     ListAdapter<CountedItem, SummaryListAdapter.SummaryListViewHolder>(BasicItemListAdapter.ItemDiffCallback) {
 
     inner class SummaryListViewHolder(
-        private val binding: SummaryItemBinding
+        private val binding: ItemSummaryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CountedItem) {
@@ -24,7 +24,7 @@ class SummaryListAdapter :
         viewType: Int
     ): SummaryListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = SummaryItemBinding.inflate(inflater, parent, false)
+        val binding = ItemSummaryBinding.inflate(inflater, parent, false)
         return SummaryListViewHolder(binding)
     }
 

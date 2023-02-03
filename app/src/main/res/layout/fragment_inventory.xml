@@ -19,7 +19,7 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="5"
-            tools:listitem="@layout/inventory_item" />
+            tools:listitem="@layout/item_inventory" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/startInventoryButton"
@@ -35,7 +35,7 @@
 
         <include
             android:id="@+id/emptyLayout"
-            layout="@layout/empty_items_layout"
+            layout="@layout/layout_empty_items"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />

@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.Inventory
-import pl.sokols.warehouseassistant.databinding.InventoryItemBinding
+import pl.sokols.warehouseassistant.databinding.ItemInventoryBinding
 
 class InventoryListAdapter(
     private val onItemClick: (Inventory) -> Unit
 ) : ListAdapter<Inventory, InventoryListAdapter.InventoryListViewHolder>(ItemDiffCallback) {
 
     inner class InventoryListViewHolder(
-        private val binding: InventoryItemBinding
+        private val binding: ItemInventoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(inventory: Inventory) {
@@ -28,7 +28,7 @@ class InventoryListAdapter(
         parent: ViewGroup,
         viewType: Int
     ): InventoryListViewHolder = InventoryListViewHolder(
-        InventoryItemBinding.inflate(
+        ItemInventoryBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

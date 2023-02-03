@@ -26,7 +26,7 @@
             android:scrollbars="none"
             tools:itemCount="5"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/summary_item" />
+            tools:listitem="@layout/item_summary" />
 
         <com.nambimobile.widgets.efab.ExpandableFabLayout
             android:id="@+id/expandable_fab_layout"

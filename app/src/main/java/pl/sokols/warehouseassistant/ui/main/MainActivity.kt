@@ -17,7 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.databinding.MainActivityBinding
+import pl.sokols.warehouseassistant.databinding.ActivityMainBinding
 import pl.sokols.warehouseassistant.ui.auth.AuthActivity
 import pl.sokols.warehouseassistant.utils.NFCUtil
 import pl.sokols.warehouseassistant.utils.Utils
@@ -26,7 +26,7 @@ import pl.sokols.warehouseassistant.utils.Utils
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
-    private lateinit var binding: MainActivityBinding
+    private lateinit var binding: ActivityMainBinding
     private var nfcAdapter: NfcAdapter? = null
     private val viewModel: MainViewModel by viewModels()
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     //region Helpers
 
     private fun setup() {
-        binding = MainActivityBinding.inflate(LayoutInflater.from(this))
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         navController =
             (supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment).navController

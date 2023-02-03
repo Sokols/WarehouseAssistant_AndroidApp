@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import pl.sokols.warehouseassistant.databinding.WriteNfcDialogBinding
+import pl.sokols.warehouseassistant.databinding.DialogWriteNfcBinding
 
 class WriteNfcDialog(
     private val onCancelListener: DialogInterface.OnCancelListener
 ) : DialogFragment() {
 
-    private lateinit var dialogBinding: WriteNfcDialogBinding
+    private lateinit var dialogBinding: DialogWriteNfcBinding
 
     //region Lifecycle
 
@@ -21,7 +21,7 @@ class WriteNfcDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dialogBinding = WriteNfcDialogBinding.inflate(inflater, container, false)
+        dialogBinding = DialogWriteNfcBinding.inflate(inflater, container, false)
         dialog?.apply {
             setCanceledOnTouchOutside(false)
             setOnCancelListener(onCancelListener)

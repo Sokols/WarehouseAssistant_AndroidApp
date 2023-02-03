@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
 import pl.sokols.warehouseassistant.data.models.Inventory
-import pl.sokols.warehouseassistant.databinding.InventoryProcedureFragmentBinding
+import pl.sokols.warehouseassistant.databinding.FragmentInventoryProcedureBinding
 import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.adapters.ProcedureItemListAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
@@ -24,8 +24,8 @@ import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 class InventoryProcedureFragment : BaseFragment() {
 
     private val viewModel: InventoryProcedureViewModel by viewModels()
-    override val binding by viewBinding(InventoryProcedureFragmentBinding::bind)
-    override fun getLayoutRes(): Int = R.layout.inventory_procedure_fragment
+    override val binding by viewBinding(FragmentInventoryProcedureBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.fragment_inventory_procedure
     private val itemsAdapter = ProcedureItemListAdapter { position, item ->
         onItemClick(position, item)
     }

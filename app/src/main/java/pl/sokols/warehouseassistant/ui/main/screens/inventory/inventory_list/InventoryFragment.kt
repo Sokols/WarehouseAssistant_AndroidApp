@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.Inventory
-import pl.sokols.warehouseassistant.databinding.InventoryFragmentBinding
+import pl.sokols.warehouseassistant.databinding.FragmentInventoryBinding
 import pl.sokols.warehouseassistant.ui.base.BaseFragment
 import pl.sokols.warehouseassistant.ui.main.adapters.InventoryListAdapter
 import pl.sokols.warehouseassistant.utils.AlertUtils
@@ -20,8 +20,8 @@ import pl.sokols.warehouseassistant.utils.viewBinding
 class InventoryFragment : BaseFragment() {
 
     private val viewModel: InventoryViewModel by viewModels()
-    override val binding by viewBinding(InventoryFragmentBinding::bind)
-    override fun getLayoutRes(): Int = R.layout.inventory_fragment
+    override val binding by viewBinding(FragmentInventoryBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.fragment_inventory
     private val inventoriesAdapter = InventoryListAdapter { onItemClick(it) }
 
     //region Lifecycle

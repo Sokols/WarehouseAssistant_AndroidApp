@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.BasicItemBinding
+import pl.sokols.warehouseassistant.databinding.ItemBasicBinding
 
 class BasicItemListAdapter(
     private val onItemClick: (CountedItem) -> Unit
@@ -18,7 +18,7 @@ class BasicItemListAdapter(
     //region ViewHolder
 
     inner class BasicItemListViewHolder(
-        private val binding: BasicItemBinding
+        private val binding: ItemBasicBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("NotifyDataSetChanged")
@@ -44,7 +44,7 @@ class BasicItemListAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BasicItemListViewHolder = BasicItemListViewHolder(
-        BasicItemBinding.inflate(
+        ItemBasicBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

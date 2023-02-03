@@ -40,7 +40,7 @@
             app:layout_constraintHeight_percent=".7"
             app:layout_constraintStart_toStartOf="parent"
             tools:itemCount="3"
-            tools:listitem="@layout/basic_item" />
+            tools:listitem="@layout/item_basic" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/applyDialogButton"

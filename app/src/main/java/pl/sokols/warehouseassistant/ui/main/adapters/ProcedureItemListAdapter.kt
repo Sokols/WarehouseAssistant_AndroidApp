@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.ProcedureItemBinding
+import pl.sokols.warehouseassistant.databinding.ItemProcedureBinding
 
 class ProcedureItemListAdapter(
     private val onItemClick: (Int, CountedItem) -> Unit
@@ -17,7 +17,7 @@ class ProcedureItemListAdapter(
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
     inner class ProcedureItemListViewHolder(
-        private val binding: ProcedureItemBinding
+        private val binding: ItemProcedureBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("NotifyDataSetChanged")
@@ -39,7 +39,7 @@ class ProcedureItemListAdapter(
         parent: ViewGroup,
         viewType: Int
     ): ProcedureItemListViewHolder = ProcedureItemListViewHolder(
-        ProcedureItemBinding.inflate(
+        ItemProcedureBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

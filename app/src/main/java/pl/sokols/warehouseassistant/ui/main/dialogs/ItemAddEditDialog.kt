@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.AddEditItemDialogBinding
+import pl.sokols.warehouseassistant.databinding.DialogAddEditItemBinding
 
 class ItemAddEditDialog(
     providedItem: CountedItem?,
@@ -15,7 +15,7 @@ class ItemAddEditDialog(
 ) : DialogFragment() {
 
     private var item: CountedItem = providedItem ?: CountedItem()
-    private lateinit var dialogBinding: AddEditItemDialogBinding
+    private lateinit var dialogBinding: DialogAddEditItemBinding
 
     //region Lifecycle
 
@@ -24,7 +24,7 @@ class ItemAddEditDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dialogBinding = AddEditItemDialogBinding.inflate(inflater, container, false)
+        dialogBinding = DialogAddEditItemBinding.inflate(inflater, container, false)
         dialogBinding.item = item
         setupButtons()
         return dialogBinding.root

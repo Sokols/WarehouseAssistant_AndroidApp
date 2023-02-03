@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.SearchItemDialogBinding
+import pl.sokols.warehouseassistant.databinding.DialogSearchItemBinding
 import pl.sokols.warehouseassistant.ui.main.adapters.BasicItemListAdapter
 import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 
@@ -16,7 +16,7 @@ class SearchItemDialog(
     private val onApplyClick: (CountedItem) -> Unit
 ) : DialogFragment() {
 
-    private lateinit var binding: SearchItemDialogBinding
+    private lateinit var binding: DialogSearchItemBinding
     private val itemsAdapter = BasicItemListAdapter { onItemClick(it) }
 
     //region Lifecycle
@@ -26,7 +26,7 @@ class SearchItemDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = SearchItemDialogBinding.inflate(inflater, container, false)
+        binding = DialogSearchItemBinding.inflate(inflater, container, false)
         setComponents()
         return binding.root
     }
