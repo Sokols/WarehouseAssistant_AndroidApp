@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_selector">
-
-    <data>
-
-        <variable
-            name="item"
-            type="pl.sokols.warehouseassistant.data.models.CountedItem" />
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/itemLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/icon_image"
+            android:padding="@dimen/very_small_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_baseline_insert_drive_file_24" />
+
         <TextView
-            android:id="@+id/itemNameTextView"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/default_padding"
             android:paddingVertical="@dimen/very_small_padding"
-            android:text="@{item.name}"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/itemIdTextView"
+            app:layout_constraintBottom_toTopOf="@+id/tv_subtitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/iv_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Test Name" />
 
         <TextView
-            android:id="@+id/itemIdTextView"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_subtitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/default_padding"
             android:paddingVertical="@dimen/very_small_padding"
-            android:text="@{String.format(@string/id_and_value, item.id)}"
             android:textColor="?attr/colorSecondary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/iv_icon"
+            tools:text="Test ID" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

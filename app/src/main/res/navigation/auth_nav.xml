@@ -22,7 +22,7 @@
         android:id="@+id/registryFragment"
         android:name="pl.sokols.warehouseassistant.ui.auth.registry.RegistryFragment"
         android:label="fragment_registry"
-        tools:layout="@layout/registry_fragment">
+        tools:layout="@layout/fragment_registry">
         <action
             android:id="@+id/action_registryFragment_to_loginFragment"
             app:destination="@id/loginFragment"

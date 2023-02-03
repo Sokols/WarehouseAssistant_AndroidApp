@@ -20,10 +20,8 @@
             android:id="@+id/itemsLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="percent"
             app:layout_constraintHeight_percent=".6"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -34,12 +32,9 @@
                 android:fillViewport="true"
                 android:scrollbars="none"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:listitem="@layout/procedure_item" />
+                tools:itemCount="5"
+                tools:listitem="@layout/item_counted_item" />
 
             <com.nambimobile.widgets.efab.ExpandableFabLayout
                 android:id="@+id/expandable_fab_layout"
@@ -90,41 +85,30 @@
 
             <include
                 android:id="@+id/emptyLayout"
-                layout="@layout/empty_nfc_layout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                layout="@layout/layout_empty_items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
             android:id="@+id/itemScrollView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/verticalSeparator"
-            app:layout_constraintVertical_bias="0.0">
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/verticalSeparator">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/inventoryItemLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <TextView
                     android:id="@+id/nameTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/large_padding"
                     android:layout_marginTop="@dimen/default_padding"
-                    android:layout_marginEnd="@dimen/very_small_padding"
                     android:text="@string/name_placeholder"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -135,41 +119,38 @@
 
                 <TextView
                     android:id="@+id/nameValueTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/huge_padding"
+                    android:layout_marginStart="@dimen/very_small_padding"
                     android:layout_marginTop="@dimen/default_padding"
                     android:text="@{item != null ? item.name : `-`}"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@id/nameTitle"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Test Name" />
 
                 <TextView
                     android:id="@+id/idTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/very_small_padding"
                     android:text="@string/id_placeholder"
                     android:textSize="16sp"
-                    app:layout_constraintEnd_toStartOf="@+id/nameValueTitle"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/nameTitle"
                     app:layout_constraintTop_toBottomOf="@+id/nameTitle" />
 
                 <TextView
                     android:id="@+id/idValueTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/huge_padding"
+                    android:layout_marginStart="@dimen/very_small_padding"
                     android:text="@{item != null ? item.id : `-`}"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/nameValueTitle" />
+                    app:layout_constraintStart_toEndOf="@id/idTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/nameValueTitle"
+                    tools:text="Test ID" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/itemAmountTextInputLayout"
@@ -193,32 +174,24 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/applyDialogButton"
+                    style="@style/ButtonActionStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_padding"
-                    android:layout_marginEnd="@dimen/default_padding"
-                    android:paddingHorizontal="@dimen/large_padding"
-                    android:paddingVertical="@dimen/default_padding"
                     android:text="@string/confirm"
-                    android:textSize="18sp"
-                    app:cornerRadius="45dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/itemAmountTextInputLayout"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/itemAmountTextInputLayout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
         <LinearLayout
             android:id="@+id/verticalSeparator"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/colorOnPrimary"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemsLayout" />
 
         <ProgressBar

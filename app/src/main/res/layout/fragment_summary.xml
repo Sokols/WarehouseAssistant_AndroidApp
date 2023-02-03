@@ -19,17 +19,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itemsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
             android:fillViewport="true"
             android:paddingBottom="72dp"
             android:scrollbars="none"
+            tools:itemCount="5"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/summary_item" />
+            tools:listitem="@layout/item_counted_item" />
 
         <com.nambimobile.widgets.efab.ExpandableFabLayout
             android:id="@+id/expandable_fab_layout"

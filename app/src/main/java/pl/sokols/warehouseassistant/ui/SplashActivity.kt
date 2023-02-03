@@ -12,17 +12,26 @@ import pl.sokols.warehouseassistant.ui.main.MainActivity
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
+
+    //region Lifecycle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkIfUserLoggedIn()
+        navigateToProperActivity()
     }
 
-    private fun checkIfUserLoggedIn() {
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-        } else {
-            startActivity(Intent(this@SplashActivity, AuthActivity::class.java))
-        }
+    //endregion
+
+    //region Helpers
+
+    private fun navigateToProperActivity() {
+        val activity = if (FirebaseAuth.getInstance().currentUser != null)
+            MainActivity::class.java
+        else
+            AuthActivity::class.java
+        startActivity(Intent(this@SplashActivity, activity))
         finish()
     }
+
+    //endregion
 }

@@ -13,4 +13,19 @@
         <item name="boxStrokeErrorColor">@color/red</item>
         <item name="errorTextColor">@color/red</item>
     </style>
+
+    <style name="ButtonActionStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/color_states_btn_primary</item>
+        <item name="android:textSize">@dimen/font_h3</item>
+        <item name="android:paddingStart">@dimen/large_padding</item>
+        <item name="android:paddingEnd">@dimen/large_padding</item>
+        <item name="android:paddingTop">@dimen/default_padding</item>
+        <item name="android:paddingBottom">@dimen/default_padding</item>
+        <item name="cornerRadius">@dimen/radius_button_action</item>
+    </style>
+
 </resources>

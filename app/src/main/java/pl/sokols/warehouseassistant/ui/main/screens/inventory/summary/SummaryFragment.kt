@@ -1,44 +1,41 @@
 package pl.sokols.warehouseassistant.ui.main.screens.inventory.summary
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.data.models.Inventory
-import pl.sokols.warehouseassistant.databinding.SummaryFragmentBinding
-import pl.sokols.warehouseassistant.ui.main.adapters.SummaryListAdapter
-import pl.sokols.warehouseassistant.utils.DividerItemDecorator
+import pl.sokols.warehouseassistant.databinding.FragmentSummaryBinding
+import pl.sokols.warehouseassistant.ui.base.BaseFragment
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemAdapterType
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemsAdapter
+import pl.sokols.warehouseassistant.utils.extensions.setupDivider
+import pl.sokols.warehouseassistant.utils.viewBinding
 
 @AndroidEntryPoint
-class SummaryFragment : Fragment() {
+class SummaryFragment : BaseFragment() {
 
     private val viewModel: SummaryViewModel by viewModels()
-    private lateinit var binding: SummaryFragmentBinding
+    override val binding by viewBinding(FragmentSummaryBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.fragment_summary
     private val args: SummaryFragmentArgs by navArgs()
-    private lateinit var inventory: Inventory
-    private lateinit var itemsAdapter: SummaryListAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = SummaryFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private val itemsAdapter = CountedItemsAdapter(CountedItemAdapterType.SUMMARY)
+
+    //region Lifecycle
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        inventory = args.inventory
-        binding.inventory = inventory
+        viewModel.inventory = args.inventory
+        binding.inventory = viewModel.inventory
         setComponents()
     }
+
+    //endregion
+
+    //region Setup UI components
 
     private fun setComponents() {
         initRecyclerView()
@@ -46,31 +43,30 @@ class SummaryFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        itemsAdapter = SummaryListAdapter()
-        binding.itemsRecyclerView.adapter = itemsAdapter
-        itemsAdapter.submitList(ArrayList(inventory.items.values).toMutableList() as List<Any>?)
-
-        binding.itemsRecyclerView.addItemDecoration(
-            DividerItemDecorator(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.divider,
-                    null
-                )!!
-            )
-        )
+        binding.itemsRecyclerView.apply {
+            adapter = itemsAdapter
+            val list = viewModel.inventory.items.values.toMutableList()
+            itemsAdapter.submitList(list)
+            setupDivider()
+        }
     }
 
     private fun setButtonClickListeners() {
-        binding.editFAB.setOnClickListener {
-            it.findNavController().navigate(
-                SummaryFragmentDirections
-                    .actionSummaryFragmentToInventoryProcedureFragment(binding.inventory)
-            )
-        }
-
-        binding.shareFAB.setOnClickListener {
-            viewModel.shareInventory(inventory)
+        binding.apply {
+            editFAB.setOnClickListener { onEditClicked() }
+            shareFAB.setOnClickListener { viewModel.shareInventory() }
         }
     }
+
+    //endregion
+
+    //region Actions
+
+    private fun onEditClicked() {
+        val directions =
+            SummaryFragmentDirections.actionSummaryFragmentToInventoryProcedureFragment(viewModel.inventory)
+        findNavController().navigate(directions)
+    }
+
+    //endregion
 }

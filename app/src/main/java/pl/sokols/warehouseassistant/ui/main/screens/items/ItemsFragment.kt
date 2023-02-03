@@ -1,47 +1,62 @@
 package pl.sokols.warehouseassistant.ui.main.screens.items
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.ItemsFragmentBinding
-import pl.sokols.warehouseassistant.ui.main.adapters.ItemListAdapter
+import pl.sokols.warehouseassistant.databinding.FragmentItemsBinding
+import pl.sokols.warehouseassistant.ui.base.BaseFragment
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemAdapterType
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemsAdapter
 import pl.sokols.warehouseassistant.ui.main.dialogs.ItemAddEditDialog
 import pl.sokols.warehouseassistant.ui.main.dialogs.WriteNfcDialog
-import pl.sokols.warehouseassistant.utils.DividerItemDecorator
+import pl.sokols.warehouseassistant.utils.AlertUtils
 import pl.sokols.warehouseassistant.utils.NFCUtil
 import pl.sokols.warehouseassistant.utils.NfcState
-import pl.sokols.warehouseassistant.utils.SwipeHelper
+import pl.sokols.warehouseassistant.utils.extensions.addSwipe
+import pl.sokols.warehouseassistant.utils.extensions.setupDivider
+import pl.sokols.warehouseassistant.utils.viewBinding
 
 @AndroidEntryPoint
-class ItemsFragment : Fragment() {
+class ItemsFragment : BaseFragment() {
 
     private lateinit var nfcDialog: WriteNfcDialog
     private val viewModel: ItemsViewModel by viewModels()
-    private lateinit var binding: ItemsFragmentBinding
-    private lateinit var recyclerViewAdapter: ItemListAdapter
+    override val binding by viewBinding(FragmentItemsBinding::bind)
+    override fun getLayoutRes(): Int = R.layout.fragment_items
+    private val recyclerViewAdapter = CountedItemsAdapter(
+        CountedItemAdapterType.ITEM,
+        { _, item -> onItemClick(item) },
+        { onNfcTagClick(it) }
+    )
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = ItemsFragmentBinding.inflate(inflater, container, false)
+    //region Lifecycle
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setComponents()
-        setListeners()
-        return binding.root
+        setupButtons()
+        setupObservers()
     }
+
+    //endregion
+
+    //region Observers
+
+    private fun setupObservers() {
+        viewModel.getItems().observe(viewLifecycleOwner) {
+            recyclerViewAdapter.submitList(it)
+            setView(it)
+        }
+    }
+
+    //endregion
+
+    //region NFC setup
 
     fun retrieveIntent(intent: Intent?) {
         val nfcData = viewModel.retrieveNFC(intent)
@@ -53,56 +68,57 @@ class ItemsFragment : Fragment() {
         viewModel.changeNfcState()
     }
 
+    private fun invokeItemClick(nfcData: CountedItem) {
+        val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
+        binding.itemsRecyclerView.apply {
+            scrollToPosition(position)
+            postDelayed({
+                findViewHolderForLayoutPosition(position)?.itemView?.performClick()
+            }, 50)
+        }
+    }
+
+    //endregion
+
+    //region Setup UI elements
+
     private fun setComponents() {
         nfcDialog = WriteNfcDialog { viewModel.changeNfcState() }
         initRecyclerView()
     }
 
-    private fun setListeners() {
-        binding.addItemButton.setOnClickListener {
-            addEditItem(null, object : (Any) -> Unit {
-                override fun invoke(item: Any) {
-                    viewModel.addItem(item as CountedItem)
-                }
-            })
-        }
+    private fun setupButtons() {
+        binding.addItemButton.setOnClickListener { onAddItemClicked() }
     }
 
     private fun initRecyclerView() {
-        recyclerViewAdapter = ItemListAdapter(mainListener, nfcListener)
-        viewModel.getItems().observe(viewLifecycleOwner, {
-            recyclerViewAdapter.submitList(it)
-            setView(it)
-        })
-        binding.itemsRecyclerView.adapter = recyclerViewAdapter
-        binding.itemsRecyclerView.addItemDecoration(
-            DividerItemDecorator(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.divider,
-                    null
-                )!!
-            )
-        )
-        addSwipeToDelete()
-    }
-
-    private fun invokeItemClick(nfcData: CountedItem) {
-        val position: Int = recyclerViewAdapter.getItemPosition(nfcData)
-        binding.itemsRecyclerView.scrollToPosition(position)
-        binding.itemsRecyclerView.postDelayed({
-            binding.itemsRecyclerView.findViewHolderForLayoutPosition(position)?.itemView?.performClick()
-        }, 50)
+        binding.itemsRecyclerView.apply {
+            adapter = recyclerViewAdapter
+            setupDivider()
+            addSwipe { deleteItemAt(it) }
+        }
     }
 
     private fun setView(list: List<CountedItem>?) {
-        binding.loading.isVisible = false
-        val emptyVisibility = list.isNullOrEmpty()
-        binding.emptyLayout.emptyLayout.isVisible = emptyVisibility
-        binding.itemsRecyclerView.isVisible = !emptyVisibility
+        binding.apply {
+            loading.isVisible = false
+            val emptyVisibility = list.isNullOrEmpty()
+            emptyLayout.emptyLayout.isVisible = emptyVisibility
+            itemsRecyclerView.isVisible = !emptyVisibility
+        }
     }
 
-    private fun addEditItem(item: CountedItem?, listener: (Any) -> Unit) {
+    //endregion
+
+    //region Actions
+
+    private fun onAddItemClicked() {
+        addEditItem(null) {
+            viewModel.addItem(it)
+        }
+    }
+
+    private fun addEditItem(item: CountedItem?, listener: (CountedItem) -> Unit) {
         activity?.let {
             ItemAddEditDialog(item, listener).show(
                 it.supportFragmentManager,
@@ -111,42 +127,35 @@ class ItemsFragment : Fragment() {
         }
     }
 
-    private fun addSwipeToDelete() {
-        ItemTouchHelper(object : SwipeHelper(requireContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedItem: CountedItem =
-                    recyclerViewAdapter.currentList[viewHolder.layoutPosition] as CountedItem
-                viewModel.deleteItem(deletedItem)
+    //endregion
 
-                Snackbar
-                    .make(requireView(), getString(R.string.deleted), Snackbar.LENGTH_SHORT)
-                    .setAction(getString(R.string.undo)) { viewModel.updateItem(deletedItem) }
-                    .show()
-            }
-        }).attachToRecyclerView(binding.itemsRecyclerView)
-    }
+    //region Helpers
 
-    private val mainListener = object : (Any) -> Unit {
-        override fun invoke(item: Any) {
-            addEditItem(item as CountedItem, object : (Any) -> Unit {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun invoke(item: Any) {
-                    viewModel.updateItem(item as CountedItem)
-                    recyclerViewAdapter.notifyDataSetChanged()
-                }
-            })
+    private fun deleteItemAt(index: Int) {
+        val deletedItem = recyclerViewAdapter.currentList[index] as CountedItem
+        viewModel.deleteItem(deletedItem)
+
+        AlertUtils.showMessage(requireView(), R.string.deleted, R.string.undo) {
+            viewModel.updateItem(deletedItem)
         }
     }
 
-    private val nfcListener = object : (Any) -> Unit {
-        override fun invoke(item: Any) {
-            viewModel.changeNfcState(NfcState.WRITE, (item as CountedItem).id)
-            activity?.let {
-                nfcDialog.show(
-                    it.supportFragmentManager,
-                    getString(R.string.provide_nfc_dialog)
-                )
-            }
+    private fun onItemClick(item: CountedItem) {
+        addEditItem(item) {
+            viewModel.updateItem(item)
+            recyclerViewAdapter.notifyDataSetChanged()
         }
     }
+
+    private fun onNfcTagClick(item: CountedItem) {
+        viewModel.changeNfcState(NfcState.WRITE, item.id)
+        activity?.let {
+            nfcDialog.show(
+                it.supportFragmentManager,
+                getString(R.string.provide_nfc_dialog)
+            )
+        }
+    }
+
+    //endregion
 }

@@ -19,14 +19,12 @@
             android:text="@string/writing_to_the_tag"
             android:textSize="28sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/nfcTagButton"
+            app:layout_constraintBottom_toTopOf="@+id/btn_nfc_tag"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/nfcTagButton"
+            android:id="@+id/btn_nfc_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/very_large_padding"
