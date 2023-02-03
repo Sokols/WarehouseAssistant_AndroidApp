@@ -1,5 +1,6 @@
 package pl.sokols.warehouseassistant.services
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -16,6 +17,7 @@ class EmailService @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
+    @SuppressLint("IntentReset")
     fun sendEmail(
         recipient: String,
         subject: String? = null,

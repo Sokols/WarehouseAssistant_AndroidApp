@@ -7,8 +7,11 @@ import com.google.firebase.database.FirebaseDatabase
 
 object FirebaseDatabaseUtils {
 
+    private const val FIREBASE_URL =
+        "https://warehouse-assistant-88a9e-default-rtdb.europe-west1.firebasedatabase.app"
+
     fun getUserTableReference(): DatabaseReference = FirebaseDatabase
-        .getInstance("https://warehouseassistant-default-rtdb.europe-west1.firebasedatabase.app")
+        .getInstance(FIREBASE_URL)
         .reference
         .child(getItemsTableName())
 

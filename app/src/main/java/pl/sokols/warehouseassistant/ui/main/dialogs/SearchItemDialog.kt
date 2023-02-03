@@ -4,66 +4,62 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
-import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
-import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.SearchItemDialogBinding
-import pl.sokols.warehouseassistant.ui.main.adapters.BasicItemListAdapter
-import pl.sokols.warehouseassistant.utils.DividerItemDecorator
+import pl.sokols.warehouseassistant.databinding.DialogSearchItemBinding
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemAdapterType
+import pl.sokols.warehouseassistant.ui.main.adapters.CountedItemsAdapter
+import pl.sokols.warehouseassistant.utils.extensions.setupDivider
 
 class SearchItemDialog(
-    private val listener: (CountedItem) -> Unit,
-    private val items: List<CountedItem>
+    private val items: List<CountedItem>,
+    private val onApplyClick: (CountedItem) -> Unit
 ) : DialogFragment() {
 
-    private lateinit var binding: SearchItemDialogBinding
-    private var matchedItems: ArrayList<CountedItem> = arrayListOf()
-    private lateinit var itemsAdapter: BasicItemListAdapter
+    private lateinit var binding: DialogSearchItemBinding
+    private val itemsAdapter = CountedItemsAdapter(
+        CountedItemAdapterType.SEARCH,
+        { _, item -> onItemClick(item) }
+    )
 
-    override fun onPause() {
-        super.onPause()
-        dismiss()
-    }
+    //region Lifecycle
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = SearchItemDialogBinding.inflate(inflater, container, false)
+        binding = DialogSearchItemBinding.inflate(inflater, container, false)
         setComponents()
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        dismiss()
+    }
+
+    //endregion
+
+    //region Setup UI components
+
     private fun setComponents() {
         initRecyclerView()
         setSearching()
+        setupButtons()
+    }
 
-        binding.applyDialogButton.setOnClickListener {
-            val item: CountedItem? = binding.item
-            item?.let {
-                listener(item)
-            }
-            dismiss()
-        }
+    private fun setupButtons() {
+        binding.applyDialogButton.setOnClickListener { onApplyClicked() }
     }
 
     private fun initRecyclerView() {
-        itemsAdapter = BasicItemListAdapter(searchItemListener).also {
-            binding.recyclerView.adapter = it
-            it.submitList(items)
+        binding.recyclerView.apply {
+            adapter = itemsAdapter
+            itemsAdapter.submitList(items)
+            setupDivider()
         }
-        binding.recyclerView.addItemDecoration(
-            DividerItemDecorator(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.divider,
-                    null
-                )!!
-            )
-        )
     }
 
     private fun setSearching() {
@@ -80,31 +76,36 @@ class SearchItemDialog(
         })
     }
 
+    //endregion
+
+    //region Actions
+
+    private fun onApplyClicked() {
+        binding.item?.let {
+            onApplyClick(it)
+        }
+        dismiss()
+    }
+
+    //endregion
+
+    //region Helpers
+
     private fun search(text: String?) {
-        matchedItems = arrayListOf()
-
-        text?.let {
-            items.forEach { item ->
-                if (item.name.contains(text, true) ||
-                    item.id.contains(text, true)
-                ) {
-                    matchedItems.add(item)
-                }
+        text?.let { txt ->
+            val matchedItems = items.filter { item ->
+                item.name.contains(txt, true) || item.id.contains(txt, true)
             }
-            updateRecyclerView()
+            itemsAdapter.submitList(matchedItems)
         }
     }
 
-    private fun updateRecyclerView() {
-        binding.recyclerView.apply {
-            itemsAdapter.submitList(matchedItems as List<Any>?)
+    private fun onItemClick(item: CountedItem) {
+        binding.apply {
+            this.item = item
+            applyDialogButton.isEnabled = true
         }
     }
 
-    private val searchItemListener = object : (Any) -> Unit {
-        override fun invoke(item: Any) {
-            binding.item = item as CountedItem
-            binding.applyDialogButton.isEnabled = true
-        }
-    }
+    //endregion
 }

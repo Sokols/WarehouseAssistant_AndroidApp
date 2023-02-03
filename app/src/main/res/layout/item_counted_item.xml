@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_selector">
+
+    <data>
+
+        <variable
+            name="item"
+            type="pl.sokols.warehouseassistant.data.models.CountedItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/default_padding"
+            android:paddingVertical="@dimen/very_small_padding"
+            android:text="@{item.name}"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_subtitle"
+            app:layout_constraintEnd_toStartOf="@id/barrier"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Test Name" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/default_padding"
+            android:paddingVertical="@dimen/very_small_padding"
+            android:text="@{String.format(@string/id_and_value, item.id)}"
+            android:textColor="?attr/colorSecondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/barrier"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            tools:text="Test ID" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="tv_amount, tv_difference" />
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/very_small_padding"
+            android:layout_marginEnd="@dimen/default_padding"
+            android:text="@{String.format(@string/amount_and_value, item.amount)}"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/tv_difference"
+            app:layout_constraintEnd_toStartOf="@id/btn_nfc_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Amount: 0"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_difference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/very_small_padding"
+            android:layout_marginEnd="@dimen/default_padding"
+            android:text="@{String.format(@string/difference_and_value, item.difference)}"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_nfc_tag"
+            app:layout_constraintTop_toBottomOf="@id/tv_amount"
+            tools:text="Difference: -20"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/btn_nfc_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/nfc_tag_image"
+            android:padding="@dimen/default_padding"
+            android:src="@drawable/ic_baseline_nfc_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

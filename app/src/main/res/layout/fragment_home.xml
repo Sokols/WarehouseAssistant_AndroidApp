@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.main.screens.home.HomeFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -18,62 +17,50 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/large_padding">
 
             <TextView
                 android:id="@+id/titleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/very_large_padding"
-                android:layout_marginStart="@dimen/large_padding"
                 android:layout_marginTop="@dimen/very_large_padding"
-                android:layout_marginEnd="@dimen/large_padding"
                 android:autoSizeTextType="uniform"
+                android:gravity="center"
                 android:text="@{String.format(@string/hello_user_title, user.email)}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:targetApi="o" />
+                tools:targetApi="o"
+                tools:text="Home" />
 
             <TextView
                 android:id="@+id/descriptionTextView"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/large_padding"
                 android:layout_marginTop="@dimen/large_padding"
-                android:layout_marginEnd="@dimen/large_padding"
+                android:gravity="center"
                 android:text="@string/description_home"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-            <pl.sokols.warehouseassistant.utils.CustomItemCard
+            <pl.sokols.warehouseassistant.utils.widgets.CustomItemCard
                 android:id="@+id/itemsCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/large_padding"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="@dimen/large_padding"
+                android:layout_marginTop="@dimen/large_padding"
                 app:itemDescription="@string/items_description"
                 app:itemIcon="@drawable/ic_baseline_shopping_cart_24"
                 app:itemTitle="@string/items"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
-            <pl.sokols.warehouseassistant.utils.CustomItemCard
+            <pl.sokols.warehouseassistant.utils.widgets.CustomItemCard
                 android:id="@+id/inventoriesCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/large_padding"
                 android:layout_marginTop="@dimen/default_padding"
-                android:layout_marginEnd="@dimen/large_padding"
                 android:layout_marginBottom="@dimen/large_padding"
                 app:itemDescription="@string/inventory_description"
                 app:itemIcon="@drawable/ic_baseline_document_scanner_24"
                 app:itemTitle="@string/inventory"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/itemsCardView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

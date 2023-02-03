@@ -2,30 +2,27 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.main.screens.items.ItemsFragment">
+    tools:context=".ui.main.screens.inventory.inventory_list.InventoryFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mainLayout"
+        android:id="@+id/inventoryLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/itemsRecyclerView"
+            android:id="@+id/inventoriesRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
             android:fillViewport="true"
-            android:paddingBottom="72dp"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item" />
+            tools:itemCount="5"
+            tools:listitem="@layout/item_counted_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addItemButton"
+            android:id="@+id/startInventoryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_padding"
@@ -33,23 +30,15 @@
             android:contentDescription="@string/fab_content_desc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_baseline_add_24"
             app:tint="@color/white" />
 
         <include
             android:id="@+id/emptyLayout"
-            layout="@layout/empty_items_layout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            layout="@layout/layout_empty_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/loading"

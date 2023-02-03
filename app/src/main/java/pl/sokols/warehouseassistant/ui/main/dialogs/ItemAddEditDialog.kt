@@ -7,57 +7,70 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import pl.sokols.warehouseassistant.R
 import pl.sokols.warehouseassistant.data.models.CountedItem
-import pl.sokols.warehouseassistant.databinding.AddEditItemDialogBinding
+import pl.sokols.warehouseassistant.databinding.DialogAddEditItemBinding
 
 class ItemAddEditDialog(
     providedItem: CountedItem?,
-    private val listener: (Any) -> Unit
+    private val onApplyClick: (CountedItem) -> Unit
 ) : DialogFragment() {
 
-    var item: CountedItem = providedItem ?: CountedItem()
+    private var item: CountedItem = providedItem ?: CountedItem()
+    private lateinit var dialogBinding: DialogAddEditItemBinding
 
-    private lateinit var dialogBinding: AddEditItemDialogBinding
-
-    override fun onPause() {
-        super.onPause()
-        dismiss()
-    }
+    //region Lifecycle
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dialogBinding = AddEditItemDialogBinding.inflate(inflater, container, false)
+        dialogBinding = DialogAddEditItemBinding.inflate(inflater, container, false)
         dialogBinding.item = item
-        setComponents()
+        setupButtons()
         return dialogBinding.root
     }
 
-    /**
-     * Method which:
-     * - validates the inputs,
-     * - displays the errors if the inputs are incorrect,
-     * - turns on the listener if the inputs are correct.
-     */
-    private fun setComponents() {
-        dialogBinding.applyDialogButton.setOnClickListener {
-            if (item.name.trim().isEmpty()) {
-                dialogBinding.itemNameTextInputLayout.error = getString(R.string.incorrect_value)
-                dialogBinding.itemNameTextInputLayout.isErrorEnabled = true
-            } else {
-                dialogBinding.itemNameTextInputLayout.isErrorEnabled = false
+    override fun onPause() {
+        super.onPause()
+        dismiss()
+    }
+
+    //endregion
+
+    //region Helpers
+
+    private fun setupButtons() {
+        dialogBinding.applyDialogButton.setOnClickListener { onApplyClicked() }
+    }
+
+    private fun onApplyClicked() {
+        val nameValid = item.name.trim().isNotEmpty()
+        val priceValid = item.price.toInt() > 0
+        dialogBinding.apply {
+            itemNameTextInputLayout.apply {
+                if (!nameValid) {
+                    error = getString(R.string.incorrect_value)
+                    isErrorEnabled = true
+                } else {
+                    isErrorEnabled = false
+                }
             }
-            if (item.price.toInt() == 0) {
-                dialogBinding.itemPriceTextInputLayout.error = getString(R.string.incorrect_value)
-                dialogBinding.itemPriceTextInputLayout.isErrorEnabled = true
-            } else {
-                dialogBinding.itemPriceTextInputLayout.isErrorEnabled = false
+
+            itemPriceTextInputLayout.apply {
+                if (!priceValid) {
+                    error = getString(R.string.incorrect_value)
+                    isErrorEnabled = true
+                } else {
+                    isErrorEnabled = false
+                }
             }
-            if (item.name.trim().isNotEmpty() && item.price.toInt() != 0) {
-                listener(item)
+
+            if (nameValid && priceValid) {
+                onApplyClick(this@ItemAddEditDialog.item)
                 dismiss()
             }
         }
     }
+
+    //endregion
 }

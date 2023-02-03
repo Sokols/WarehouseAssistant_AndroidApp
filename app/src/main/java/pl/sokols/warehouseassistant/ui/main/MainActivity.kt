@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.nfc.NfcAdapter
 import android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -16,7 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.warehouseassistant.R
-import pl.sokols.warehouseassistant.databinding.MainActivityBinding
+import pl.sokols.warehouseassistant.databinding.ActivityMainBinding
 import pl.sokols.warehouseassistant.ui.auth.AuthActivity
 import pl.sokols.warehouseassistant.utils.NFCUtil
 import pl.sokols.warehouseassistant.utils.Utils
@@ -25,9 +26,11 @@ import pl.sokols.warehouseassistant.utils.Utils
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
-    private lateinit var binding: MainActivityBinding
+    private lateinit var binding: ActivityMainBinding
     private var nfcAdapter: NfcAdapter? = null
     private val viewModel: MainViewModel by viewModels()
+
+    //region Lifecycle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +54,12 @@ class MainActivity : AppCompatActivity() {
         NFCUtil.retrieveIntent(supportFragmentManager, intent)
     }
 
+    //endregion
+
+    //region Helpers
+
     private fun setup() {
-        binding = MainActivityBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         navController =
             (supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment).navController
@@ -61,35 +68,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment,
-                R.id.itemsFragment,
-                R.id.inventoryFragment
-            ),
-            binding.drawerLayout
-        )
-        binding.topAppBar.setupWithNavController(navController, appBarConfiguration)
-        binding.drawerView.setupWithNavController(navController)
+        binding.apply {
+            val appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.homeFragment,
+                    R.id.itemsFragment,
+                    R.id.inventoryFragment
+                ),
+                drawerLayout
+            )
+            topAppBar.setupWithNavController(navController, appBarConfiguration)
+            drawerView.setupWithNavController(navController)
 
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.logout -> {
-                    displayLogoutDialog()
-                    true
+            topAppBar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.logout -> {
+                        displayLogoutDialog()
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
         }
     }
 
     private fun setPlaceholderView() {
-        val isMainViewVisible = checkIfInternetAndNfcEnabled()
-        binding.drawerLayout.isVisible = isMainViewVisible
-        binding.noServicesPlaceholder.isVisible = !isMainViewVisible
-        binding.refreshButton.setOnClickListener {
-            finish()
-            startActivity(intent)
+        binding.apply {
+            val isMainViewVisible = checkIfInternetAndNfcEnabled()
+            drawerLayout.isVisible = isMainViewVisible
+            noServicesPlaceholder.isVisible = !isMainViewVisible
+            refreshButton.setOnClickListener {
+                finish()
+                startActivity(intent)
+            }
         }
     }
 
@@ -118,4 +129,6 @@ class MainActivity : AppCompatActivity() {
             finish()
         }.show()
     }
+
+    //endregion
 }

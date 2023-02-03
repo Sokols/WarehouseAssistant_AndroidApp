@@ -69,4 +69,6 @@
     <string name="select">Select</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="required">Required</string>
+    <string name="ok">OK</string>
 </resources>
